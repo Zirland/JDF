@@ -31,6 +31,8 @@ switch ($action) {
 
 				$ready30 = "UPDATE linestopsDB SET stop_vazba='$stop2_id' WHERE (stop_id ='$stop_id');";
 				$aktual30 = mysqli_query($link, $ready30);
+				$ready34 = "INSERT INTO linevazba (stop_id, stop_vazba) VALUES ('stop_id', '$stop2_id');";
+				$aktual34 = mysqli_query($link, $ready34);
    		}
 }
 

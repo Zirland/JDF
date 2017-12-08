@@ -18,7 +18,7 @@ echo "</select></td></tr>";
 echo "<tr><td>Číslo linky</td><td>Název trasy</td></tr>";
 echo "<tr><td><input type=\"text\" name=\"routeid\"></td><td><input name=\"fullname\" value=\"\" type=\"text\"></td></tr>";
 echo "<tr><td>Jede od</td><td>Jede do</td></tr>";
-echo "<tr><td><input name=\"jedeod\" value=\"01092017\" type=\"text\"></td><td><input name=\"jededo\" value=\"09122017\" type=\"text\"></td></tr>";
+echo "<tr><td><input name=\"jedeod\" value=\"05122017\" type=\"text\"></td><td><input name=\"jededo\" value=\"31122017\" type=\"text\"></td></tr>";
 echo "<tr><td>Charakter dopravy</td><td>Dopravní prostředek</td></tr>";
 echo "<tr><td><select name=\"areatype\">";
 $query9 = "SELECT kod, popis FROM area_enum;";

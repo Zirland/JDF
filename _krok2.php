@@ -31,6 +31,10 @@ $file = $route_id."-Linky.txt.txt";
 $current = "\"$route_id\",\"$route_long_name\",\"$agency_id\",\"$area_type\",\"$route_type\",\"0\",\"0\",\"0\",\"0\",\"\",\"\",\"\",\"\",\"$datumod\",\"$datumdo\",\"1\",\"1\";";
 file_put_contents($file, $current);
 
+$file = $route_id."-Spoje.txt.txt";
+$current = "";
+file_put_contents($file, $current);
+
 $file = $route_id."-LinkyExt.txt.txt";
 $current = "\"$route_id\",\"1\",\"$exter_id\",\"$route_short_name\",\"1\",\"\",\"1\";";
 file_put_contents($file, $current);
@@ -42,6 +46,7 @@ $current .= "\"8\",\"6\",\"\";\n";
 $current .= "\"18\",\"x\",\"\";\n";
 file_put_contents($file, $current);
 
+echo "ZASTÁVKY<br />";
 echo "<form action=\"_krok3.php\" method=\"post\">";
 echo "<input type=\"hidden\" name=\"routeid\" value=\"$route_id\">";
 echo "<textarea name=\"input\" cols=\"80\" rows=\"30\"></textarea>";

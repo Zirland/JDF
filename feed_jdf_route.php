@@ -51,7 +51,7 @@ $prevnow = $now;
 				$wheelchair_accessible = $row85[6];
 				$bikes_allowed = $row85[7];
 
-				$matice_start = mktime(0,0,0,12,11,2016);
+				$matice_start = mktime(0,0,0,12,3,2017);
 				$dnes_den = date("j", time());
 				$dnes_mesic = date("n", time());
 				$dnes_rok = date("Y", time());

@@ -1,17 +1,18 @@
 <?php
-$link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
+$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
     echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
     exit;
 }
 
-$log = 'import.log';
-
+$log = "import.log";
 $dir = $_GET['file'];
-$current = "Dir $dir\n";
+$label = $_GET['mode'];
+$current = "";
+$dir = "data/".$dir;
 
-$svatky = array ( 
+$svatek = array ( 
 "24122017",
 "25122017",
 "26122017",
@@ -53,8 +54,6 @@ if ($version) {
 	}
 	fclose($version);
 }
-
-$current .= "Verze $verze\n";
 
 $dopravci = fopen("$dir/Dopravci.txt.txt", 'r');
 if ($dopravci) {
@@ -114,8 +113,7 @@ if ($linky) {
 		}
 
 		$route_id = $route_no.$linkano;
-		$query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
-		$current .= "$route_short_name $route_long_name ($route_type)\n";
+		$query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
 		$prikaz46 = mysqli_query($link, $query46);     
 	}
 	fclose ($linky);
@@ -144,7 +142,7 @@ if ($spoje) {
 		$smer = ($trip_no % 2)+1;
 		if ($smer == 2) {$smer = 0;}
 		$matrix = "";
-		$startformat = "2016-12-11"; // vždy neděle!
+		$startformat = "2017-12-03"; // vždy neděle!
 		$Ystart = substr($startformat,0,4);
 		$Mstart = substr($startformat,5,2);
 		$Dstart = substr($startformat,-2);
@@ -321,7 +319,6 @@ if ($spoje) {
 								if ($g>=$zacdnu && $g <=$kondnu) {$matrix[$g] = 0;}
 							}
 
-							$current .= "* Spoj $caskod_trip_id nejede od $datumod do $datumdo\n"; break;
 						break;
 		
 						case "5" : $current .= "* Spoj $caskod_trip_id jede jen v lichých týdnech\n"; break;
@@ -346,7 +343,7 @@ if ($spoje) {
 			if ($g<$zacplat || $g >$konplat) {$matrix[$g] = 0;}
 		}
 
-		$query484 = "SELECT matice FROM trip WHERE trip_id = '$trip_id';";
+		$query484 = "SELECT matice FROM trip WHERE trip_id = '$label$trip_id';";
 		if ($result484 = mysqli_query($link, $query484)) {
 			$radky484 = mysqli_num_rows($result484);
 			if ($radky484 != 0) {
@@ -372,14 +369,14 @@ if ($spoje) {
 		}
 
 		if ($radky484 == 0) {
-			$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$route_id', '$matrix', '$trip_id', '', '$smer', '$wheelchair','0');";
+			$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','0');";
 			$prikaz64 = mysqli_query($link, $query64);
-			$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$trip_id');";
+			$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$label$trip_id');";
 			$prikaz368 = mysqli_query($link, $query368);
 		}
 
 		if ($radky484 != 0) {
-			$query64 = "UPDATE trip SET matice = '$newmatrix' WHERE trip_id = '$trip_id';";
+			$query64 = "UPDATE trip SET matice = '$newmatrix' WHERE trip_id = '$label$trip_id';";
 			$prikaz64 = mysqli_query($link, $query64);
 		}
 	}
@@ -389,13 +386,11 @@ if ($spoje) {
 if ($verze == '1.10' || $verze == '1.11') {
 	$oznacnik = fopen("$dir/Oznacniky.txt.txt", 'r');
 	if ($oznacnik) {
-		$current .= "Označníky\n";
 		fclose ($oznacnik);
 	}	
 
 	$spojskup = fopen("$dir/SpojSkup.txt.txt", 'r');
 	if ($spojskup) {
-		$current .= "Skupina spojů\n";
 		fclose ($spojskup);
 	}
 
@@ -412,7 +407,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 			$oznaclin = $linext[3];
 			$prefer = $linext[4];
 				
-			$query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
+			$query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$label$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
 			$prikaz1213 = mysqli_query($link, $query1213);
 		}
 		fclose ($extlinka);
@@ -460,9 +455,9 @@ if ($zaslinky) {
     	$zastPK = $najdipom[1];
 		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";        
 		
-		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$stop_id+', '$stop_name', '$stopPK', '$linka_id', '$zastporadi', '0', '');";
+		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
 		$prikaz467 = mysqli_query($link, $query467);
-		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$stop_id-', '$stop_name', '$stopPK', '$linka_id', '$zastporadi', '1', '');";
+		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
 		$prikaz469 = mysqli_query($link, $query469);
 	} 
 	fclose ($zaslinky);
@@ -523,11 +518,24 @@ if ($zasspoje) {
 		}
 
 		if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|') {
-			$query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$zastav_id','$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
+			$query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$label$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
 			$prikaz537 = mysqli_query($link, $query537);
 		}
 	}
 	fclose ($zasspoje);
+}
+
+$query528 = "SELECT * FROM linevazba ORDER BY id;";
+if ($result528 = mysqli_query($link, $query528)) {
+	while ($row528 = mysqli_fetch_row($result528)) {
+		$stop_id = $row528[1];
+		$stop_vazba = $row528[2];
+
+		$ready534 = "UPDATE linestopsDB SET stop_vazba = '$stop_vazba' WHERE stop_id = '$stop_id';";
+		$prikaz534 = mysqli_query($link, $ready534);
+		$ready536 = "UPDATE linestopsDB SET stop_vazba = '$stop_vazba' WHERE stop_id = 'F$stop_id';";
+		$prikaz536 = mysqli_query($link, $ready536);
+	}
 }
 
 file_put_contents($log, $current, FILE_APPEND);

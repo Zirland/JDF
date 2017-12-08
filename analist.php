@@ -8,7 +8,7 @@ $dnes_mesic = date("n", time());
 $dnes_rok = date("Y", time());
 $today = mktime(0,0,0,$dnes_mesic,$dnes_den,$dnes_rok);
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza ORDER BY route_id LIMIT 5;";
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '595%' ORDER BY route_id;"; // WHERE route_id LIKE '5950%' 
 if ($result6 = mysqli_query($link, $query6)) {
 	while ($row6 = mysqli_fetch_row($result6)) {
 		$route_id = $row6[0];
@@ -35,7 +35,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label<br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label\" target=\"_blank\">Generovat</a><br />";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
 		}

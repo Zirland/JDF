@@ -70,7 +70,13 @@ switch ($t) {
 				$ro_ag = $ro_ag_pom['0'];
 				echo "<td>$ro_ag</td>";
 
-				echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">$route_short</td>";
+		echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">$route_short";
+				
+		if (strpos($route_id, 'F') !== false) {
+			echo "F";
+		}				
+		
+		echo "</td>";
 				
 				$query73 = "SELECT kod_linky from exter WHERE linka = '$route_id';";
 				$mhd = mysqli_fetch_row(mysqli_query($link, $query73));
