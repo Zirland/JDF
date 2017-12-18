@@ -10,14 +10,14 @@ $x=1;
 $current0 = "";
 $current1 = "";
 foreach ($pole as $stanice) {
-	$stanice = str_replace("přestup na vlak", "", $stanice);
-	$stanice = str_replace("zastávka je bezbariérově přístupná", "", $stanice);
+	$stanice = str_replace("[přestup na vlak]", "", $stanice);
+	$stanice = str_replace("[zastávka je bezbariérově přístupná]", "", $stanice);
 	$stanice = str_replace(" p", "", $stanice);
 	$stanice = str_replace(" ,", "", $stanice);
 	$znam = "";
-	if (strpos($stanice, 'zastávka nebo spoj na znamení') !== false) {
+	if (strpos($stanice, '[zastávka nebo spoj na znamení]') !== false) {
 		$znam="18";
-		$stanice = str_replace("zastávka nebo spoj na znamení", "", $stanice);
+		$stanice = str_replace("[zastávka nebo spoj na znamení]", "", $stanice);
 	}
 		
 	$stanice = rtrim($stanice);

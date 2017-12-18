@@ -303,7 +303,8 @@ if ($spoje) {
 			
 						case "3" :
 							$Dod = substr($datumod,0,2); $Mod = substr($datumod,2,2); $Yod = substr($datumod,-4); $timeod = mktime(0,0,0,$Mod, $Dod, $Yod); 
-							$zacdnu = round(($timeod - $maticestart) / 86400); 
+							$zacdnu = round(($timeod - $maticestart) / 86400);
+							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; break; 
 							for ($g=0; $g<406; $g++) {
 								if ($g==$zacdnu) {$matrix[$g] = 1;} else {$matrix[$g] = 0;}
 							} 
@@ -537,6 +538,9 @@ if ($result528 = mysqli_query($link, $query528)) {
 		$prikaz536 = mysqli_query($link, $ready536);
 	}
 }
+
+$query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$datumod')";
+$zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
 mysqli_close ($link);

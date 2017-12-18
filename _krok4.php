@@ -29,7 +29,7 @@ foreach ($pole as $stanice) {
 		$index = 0;
 		$zast = $x-3;
 		foreach ($jizda as $prijezd) {
-			$casprijezd = substr($prijezd,0.2) . substr($prijezd,-2);
+			$casprijezd = substr($prijezd,0,2) . substr($prijezd,-2);
 			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"1\";\n";
 			$index = $index+1;
 		}
