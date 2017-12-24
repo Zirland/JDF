@@ -67,6 +67,7 @@ if ($dopravci) {
 		
 		$cistiag = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
 		$query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
+		echo "$query21<br/>";
 		$prikaz21 = mysqli_query($link, $query21);     
 	}
 	fclose ($dopravci);
@@ -118,6 +119,7 @@ if ($linky) {
 		$cistiro = mysqli_query($link, "DELETE FROM route WHERE route_id = '$label$route_id';");
 		$cistitr = mysqli_query($link, "DELETE FROM trip WHERE route_id = '$label$route_id';");
 		$query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
+		echo "$query46<br/>";
 		$prikaz46 = mysqli_query($link, $query46);     
 	}
 	fclose ($linky);
@@ -375,8 +377,10 @@ if ($spoje) {
 
 		if ($radky484 == 0) {
 			$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','0');";
+			echo "$query64<br/>";
 			$prikaz64 = mysqli_query($link, $query64);
 			$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$label$trip_id');";
+			echo "$query368<br/>";
 			$prikaz368 = mysqli_query($link, $query368);
 		}
 
@@ -414,6 +418,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 				
 			$cistiex = mysqli_query($link, "DELETE FROM exter WHERE linka = '$label$linka';");
 			$query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$label$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
+			echo "$query1213<br/>";
 			$prikaz1213 = mysqli_query($link, $query1213);
 		}
 		fclose ($extlinka);
@@ -433,6 +438,7 @@ if ($zastavky) {
 		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";        
 
 		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$zastav_no', '$zast_name', '$zastPK');";
+		echo "$query236<br/>";
 		$prikaz236 = mysqli_query($link, $query236);     
 	}
 	fclose ($zastavky);
@@ -462,8 +468,10 @@ if ($zaslinky) {
 		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";        
 		
 		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
+		echo "$query467<br/>";
 		$prikaz467 = mysqli_query($link, $query467);
 		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
+		echo "$query469<br/>";
 		$prikaz469 = mysqli_query($link, $query469);
 
 		$query464 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id+';";
@@ -545,6 +553,7 @@ if ($zasspoje) {
 
 		if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|') {
 			$query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$label$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
+			echo "$query537<br/>";
 			$prikaz537 = mysqli_query($link, $query537);
 		}
 	}
@@ -565,6 +574,7 @@ if ($result528 = mysqli_query($link, $query528)) {
 }
 
 $query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$linkaod')";
+echo $query542;
 $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);

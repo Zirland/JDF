@@ -20,7 +20,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 		$halt = 0;
 		$label = "";
 		
-		$query11 = "SELECT analyza.dir, analyza.verze, analyza.datumod, analyza.datumdo, anal_done.datumod FROM analyza LEFT JOIN anal_done ON analyza.route_id = anal_done.route_id WHERE analyza.route_id = '$route_id' ORDER BY analyza.datumod DESC;";
+		$query11 = "SELECT DISTINCT analyza.dir, analyza.verze, analyza.datumod, analyza.datumdo, anal_done.datumod FROM analyza LEFT JOIN anal_done ON analyza.route_id = anal_done.route_id WHERE analyza.route_id = '$route_id' ORDER BY analyza.datumod DESC;";
 		if ($result11 = mysqli_query($link, $query11)) {
 			while ($row11 = mysqli_fetch_row($result11)) {
 				$dir = $row11[0];
