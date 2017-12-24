@@ -37,7 +37,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 				if ($platnost == $datumod) {echo "<i>";}
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label\" target=\"_blank\">Generovat</a><br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod\" target=\"_blank\">Generovat</a><br />";}
 				if ($platnost == $datumod) {echo "</i>";}
 				if ($od_time <= $today) {$halt = 1;}
 			}

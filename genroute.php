@@ -9,6 +9,7 @@ if (!$link) {
 $log = "import.log";
 $dir = $_GET['file'];
 $label = $_GET['mode'];
+$linkaod = $_GET['linkaod'];
 $current = "";
 $dir = "data/".$dir;
 
@@ -563,7 +564,7 @@ if ($result528 = mysqli_query($link, $query528)) {
 	}
 }
 
-$query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$datumod')";
+$query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$linkaod')";
 $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
