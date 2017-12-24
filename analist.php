@@ -15,7 +15,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 		$route_name = $row6[1];
 		$route_type = $row6[2];
 
-		echo "$route_id - $route_name ($route_type)<br />";
+		echo "<span style=\"background-color:#dd0000;\">$route_id - $route_name ($route_type)</span><br />";
 		
 		$halt = 0;
 		$label = "";
@@ -36,11 +36,11 @@ if ($result6 = mysqli_query($link, $query6)) {
 				$od_rok = substr($datumod,0,4);
 				$od_time = mktime(0,0,0,$od_mesic,$od_den,$od_rok);
 
-				if ($platnost > 0) {echo "<i>";}
+				if ($platnost > 0) {echo "<span style=\"background-color:#dddddd;\">";}
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
 				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod\" target=\"_blank\">Generovat</a><br />";}
-				if ($platnost > 0) {echo "</i>";}
+				if ($platnost > 0) {echo "</span>";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
 		}
@@ -77,7 +77,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label\" target=\"_blank\">Generovat</a><br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod\" target=\"_blank\">Generovat</a><br />";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
 		}

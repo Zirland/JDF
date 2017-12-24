@@ -438,11 +438,14 @@ if ($zastavky) {
 		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";        
 
 		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$zastav_no', '$zast_name', '$zastPK');";
-		//echo "$query236<br/>";
+		// echo "$query236<br/>";
 		$prikaz236 = mysqli_query($link, $query236);     
 	}
 	fclose ($zastavky);
 }
+
+$cististopDB = mysqli_query($link, "DELETE FROM linestopsDB WHERE stop_id LIKE '$label$linka%';");
+$cistitripDB = mysqli_query($link, "DELETE FROM triptimesDB WHERE trip_id LIKE '$label$linka%';");
 
 $zaslinky = fopen("$dir/Zaslinky.txt.txt", 'r');
 if ($zaslinky) {
@@ -468,10 +471,10 @@ if ($zaslinky) {
 		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";        
 		
 		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
-		//echo "$query467<br/>";
+		// echo "$query467<br/>";
 		$prikaz467 = mysqli_query($link, $query467);
 		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
-		//echo "$query469<br/>";
+		// echo "$query469<br/>";
 		$prikaz469 = mysqli_query($link, $query469);
 
 		$query464 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id+';";
@@ -553,7 +556,7 @@ if ($zasspoje) {
 
 		if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|') {
 			$query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$label$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
-			//echo "$query537<br/>";
+			// echo "$query537<br/>";
 			$prikaz537 = mysqli_query($link, $query537);
 		}
 	}

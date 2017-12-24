@@ -22,16 +22,16 @@ switch ($action) {
 	case "zastavky" :
 		$route = $_POST['route_id'];
 	
-		for ($y = 0; $y < 40; $y++) {
+		for ($y = 0; $y < 60; $y++) {
 				$$ind = $y;
 				$stpidindex = "stop_id".${$ind};
 				$stop_id = $_POST[$stpidindex];
 				$stpvazbaindex = "stop_vazba".${$ind};
 				$stop2_id = $_POST[$stpvazbaindex];
 
-				$ready30 = "UPDATE linestopsDB SET stop_vazba='$stop2_id' WHERE (stop_id ='$stop_id');";
-				$aktual30 = mysqli_query($link, $ready30);
-				$ready34 = "INSERT INTO linevazba (stop_id, stop_vazba) VALUES ('stop_id', '$stop2_id');";
+				$query30 = "UPDATE linestopsDB SET stop_vazba='$stop2_id' WHERE (stop_id ='$stop_id');";
+				$aktual30 = mysqli_query($link, $query30);
+				$ready34 = "INSERT INTO linevazba (stop_id, stop_vazba) VALUES ('$stop_id', '$stop2_id');";
 				$aktual34 = mysqli_query($link, $ready34);
    		}
 }
