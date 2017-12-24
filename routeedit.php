@@ -189,7 +189,7 @@ if ($result80 = mysqli_query($link, $query80)) {
 }
 echo "</td><td>";
 		
-$query96 = "SELECT * FROM trip WHERE ((route_id = $route_id) AND (direction_id = '1')) ORDER BY trip_id;";
+$query96 = "SELECT * FROM trip WHERE ((route_id = '$route_id') AND (direction_id = '1')) ORDER BY trip_id;";
 if ($result96 = mysqli_query($link, $query96)) {
 	while ($row96 = mysqli_fetch_row($result96)) {
 		$trip_id = $row96[2];
