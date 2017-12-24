@@ -17,6 +17,15 @@ if ($version) {
 	fclose($version);
 }
 
+$dopravci = fopen("data/$dir/Dopravci.txt.txt", 'r');
+if ($dopravci) {
+	while (($buffer1 = fgets($dopravci, 4096)) !== false) {
+		$dopr = explode ('"', $buffer1);
+		$dopravce = $dopr[5];				
+	}
+	fclose ($dopravci);
+}
+
 $linky = fopen("data/$dir/Linky.txt.txt", 'r');
 if ($linky) {
 	while (($buffer2 = fgets($linky, 4096)) !== false) {
@@ -58,7 +67,7 @@ if ($linky) {
 
 $datumod = substr($platnostod, -4)."-".substr($platnostod, 2,2)."-".substr($platnostod, 0,2);
 $datumdo = substr($platnostdo, -4)."-".substr($platnostdo, 2,2)."-".substr($platnostdo, 0,2);
-$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo) VALUES ('$dir', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo');";
+$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce) VALUES ('$dir', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce');";
 $prikaz68 = mysqli_query($link, $query68);
 
 mysqli_close ($link);

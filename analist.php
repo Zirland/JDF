@@ -8,7 +8,7 @@ $dnes_mesic = date("n", time());
 $dnes_rok = date("Y", time());
 $today = mktime(0,0,0,$dnes_mesic,$dnes_den,$dnes_rok);
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id IN (SELECT DISTINCT route_id FROM anal_done) AS done ORDER BY route_id;"; // WHERE route_id LIKE '5950%' 
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;"; // WHERE route_id LIKE '5950%' 
 if ($result6 = mysqli_query($link, $query6)) {
 	while ($row6 = mysqli_fetch_row($result6)) {
 		$route_id = $row6[0];
@@ -48,7 +48,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 echo "<hr>";
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) AS done ORDER BY route_id;"; // WHERE route_id LIKE '5950%' 
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;"; // WHERE route_id LIKE '5950%' 
 if ($result6 = mysqli_query($link, $query6)) {
 	while ($row6 = mysqli_fetch_row($result6)) {
 		$route_id = $row6[0];

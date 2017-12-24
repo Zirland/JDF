@@ -76,6 +76,17 @@ echo "<td>Aktivní <input type=\"checkbox\" name=\"aktif\" value=\"1\"";
 if ($route_active == '1') {echo " CHECKED";}
 echo "></td><td><input type=\"submit\"></td></tr></form></table>";
 
+$query79 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id = '$route_id';";
+if ($result79 = mysqli_query($link, $query79)) {
+	while ($row79 = mysqli_fetch_row($result79)) {
+		$routeid = $row79[0];
+		$routename = $row79[1];
+
+		echo "$routename<BR/>";
+	}
+}
+
+
 echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a><br/>";
 echo "<table>";
 echo "<tr><td>";

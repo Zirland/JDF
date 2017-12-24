@@ -63,7 +63,8 @@ if ($dopravci) {
 		$dopr_name = $dopr[5];
 		$dopr_url = $dopr[23];
 		if ($dopr_url == '') {$dopr_url = "andreas.zirland.org";}
-				
+		
+		$cistiag = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
 		$query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
 		$prikaz21 = mysqli_query($link, $query21);     
 	}
@@ -113,6 +114,8 @@ if ($linky) {
 		}
 
 		$route_id = $route_no.$linkano;
+		$cistiro = mysqli_query($link, "DELETE FROM route WHERE route_id = '$label$route_id';");
+		$cistitr = mysqli_query($link, "DELETE FROM trip WHERE route_id = '$label$route_id';");
 		$query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
 		$prikaz46 = mysqli_query($link, $query46);     
 	}
@@ -408,6 +411,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 			$oznaclin = $linext[3];
 			$prefer = $linext[4];
 				
+			$cistiex = mysqli_query($link, "DELETE FROM exter WHERE linka = '$label$linka';");
 			$query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$label$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
 			$prikaz1213 = mysqli_query($link, $query1213);
 		}
