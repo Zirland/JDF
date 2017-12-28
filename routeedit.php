@@ -11,7 +11,7 @@ switch ($action) {
 		$dopravce = $_POST['dopravce'];
 		$shortname = $_POST['shortname'];
 		$longname = $_POST['longname'];
-		$routetype = $_POST['route_type']
+		$routetype = $_POST['route_type'];
 		$pozadi = $_POST['route_pozadi'];
 		$foreground = $_POST['foreground'];
 		$aktif = $_POST['aktif'];
@@ -46,7 +46,7 @@ $route_id = $hlavicka[0];
 $agency_id = $hlavicka[1];
 $route_short_name = $hlavicka[2];
 $route_long_name = $hlavicka[3];
-$route_type = $hlavicka[5]
+$route_type = $hlavicka[5];
 $route_color = $hlavicka[7];
 $route_text_color = $hlavicka[8];
 $route_active = $hlavicka[9];
@@ -67,7 +67,7 @@ if ($result24 = mysqli_query($link, $query24)) {
 		echo ">$agname</option>";
 	}
 }
-echo "</select><br><select name=\"routetype\">";
+echo "</select><br>Typ linky: <select name=\"routetype\">";
 echo "<option value=\"0\""; if ($route_type == "0") {echo " SELECTED";} echo ">tramvaj</option>";
 echo "<option value=\"1\""; if ($route_type == "1") {echo " SELECTED";} echo ">metro</option>";
 echo "<option value=\"2\""; if ($route_type == "2") {echo " SELECTED";} echo ">vlak</option>";
