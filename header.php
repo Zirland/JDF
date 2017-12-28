@@ -23,6 +23,7 @@ if (!$link) {
 <td style="height:5px; background-color:#cccccc;">
 </td></tr>
 <tr><td style="width:100px; background-color:yellow; vertical-align:top;">
+<a href="cisti.php">Čisti</a><br/>
 <a href="newstop.php">Newstop</a><br/>
 <a href="analist.php">Analýza</a><br/>
 <a href="_krok1.php">Manuální linka</a><br/>

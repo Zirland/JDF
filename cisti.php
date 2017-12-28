@@ -1,14 +1,14 @@
 <?php
 include 'header.php';
 
-$query = "SELECT matice,trip_id FROM trip WHERE route_id = '5950521';";
+$query = "SELECT matice,trip_id FROM trip;";
 if ($result = mysqli_query($link, $query)) {
 	while ($row = mysqli_fetch_row($result)) {
-		$matice = $row[0];
+		$matice = "0".$row[0];
 		$trip_id = $row[1];
 		
-		$matice_start = mktime(0,0,0,12,11,2016);
-		$matice_end = mktime(0,0,0,12,9,2017);
+		$matice_start = mktime(0,0,0,12,3,2017);
+		$matice_end = mktime(0,0,0,12,8,2018);
 		
 		$dnes_den = date("d", time());
 		$dnes_mesic = date("m", time());
@@ -41,14 +41,11 @@ if ($result = mysqli_query($link, $query)) {
 			$soucet = $soucet + $den;
 		}
 		
-		echo "$trip_id : $aktual = $soucet<br />";
-		
 		if ($soucet == 0) {
 			echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a> = $soucet<br/>";
 			
 			$prikaz = mysqli_query($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
-//			$prikaz2 = mysqli_query($link, "DELETE FROM stoptime WHERE trip_id = '$trip_id';");
-//			$prikaz3 = mysqli_query($link, "DELETE FROM triptimesDB WHERE trip_id = '$trip_id';");
+			$prikaz2 = mysqli_query($link, "DELETE FROM stoptime WHERE trip_id = '$trip_id';");
 			
 		}
 	}
@@ -59,8 +56,8 @@ if ($result1 = mysqli_query($link, $query1)) {
 	while ($row1 = mysqli_fetch_row($result1)) {
 		$route_id = $row1[0];
 
-		echo "$route_id<br/>";
-	//	$prikaz3 = mysqli_query($link, "DELETE FROM route WHERE route_id = '$route_id';");
+		echo "Route $route_id<br/>";
+		$prikaz3 = mysqli_query($link, "DELETE FROM route WHERE route_id = '$route_id';");
 	}
 }
 

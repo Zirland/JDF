@@ -195,6 +195,7 @@ $hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip
 
 echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
 echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
+echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
 echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
 echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
 echo "<td><td>";

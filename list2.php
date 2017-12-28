@@ -2,6 +2,7 @@
 include 'header.php';
 echo "<table>";
 echo "<tr>";
+echo"<th></th>";
 echo "<th>Přepravce</th>
 <th>Linka</th>
 <th>MHD</th>
@@ -26,7 +27,7 @@ if ($result = mysqli_query($link, $query)) {
 		echo "<tr>";
  		$ro_ag_pom = mysqli_fetch_row(mysqli_query($link, "SELECT agency_name FROM agency WHERE (agency_id = $agency_id);"));
 		$ro_ag = $ro_ag_pom['0'];
-		echo "<td>$ro_ag</td>";
+		echo "<td><a href=\"delroute.php?route=$route_id\">Smazat linku</td><td>$ro_ag</td>";
 
 		echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">$route_short";
 				
