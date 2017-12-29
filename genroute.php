@@ -310,7 +310,8 @@ if ($spoje) {
 						case "3" :
 							$Dod = substr($datumod,0,2); $Mod = substr($datumod,2,2); $Yod = substr($datumod,-4); $timeod = mktime(0,0,0,$Mod, $Dod, $Yod); 
 							$zacdnu = round(($timeod - $maticestart) / 86400);
-							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; break; 
+							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
+							echo "* Spoj $caskod_trip_id jede pouze dne $datumod<br/>"; 
 							for ($g=0; $g<406; $g++) {
 								if ($g==$zacdnu) {$matrix[$g] = 1;} else {$matrix[$g] = 0;}
 							} 

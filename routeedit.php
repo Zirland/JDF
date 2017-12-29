@@ -11,7 +11,7 @@ switch ($action) {
 		$dopravce = $_POST['dopravce'];
 		$shortname = $_POST['shortname'];
 		$longname = $_POST['longname'];
-		$routetype = $_POST['route_type'];
+		$routetype = $_POST['routetype'];
 		$pozadi = $_POST['route_pozadi'];
 		$foreground = $_POST['foreground'];
 		$aktif = $_POST['aktif'];
