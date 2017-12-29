@@ -49,27 +49,28 @@ $query29 = "SELECT castobce, misto, pomcode, stop_code, stop_lat, stop_lon FROM 
 if ($result29 = mysqli_query ($link, $query29)) {
 	while ($row29 = mysqli_fetch_row($result29)) {
 		$kod_obec = substr($stop_id, 0, 6);
-		$stop_cast = $row29[1];
-		$stop_misto = $row29[2];
-		$stop_pomcode = $row29[3];
-		$stop_stopcode = $row29[4];
-		$stop_lat = $row29[5];
-		$stop_lon = $row29[6];
+		$stop_cast = $row29[0];
+		$stop_misto = $row29[1];
+		$stop_pomcode = $row29[2];
+		$stop_stopcode = $row29[3];
+		$stop_lat = $row29[4];
+		$stop_lon = $row29[5];
 
 echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
 echo "<tr><td><select name=\"kodobec\">";
-$query53 = "SELECT * FROM obce ORDER BY nazev;";
+$query53 = "SELECT * FROM obce ORDER BY nazev_obce;";
 if ($result53 = mysqli_query($link, $query53)) {
 	while ($row53 = mysqli_fetch_row($result53)) {
-		$kodobce = $row53[0];
-		$nazevobce = $row53[1];
+		$kodokres = $row53[1];
+		$kodobce = $row53[2];
+		$nazevobce = $row53[3];
 
 		echo "<option value=\"$kodobce\"";
 		if ($kodobce == $stop_obec) {echo " SELECTED";} 
-		echo ">$nazevobce</option>";
+		echo ">$nazevobce $kodokres</option>";
 	}
 }
-echo "</select><input type=\"hidden\" name=\"oldobec\" value=\"$kod_obec\"></td><td><input name=\"castobce\" value=\"$stop_cast\" type=\"text\"></td><td><input name=\"misto\" value=\"$stop_misto\" type=\"text\"></td><td><input name=\"pomcode\" value=\"$stop_pomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"$stop_stopcode\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\" value=\"$stop_lat\"></td><td><input name=\"stoplon\" type=\"text\" value=\"stop_lon\"></td></tr>";
+echo "</select><input type=\"hidden\" name=\"oldobec\" value=\"$kod_obec\"></td><td><input name=\"castobce\" value=\"$stop_cast\" type=\"text\"></td><td><input name=\"misto\" value=\"$stop_misto\" type=\"text\"></td><td><input name=\"pomcode\" value=\"$stop_pomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"$stop_stopcode\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\" value=\"$stop_lat\"></td><td><input name=\"stoplon\" type=\"text\" value=\"$stop_lon\"></td></tr>";
 
 echo "<tr><td colspan=\"7\"><input type=\"submit\" value=\"Insert\"></td></tr>";
 echo "</table>";
