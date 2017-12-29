@@ -36,8 +36,6 @@ switch ($action) {
 		$drop_off_type = substr($rzm,1,1);
 		$seqindex = "poradi".${$ind};
 		$stop_sequence = $_POST[$seqindex];
-		$nameindex = "stopname".${$ind};
-		$stop_name = $_POST[$nameindex];
 		$stpidindex = "stop_id".${$ind};
 		$stop_id = $_POST[$stpidindex];
 		$stp2idindex = "stop2_id".${$ind};
@@ -82,9 +80,6 @@ switch ($action) {
 			default : 
 				$ready1 = "UPDATE stoptime SET arrival_time='$arrival_time', departure_time='$departure_time', pickup_type='$pickup_type', drop_off_type='$drop_off_type' WHERE ((trip_id ='$trip') AND (stop_sequence = '$stop_sequence'));";
 				$aktualz1 = mysqli_query($link, $ready1);
-
-				$ready2 = "UPDATE stop SET stop_name='$stop_name' WHERE (stop_id ='$stop_id');";
-				$aktualz2 = mysqli_query($link, $ready2);
 			break;
     	}
    	}
@@ -293,7 +288,7 @@ if ($result108 = mysqli_query($link, $query108)) {
 	<input name=\"poradi$z\" value=\"$stop_sequence\" type=\"hidden\">
 	<input type=\"checkbox\" name=\"reroute$z\" value=\"1\">
 	<select name=\"stop2_id$z\">";
-	$query194 = "SELECT stop_id, fullname, pomcode FROM stop WHERE active=1 ORDER BY stop_name;";
+	$query194 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE active=1 ORDER BY stop_name;";
 	if ($result194 = mysqli_query($link, $query194)) {
 		while ($row194 = mysqli_fetch_row($result194)) {
 			$stopid = $row194[0];
@@ -306,7 +301,7 @@ if ($result108 = mysqli_query($link, $query108)) {
 		}
 	}
 	echo "</select>";
-	echo "<input type=\"text\" name=\"stopname$z\" value=\"$nazev_stanice\"> $kod_stanice</td>";
+	echo "<input type=\"text\" name=\"stopname$z\" value=\"$nazev_stanice\"><a href=\"stopedit.php?id=$stop_id\">E</a> $kod_stanice</td>";
 	echo "<td><input type=\"text\" name=\"arrive$z\" value=\"$arrival_time\"></td>";
 	echo "<td><input type=\"text\" name=\"leave$z\" value=\"$departure_time\"></td>";
 	echo "<td><select name=\"rezim$z\"><option value=\"00\"></option>";

@@ -6,19 +6,32 @@ $action = @$_POST['action'];
 
 switch ($action) {
 	case 'nova' :
-		$stopid = $_POST['stopid'];
-		$stopname = $_POST['stopname'];
 		$stopcode = $_POST['stopcode'];
 		$stoplat = $_POST['stoplat'];
 		$stoplon = $_POST['stoplon'];
 		$parent = $_POST['parent'];
-//		$parent_id = $stopid;
-		$fullname = $_POST['fullname'];
 		$pomcode = $_POST['pomcode'];
+		$kodobec = $_POST['kodobec'];
+		$castobce = $_POST['castobce'];
+		$misto = $_POST['misto'];
+
+		$pom20 = mysqli_fetch_row(mysqli_query($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
+		$obec = $pom20[0];
+
+		$pom23 = mysqli_fetch_row(mysqli_query($link, "SELECT max FROM stop_count WHERE kodobce = '$kodobec';"));
+		$max = $pom23[0];
+
+		$newmax = $max + 1;
+
+		$stopid = $kodobec."Z".$newmax;
+
+		$update28 = mysqli_query($link, "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$kodobec';");
 		
-		if ($stopname == '') {$stopname = $fullname;}
-		
-		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, fullname, pomcode)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','$parent','','','0','1', '$fullname', '$pomcode');";
+		$stopname = $obec.", ".$castobce.", ".$misto;
+		if ($misto == '') {$stopname = $obec.", ".$castobce;}
+		if ($castobce == '' && $misto == '') {$stopname = $obec;}
+ 		
+		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', $misto);";
 		echo $query14;
 		$prikaz4 = mysqli_query($link, $query14);
 		
@@ -45,8 +58,18 @@ echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\">
 		<input name=\"action\" value=\"nova\" type=\"hidden\">";
 		
 
-echo "<tr><td>Stop ID</td><td>Full name</td><td>Pomcode</td><td>Stop name</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
-echo "<tr><td><input type=\"text\" name=\"stopid\"></td><td><input name=\"fullname\" value=\"\" type=\"text\"></td><td><input name=\"pomcode\" value=\"\" type=\"text\"></td><td><input name=\"stopname\" value=\"\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\"></td><td><input name=\"stoplon\" type=\"text\"></td></tr>";
+echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
+echo "<tr><td><select name=\"kodobec\">";
+$query53 = "SELECT * FROM obce ORDER BY nazev;";
+if ($result53 = mysqli_query($link, $query53)) {
+	while ($row53 = mysqli_fetch_row($result53)) {
+		$kodobce = $row53[0];
+		$nazevobce = $row53[1];
+
+		echo "<option value=\"$kodobce\">$nazevobce</option>";
+	}
+}
+echo "</select></td><td><input name=\"castobce\" value=\"\" type=\"text\"></td><td><input name=\"misto\" value=\"\" type=\"text\"></td><td><input name=\"pomcode\" value=\"\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\"></td><td><input name=\"stoplon\" type=\"text\"></td></tr>";
 echo "<tr><td>0:<input type=\"radio\" name=\"parent\" value=\"0\"";
 if ($parent == "0") {echo " CHECKED";}
 echo ">1:<input type=\"radio\" name=\"parent\" value=\"1\"";
@@ -54,7 +77,7 @@ if ($parent == "1") {echo " CHECKED";}
 echo "></td><td colspan=\"3\"><input type=\"submit\" value=\"Insert\"></form></td></tr>";
 echo "</table>";
 
-echo "<table>";
+/* echo "<table>";
 echo "<form method=\"post\" action=\"newstop.php\" name=\"sub\">
 		<input name=\"action\" value=\"sub\" type=\"hidden\">
 		<input name=\"parent_id\" value=\"$parent_id\" type=\"hidden\">";
@@ -89,6 +112,6 @@ if ($result108 = mysqli_query($link, $query108)) {
 }
 //echo "<input type=\"submit\" value=\"Parent\"></form>";
 echo "</table>";
-
+*/
 include 'footer.php';
 ?>
