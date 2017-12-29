@@ -60,13 +60,14 @@ echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\">
 
 echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
 echo "<tr><td><select name=\"kodobec\">";
-$query53 = "SELECT * FROM obce ORDER BY nazev;";
+$query53 = "SELECT * FROM obce ORDER BY nazev_obce;";
 if ($result53 = mysqli_query($link, $query53)) {
 	while ($row53 = mysqli_fetch_row($result53)) {
-		$kodobce = $row53[0];
-		$nazevobce = $row53[1];
+		$kodokres = $row53[1];
+		$kodobce = $row53[2];
+		$nazevobce = $row53[3];
 
-		echo "<option value=\"$kodobce\">$nazevobce</option>";
+		echo "<option value=\"$kodobce\">$nazevobce $kodokres</option>";
 	}
 }
 echo "</select></td><td><input name=\"castobce\" value=\"\" type=\"text\"></td><td><input name=\"misto\" value=\"\" type=\"text\"></td><td><input name=\"pomcode\" value=\"\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\"></td><td><input name=\"stoplon\" type=\"text\"></td></tr>";
