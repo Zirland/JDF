@@ -15,23 +15,31 @@ switch ($action) {
 		$castobce = $_POST['castobce'];
 		$misto = $_POST['misto'];
 
-		$pom20 = mysqli_fetch_row(mysqli_query($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
-		$obec = $pom20[0];
+		$pom18 = mysqli_fetch_row(mysqli_query($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
+		$obec = $pom18[0];
 
-		$pom23 = mysqli_fetch_row(mysqli_query($link, "SELECT max FROM stop_count WHERE kodobce = '$kodobec';"));
-		$max = $pom23[0];
+		$query21 = "SELECT max FROM stop_count WHERE kodobce = '$kodobec';";
+		if ($result21 = mysqli_query($link, $query21)) {
+			while ($row21 = mysqli_fetch_row($result21)) {
+				$max = $row21[0];
+			}
+		}
+		
+		$hit = mysqli_num_rows($result21);
+		if ($hit == 0) {
+			$max = 0;
+			$insert31 = mysqli_query($link, "INSERT INTO stop_count (kodobce, max) VALUES ('$kodobec', '0');");
+		}
 
 		$newmax = $max + 1;
-
 		$stopid = $kodobec."Z".$newmax;
-
 		$update28 = mysqli_query($link, "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$kodobec';");
 		
-		$stopname = $obec.", ".$castobce.", ".$misto;
-		if ($misto == '') {$stopname = $obec.", ".$castobce;}
-		if ($castobce == '' && $misto == '') {$stopname = $obec;}
+		$stopname = $obec;
+		if ($castobce != '') {$stopname .= ", ".$castobce;}
+		if ($misto != '') {$stopname .= ", ".$misto;}
  		
-		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', $misto);";
+		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', '$misto');";
 		echo $query14;
 		$prikaz4 = mysqli_query($link, $query14);
 		

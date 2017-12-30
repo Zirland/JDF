@@ -100,7 +100,12 @@ if ($result79 = mysqli_query($link, $query79)) {
 }
 
 
-echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a><br/>";
+echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a>";
+
+echo "<form method=\"post\" action=\"ukonci.php\" name=\"konec\">
+		<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
+echo "Naposledy jede <input type=\"text\" name=\"datumod\" value=\"31122019\">";
+echo "<input type=\"submit\"></form><br/>";
 echo "<table>";
 echo "<tr><td>";
 
