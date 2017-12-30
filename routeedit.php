@@ -129,21 +129,16 @@ if ($result63 = mysqli_query($link, $query63)) {
 
 		echo "<select name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
-		$query82 = "SELECT stop_id, obec, castobce, misto, pomcode FROM stop WHERE active=1 ORDER BY obec, castobce, misto;";
+		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
 		if ($result82 = mysqli_query($link, $query82)) {
 			while ($row82 = mysqli_fetch_row($result82)) {
 				$stopid = $row82[0];
-				$obec = $row82[1];
-				$castobce = $row82[2];
-				$misto = $row82[3];
-				$stopcode = $row82[4];
+				$sortname = $row82[1];
+				$stopcode = $row82[2];
 
 				echo "<option value=\"$stopid\"";
 				if ($stopid == $stop_vazba) {echo " SELECTED";}
-				echo ">";
-				if ($misto != "") {echo "$misto ";}
-				if ($castobce != "") {echo "$castobce ";}
-				echo "$obec $stopcode</option>";
+				echo ">$sortname $stopcode</option>";
 			}
 		}
 		$z = $z+1;
@@ -173,21 +168,16 @@ if ($result63 = mysqli_query($link, $query63)) {
 
 		echo "<select name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
-		$query82 = "SELECT stop_id, obec, castobce, misto, pomcode FROM stop WHERE active=1 ORDER BY obec, castobce, misto;";
+		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
 		if ($result82 = mysqli_query($link, $query82)) {
 			while ($row82 = mysqli_fetch_row($result82)) {
 				$stopid = $row82[0];
-				$obec = $row82[1];
-				$castobce = $row82[2];
-				$misto = $row82[3];
-				$stopcode = $row82[4];
+				$sortname = $row82[1];
+				$stopcode = $row82[2];
 
 				echo "<option value=\"$stopid\"";
 				if ($stopid == $stop_vazba) {echo " SELECTED";}
-				echo ">";
-				if ($misto != "") {echo "$misto ";}
-				if ($castobce != "") {echo "$castobce ";}
-				echo "$obec $stopcode</option>";
+				echo ">$sortname $stopcode</option>";
 			}
 		}
 		$z = $z+1;

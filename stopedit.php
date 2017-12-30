@@ -47,7 +47,12 @@ switch ($action) {
 		if ($stopcastobce != '') {$stopname .= ", ".$stopcastobce;}
 		if ($stopmisto != '') {$stopname .= ", ".$stopmisto;}
 
-		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stopcode = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon' WHERE stop_id = '$stop_id';";
+		$sortname = "";
+		if ($misto != '') {$sortname .= "$misto ";}
+ 		if ($castobce != '') {$sortname .= "$castobce ";}
+ 		$sortname .= $obec;
+
+		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stopcode = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
 		// echo "$query14<br/>";
 		$prikaz4 = mysqli_query($link, $query14);
 

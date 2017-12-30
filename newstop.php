@@ -38,8 +38,13 @@ switch ($action) {
 		$stopname = $obec;
 		if ($castobce != '') {$stopname .= ", ".$castobce;}
 		if ($misto != '') {$stopname .= ", ".$misto;}
- 		
-		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', '$misto');";
+
+		$sortname = "";
+		if ($misto != '') {$sortname .= "$misto ";}
+ 		if ($castobce != '') {$sortname .= "$castobce ";}
+ 		$sortname .= $obec;
+
+		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
 		echo $query14;
 		$prikaz4 = mysqli_query($link, $query14);
 		
