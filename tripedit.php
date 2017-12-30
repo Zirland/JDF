@@ -288,16 +288,16 @@ if ($result108 = mysqli_query($link, $query108)) {
 	<input name=\"poradi$z\" value=\"$stop_sequence\" type=\"hidden\">
 	<input type=\"checkbox\" name=\"reroute$z\" value=\"1\">
 	<select name=\"stop2_id$z\">";
-	$query194 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE active=1 ORDER BY stop_name;";
+	$query194 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
 	if ($result194 = mysqli_query($link, $query194)) {
 		while ($row194 = mysqli_fetch_row($result194)) {
 			$stopid = $row194[0];
-			$stopname = $row194[1];
+			$sortname = $row194[1];
 			$stopcode = $row194[2];
 
 			echo "<option value=\"$stopid\"";
 			if ($stopid == $stop_id) {echo " SELECTED";}
-			echo ">$stopname $stopcode</option>";
+			echo ">$sortname $stopcode</option>";
 		}
 	}
 	echo "</select>";
