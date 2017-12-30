@@ -39,8 +39,8 @@ switch ($action) {
 		if ($castobce != '') {$stopname .= ", ".$castobce;}
 		if ($misto != '') {$stopname .= ", ".$misto;}
 
-		if ($stop_code != '') {$stopname .= "(".$stop_code.")";}
-		
+		if ($stop_code != '') {$stopname .= " (".$stop_code.")";}
+
 		$sortname = "";
 		if ($misto != '') {$sortname .= "$misto ";}
  		if ($castobce != '') {$sortname .= "$castobce ";}

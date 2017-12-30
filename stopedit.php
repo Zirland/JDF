@@ -47,7 +47,7 @@ switch ($action) {
 		if ($stopcastobce != '') {$stopname .= ", ".$stopcastobce;}
 		if ($stopmisto != '') {$stopname .= ", ".$stopmisto;}
 
-		if ($stop_code != '') {$stopname .= "(".$stop_code.")";}
+		if ($stop_code != '') {$stopname .= " (".$stop_code.")";}
 
 		$sortname = "";
 		if ($misto != '') {$sortname .= "$misto ";}
