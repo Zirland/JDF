@@ -10,8 +10,8 @@ if ($result4 = mysqli_query($link, $query4)) {
 		$misto = $row4[3];
 
 		$stopname = $obec;
-		if ($castobce != '') {$stopname .= ", ".$stopcastobce;}
-		if ($misto != '') {$stopname .= ", ".$stopmisto;}
+		if ($castobce != '') {$stopname .= ", ".$castobce;}
+		if ($misto != '') {$stopname .= ", ".$misto;}
 
 		$sortname = "";
 		if ($misto != '') {$sortname .= "$misto ";}
