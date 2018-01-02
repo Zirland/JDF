@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 
-$trip = @$_GET['id'];
+$trip_id = @$_GET['id'];
 
 $query6 = "SELECT arrival_time,departure_time,stop_sequence FROM stoptime WHERE (trip_id = '$trip_id');";
 if ($result6 = mysqli_query($link, $query6)) {
@@ -13,14 +13,14 @@ if ($result6 = mysqli_query($link, $query6)) {
 		$arr_hour = substr($arrival_time, 0, 2);
 		$arr_rest = substr($arrival_time, 2);
 
-		if ($arr_hour = "00") {$arr_hour = "24";}
-		$arrival_time = $arr_hour.$arr_rest;
+		if ($arr_hour == "00") {$arr_hour = "24";}
+		$arrival_time == $arr_hour.$arr_rest;
 
 		$dep_hour = substr($departure_time, 0, 2);
 		$dep_rest = substr($departure_time, 2);
 
-		if ($dep_hour = "00") {$dep_hour = "24";}
-		$departure_time = $dep_hour.$dep_rest;
+		if ($dep_hour == "00") {$dep_hour = "24";}
+		$departure_time == $dep_hour.$dep_rest;
 
 		$query26 = "UPDATE stoptime SET arrival_time = '$arrival_time', departure_time = '$departure_time' WHERE (trip_id = '$trip_id' AND stop_sequence = '$stop_sequence');";
 		$prikaz27 = mysqli_query($link, $query26);

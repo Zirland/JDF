@@ -173,21 +173,6 @@ switch ($action) {
 	break;
 }
 
-echo "<table><tr><td>";
-echo "<table>";
-echo "<tr>";
-echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
-echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
-echo "<td><a href=\"pulnoc.php?id=$trip_id\" target=\"_blank\">Půlnoc</a></td>";
-echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
-echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
-echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
-echo "</tr>";
-echo "</table>";
-
-echo "<table>";
-echo "<tr>";
-
 $hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip_id='$trip');"));
 	$trip_id = $hlavicka[2];
 	$linka = $hlavicka[0];
@@ -200,7 +185,20 @@ $hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip
 	$cyklo = $hlavicka[9];
 	$aktif = $hlavicka[10];
 
-echo "</tr><tr>";
+echo "<table><tr><td>";
+echo "<table>";
+echo "<tr>";
+echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
+echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
+echo "<td><a href=\"pulnoc.php?id=$trip_id\" target=\"_blank\">Půlnoc</a></td>";
+echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
+echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
+echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
+echo "</tr>";
+echo "</table>";
+echo "<table>";
+echo "<tr>";
+
 echo "<form method=\"post\" action=\"tripedit.php\" name=\"hlava\">
 		<input name=\"action\" value=\"hlava\" type=\"hidden\">
 		<input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
