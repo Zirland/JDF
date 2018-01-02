@@ -578,9 +578,12 @@ if ($result528 = mysqli_query($link, $query528)) {
 }
 
 $query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$linkaod')";
-echo $query542;
+echo "$query542<br/>";
 $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
+
+echo "<a href=\"routeedit.php?id=$route_id\">Editace linky</a>";
+
 mysqli_close ($link);
 ?>

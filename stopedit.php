@@ -47,14 +47,14 @@ switch ($action) {
 		if ($stopcastobce != '') {$stopname .= ", ".$stopcastobce;}
 		if ($stopmisto != '') {$stopname .= ", ".$stopmisto;}
 
-		if ($stop_code != '') {$stopname .= " (".$stop_code.")";}
+		if ($stopstopcode != '') {$stopname .= " (".$stopstopcode.")";}
 
 		$sortname = "";
-		if ($misto != '') {$sortname .= "$misto ";}
- 		if ($castobce != '') {$sortname .= "$castobce ";}
+		if ($stopmisto != '') {$sortname .= "$stopmisto ";}
+ 		if ($stopcastobce != '') {$sortname .= "$stopcastobce ";}
  		$sortname .= $obec;
 
-		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stopcode = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
+		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stop_code = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
 		// echo "$query14<br/>";
 		$prikaz4 = mysqli_query($link, $query14);
 

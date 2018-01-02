@@ -23,8 +23,9 @@ switch ($action) {
 	
 	case "zastavky" :
 	$trip = $_POST['trip_id'];
-	
-	for ($y = 0; $y < 40; $y++) {
+	$pocet = $_POST['pocet'];	
+
+	for ($y = 0; $y < $pocet; $y++) {
 		$$ind = $y;
 		$arrindex = "arrive".${$ind};
 		$arrival_time = $_POST[$arrindex];
@@ -175,6 +176,16 @@ switch ($action) {
 echo "<table><tr><td>";
 echo "<table>";
 echo "<tr>";
+echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
+echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
+echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
+echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
+echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
+echo "</tr>";
+echo "</table>";
+
+echo "<table>";
+echo "<tr>";
 
 $hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip_id='$trip');"));
 	$trip_id = $hlavicka[2];
@@ -188,15 +199,7 @@ $hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip
 	$cyklo = $hlavicka[9];
 	$aktif = $hlavicka[10];
 
-echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
-echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
-echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
-echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
-echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
-echo "<td><td>";
 echo "</tr><tr>";
-
-
 echo "<form method=\"post\" action=\"tripedit.php\" name=\"hlava\">
 		<input name=\"action\" value=\"hlava\" type=\"hidden\">
 		<input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
@@ -239,24 +242,6 @@ echo "</td>";
 echo "<td>Aktivní <input type=\"checkbox\" name=\"aktif\" value=\"1\"";
 if ($aktif == '1') {echo " CHECKED";}
 echo "></td><td><input type=\"submit\"></td></tr></form>";
-echo "<tr><td colspan=\"5\">";
-
-$vlak = substr($trip_id,0,-2);
-$lomeni = substr($vlak,-1);
-$cislo7 = $vlak."/".$lomeni;
-
-$query86 = "SELECT POZNAM FROM kango.OBP WHERE ((CISLO7='$cislo7'));";
-if ($result86 = mysqli_query($link, $query86)) {
-    while ($row86 = mysqli_fetch_row($result86)) {
-	$poznamka = $row86[0];
-				
-	echo "$poznamka<br />";
-	}
-}
-
-echo "TRASA <a href=\"tripedit.php?id=$trip&trasa=1\">VYNUŤ</a><br />";
-echo "$shape <br />";
-echo "</td></tr>";
 echo "</table>";
 
 echo "<table>";
@@ -319,6 +304,7 @@ if ($result108 = mysqli_query($link, $query108)) {
 	$z = $z+1;
     }
 }
+echo "<input type=\"hidden\" name=\"pocet\" value=\"$z-1\">";
 echo "<input type=\"submit\"></form>";
 echo "</table></td></tr>";
 echo "</table>";
