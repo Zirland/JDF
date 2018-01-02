@@ -27,5 +27,6 @@ if (!$link) {
 <a href="newstop.php">Newstop</a><br/>
 <a href="analist.php">Analýza</a><br/>
 <a href="_krok1.php">Manuální linka</a><br/>
+<a href="headsigns.php">Headsigns</a><br/>
 </td>
 <td>
