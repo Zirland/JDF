@@ -1,0 +1,10 @@
+
+data/
+
+*.txt
+
+validation-results\.html
+
+*.zip
+
+*.log
