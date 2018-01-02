@@ -197,11 +197,20 @@ if ($result80 = mysqli_query($link, $query80)) {
 		$trip_id = $row80[2];
 		$trip_headsign = $row80[3];
 		$trip_aktif = $row80[10];
-				
-		$vlak = $trip_id;
+
+		$pomstartstop = mysqli_fetch_row(mysqli_query($link, "SELECT MIN(stop_sequence) FROM stoptime WHERE (trip_id = '$trip_id');"));
+		$startstopno = $pomstartstop[0];
+
+		$pomfinstop=mysqli_fetch_row(mysqli_query($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip_id' AND stop_sequence='$startstopno');"));
+		$finstopid=$pomfinstop[0];
+
+		$query15 = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
+		$result15 = mysqli_query($link, $query15);
+		$pomhead = mysqli_fetch_row($result15);
+		$from = $pomhead[0];
 
 		if ($trip_aktif == '1') {echo "<span style=\"background-color:green;\">";}
-		echo "$vlak - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
+		echo "$from - $trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {echo "</span>";}
 	}
 }
@@ -214,9 +223,19 @@ if ($result96 = mysqli_query($link, $query96)) {
 		$trip_headsign = $row96[3];
 		$trip_aktif = $row96[10];
 				
-		$vlak = $trip_id;
+		$pomstartstop = mysqli_fetch_row(mysqli_query($link, "SELECT MIN(stop_sequence) FROM stoptime WHERE (trip_id = '$trip_id');"));
+		$startstopno = $pomstartstop[0];
+
+		$pomfinstop=mysqli_fetch_row(mysqli_query($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip_id' AND stop_sequence='$startstopno');"));
+		$finstopid=$pomfinstop[0];
+
+		$query15 = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
+		$result15 = mysqli_query($link, $query15);
+		$pomhead = mysqli_fetch_row($result15);
+		$from = $pomhead[0];
+		
 		if ($trip_aktif == '1') {echo "<span style=\"background-color:green;\">";}				
-		echo "$vlak - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
+		echo "$from - $trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {echo "</span>";}
 	}
 }	

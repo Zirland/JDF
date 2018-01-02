@@ -25,18 +25,30 @@ switch ($action) {
 			}
 		
 			$hit = mysqli_num_rows($result20);
+
 			if ($hit == 0) {
 				$max = 0;
-				$insert31 = mysqli_query($link, "INSERT INTO stop_count (kodobce, max) VALUES ('$kodobec', '0');");
+				$query31 = "INSERT INTO stop_count (kodobce, max) VALUES ('$stopkodobce', '0');";
+				$insert31 = mysqli_query($link, $query31);
 			}
 
 			$newmax = $max + 1;
 			$newstopid = $stopkodobce."Z".$newmax;
-			$update28 = mysqli_query($link, "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$stopkodobce';");
+			
+			$query28 = "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$stopkodobce';";
+			$update28 = mysqli_query($link, $query28);
 
-			$update26 = mysqli_query($link, "UPDATE stoptime SET stop_id = '$newstopid' WHERE stop_id = '$stop_id';");
-			$update27 = mysqli_query($link, "UPDATE linevazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';");
-			$update28 = mysqli_query($link, "UPDATE tripvazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';");
+			$query29 = "UPDATE stoptime SET stop_id = '$newstopid' WHERE stop_id = '$stop_id';";
+			echo $query29;
+			$update29 = mysqli_query($link, $query29);
+
+			$query30 = "UPDATE linevazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';";
+			echo $query30;
+			$update30 = mysqli_query($link, $query30);
+
+			$query31 = "UPDATE tripvazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';";
+			echo $query31;
+			$update31 = mysqli_query($link, $query31);
 						
 		} else {$newstopid = $stop_id;}
 
@@ -55,7 +67,6 @@ switch ($action) {
  		$sortname .= $obec;
 
 		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stop_code = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
-		// echo "$query14<br/>";
 		$prikaz4 = mysqli_query($link, $query14);
 
 		$deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stop_id%'));";
