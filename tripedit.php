@@ -178,6 +178,7 @@ echo "<table>";
 echo "<tr>";
 echo "<td><a href = \"routeedit.php?id=$linka\">Zpět na linku</a><td>";
 echo "<td><form method=\"get\" action=\"tripedit.php\" name=\"id\"><input type=\"text\" name=\"id\" value=\"\"><input type=\"submit\"></form><td>";
+echo "<td><a href=\"pulnoc.php?id=$trip_id\" target=\"_blank\">Půlnoc</a></td>";
 echo "<td><a href=\"poradi.php?id=$trip_id\" target=\"_blank\">Pořadí</a></td>";
 echo "<td><a href=\"zajebal.php?err=$trip_id\" target=\"_blank\">Zajebal</a></td>";
 echo "<td><a href=\"tripdelete.php?trip=$trip_id\" target=\"_blank\">Smazat trip</a></td>";
