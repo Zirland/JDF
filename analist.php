@@ -40,7 +40,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 				if ($platnost > 0) {echo "<span style=\"background-color:#dddddd;\">";}
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod\" target=\"_blank\">Generovat</a><br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod&linkado=$linkado\" target=\"_blank\">Generovat</a><br />";}
 				if ($platnost > 0) {echo "</span>";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
@@ -78,7 +78,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod&linkaodo=$datumdo\" target=\"_blank\">Generovat</a><br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod&linkado=$datumdo\" target=\"_blank\">Generovat</a><br />";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
 		}
