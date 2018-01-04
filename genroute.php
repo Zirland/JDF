@@ -1,15 +1,16 @@
 <?php
 $link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    exit;
+	echo "Error: Unable to connect to MySQL." . PHP_EOL;
+	echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+	exit;
 }
 
 $log = "import.log";
 $dir = $_GET['file'];
 $label = $_GET['mode'];
 $linkaod = $_GET['linkaod'];
+$linkado = $_GET['linkado'];
 $current = "";
 $dir = "data/".$dir;
 
@@ -67,8 +68,7 @@ if ($dopravci) {
 		
 		$cistiag = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
 		$query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
-		//echo "$query21<br/>";
-		$prikaz21 = mysqli_query($link, $query21);     
+		$prikaz21 = mysqli_query($link, $query21);	
 	}
 	fclose ($dopravci);
 }
@@ -89,7 +89,7 @@ if ($linky) {
 			$platnostdo = $line[19];
 			$linkano = "1";
 			$route_type = "3";
-		}                
+		}	
 
 		if ($verze == '1.10' || $verze == '1.11') {
 			$typ = $line[9];
@@ -116,11 +116,14 @@ if ($linky) {
 		}
 
 		$route_id = $route_no.$linkano;
-		$cistiro = mysqli_query($link, "DELETE FROM route WHERE route_id = '$label$route_id';");
-		$cistitr = mysqli_query($link, "DELETE FROM trip WHERE route_id = '$label$route_id';");
+		$queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
+		$cistiro = mysqli_query($link, $queryro);
+
+		$querytr = "DELETE FROM trip WHERE route_id = '$label$route_id';";
+		$cistitr = mysqli_query($link, $querytr);
+
 		$query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
-		//echo "$query46<br/>";
-		$prikaz46 = mysqli_query($link, $query46);     
+		$prikaz46 = mysqli_query($link, $query46);
 	}
 	fclose ($linky);
 }
@@ -158,7 +161,7 @@ if ($spoje) {
 		}
 
 		if (strpos($PK, '-1-') !== false) {
-		// pracdny        
+		// pracdny
 			$dy = 1;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -191,7 +194,7 @@ if ($spoje) {
 		}
 
 		if (strpos($PK, '-3-') !== false) {
-		// pondělí       
+		// pondělí
 			$dy = 1;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -200,7 +203,7 @@ if ($spoje) {
 		}
 
 		if (strpos($PK, '-4-') !== false) {
-		// úterý       
+		// úterý
 			$dy = 2;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -209,7 +212,7 @@ if ($spoje) {
 		}
 
 		if (strpos($PK, '-5-') !== false) {
-		// středa        
+		// středa
 			$dy = 3;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -218,7 +221,7 @@ if ($spoje) {
 		}
 
 		if (strpos($PK, '-6-') !== false) {
-		// čtvrtek        
+		// čtvrtek
 			$dy = 4;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -227,7 +230,7 @@ if ($spoje) {
 		}
 	
 		if (strpos($PK, '-7-') !== false) {
-		// pátek        
+		// pátek
 			$dy = 5;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -236,7 +239,7 @@ if ($spoje) {
 		}
 			
 		if (strpos($PK, '-8-') !== false) {
-		// sobota        
+		// sobota
 			$dy = 6;
 			for ($wk=0; $wk < 58; $wk++) {
 				$index = $dy+($wk*7);
@@ -245,28 +248,28 @@ if ($spoje) {
 		}
 		
 		foreach ($svatek as $datumsvatek1) { 
-		  $Dods1 = substr($datumsvatek1,0,2); $Mods1 = substr($datumsvatek1,2,2); $Yods1 = substr($datumsvatek1,-4); $timesvatek1 = mktime(0,0,0,$Mods1, $Dods1, $Yods1); 
-		  $dnusvatek1 = round(($timesvatek1 - $maticestart) / 86400); 
-		  for ($h=0; $h<406; $h++) {
-			 if ($h==$dnusvatek1) {$matrix[$h] = 0;}
-		  }
-    }
-		
+			$Dods1 = substr($datumsvatek1,0,2); $Mods1 = substr($datumsvatek1,2,2); $Yods1 = substr($datumsvatek1,-4); $timesvatek1 = mktime(0,0,0,$Mods1, $Dods1, $Yods1); 
+			$dnusvatek1 = round(($timesvatek1 - $maticestart) / 86400); 
+			for ($h=0; $h<406; $h++) {
+				if ($h==$dnusvatek1) {$matrix[$h] = 0;}
+			}
+		}
+
 		if (strpos($PK, '-2-') !== false) {
 		// neděle a svátky
 			$dy = 0;
 			for ($wk=0; $wk < 58; $wk++) {
-			        $index = $dy+($wk*7);
+			$index = $dy+($wk*7);
 				$matrix[$index] = 1;
 			}
 	
-		  foreach ($svatek as $datumsvatek1) { 
-		    $Dods1 = substr($datumsvatek1,0,2); $Mods1 = substr($datumsvatek1,2,2); $Yods1 = substr($datumsvatek1,-4); $timesvatek1 = mktime(0,0,0,$Mods1, $Dods1, $Yods1); 
-		    $dnusvatek1 = round(($timesvatek1 - $maticestart) / 86400); 
-		    for ($h=0; $h<406; $h++) {
-			   if ($h==$dnusvatek1) {$matrix[$h] = 1;}
-		    }
-      }
+			foreach ($svatek as $datumsvatek1) { 
+				$Dods1 = substr($datumsvatek1,0,2); $Mods1 = substr($datumsvatek1,2,2); $Yods1 = substr($datumsvatek1,-4); $timesvatek1 = mktime(0,0,0,$Mods1, $Dods1, $Yods1); 
+				$dnusvatek1 = round(($timesvatek1 - $maticestart) / 86400); 
+				for ($h=0; $h<406; $h++) {
+					if ($h==$dnusvatek1) {$matrix[$h] = 1;}
+				}
+			}
 		}
 
 		$caskody = fopen("$dir/Caskody.txt.txt", 'r');
@@ -286,7 +289,7 @@ if ($spoje) {
 				$datumdo = $caskod[6];
 				if ($datumdo == "") {$datumdo = $datumod;}
 
-				if ($trip_id == $caskod_trip_id) {        
+				if ($trip_id == $caskod_trip_id) {
 					switch ($typkodu) {
 						case "1" :
 							$Dod = substr($datumod,0,2); $Mod = substr($datumod,2,2); $Yod = substr($datumod,-4); $timeod = mktime(0,0,0,$Mod, $Dod, $Yod); 
@@ -351,44 +354,17 @@ if ($spoje) {
 			if ($g<$zacplat || $g >$konplat) {$matrix[$g] = 0;}
 		}
 
-		$query484 = "SELECT matice FROM trip WHERE trip_id = '$label$trip_id';";
-		if ($result484 = mysqli_query($link, $query484)) {
-			$radky484 = mysqli_num_rows($result484);
-			if ($radky484 != 0) {
-				while ($row484= mysqli_fetch_row($result484)) {
-					$matice = $row484[0];
-
-					$old = str_split($matice); // $new = $matrix
-					for ($w = 0; $w < 406; $w++) {
-						switch ($matrix[$w]) {
-							case 0 : $grafi[$w]=$old[$w]; break;
-							case 1 : $grafi[$w]=$matrix[$w]; break;
-						}			
-					}
-					$newmatrix = implode('',$grafi);
-				}
-			}
-		}
-
 		$wheelchair = 0;
 		if (strpos($PK, '-14-') !== false) {
 		// invalida
 			$wheelchair=1;
 		}
 
-		if ($radky484 == 0) {
-			$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','0');";
-			//echo "$query64<br/>";
-			$prikaz64 = mysqli_query($link, $query64);
-			$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$label$trip_id');";
-			//echo "$query368<br/>";
-			$prikaz368 = mysqli_query($link, $query368);
-		}
+		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','0');";
+		$prikaz64 = mysqli_query($link, $query64);
 
-		if ($radky484 != 0) {
-			$query64 = "UPDATE trip SET matice = '$newmatrix' WHERE trip_id = '$label$trip_id';";
-			$prikaz64 = mysqli_query($link, $query64);
-		}
+		$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$label$trip_id');";
+		$prikaz368 = mysqli_query($link, $query368);
 	}
 	fclose ($spoje);
 }
@@ -417,9 +393,10 @@ if ($verze == '1.10' || $verze == '1.11') {
 			$oznaclin = $linext[3];
 			$prefer = $linext[4];
 				
-			$cistiex = mysqli_query($link, "DELETE FROM exter WHERE linka = '$label$linka';");
+			$queryex = "DELETE FROM exter WHERE linka = '$label$linka';";
+			$cistiex = mysqli_query($link, $queryex);
+
 			$query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$label$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
-			//echo "$query1213<br/>";
 			$prikaz1213 = mysqli_query($link, $query1213);
 		}
 		fclose ($extlinka);
@@ -436,17 +413,19 @@ if ($zastavky) {
 		if ($zastav[3] == '') {$zast_name = $zastav[1].",".$zastav[2];}
 		if ($zastav[2] == '' && $zastav[3] == '') {$zast_name = $zastav[1];}
 		$lastPK = explode(';', $zastav[11]);
-		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";        
+		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";
 
 		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$zastav_no', '$zast_name', '$zastPK');";
-		// echo "$query236<br/>";
 		$prikaz236 = mysqli_query($link, $query236);     
 	}
 	fclose ($zastavky);
 }
 
-$cististopDB = mysqli_query($link, "DELETE FROM linestopsDB WHERE stop_id LIKE '$label$linka%';");
-$cistitripDB = mysqli_query($link, "DELETE FROM triptimesDB WHERE trip_id LIKE '$label$linka%';");
+$querystopDB = "DELETE FROM linestopsDB WHERE stop_id LIKE '$label$linka';";
+$cististopDB = mysqli_query($link, $querystopDB);
+
+$querytripDB = "DELETE FROM triptimesDB WHERE trip_id LIKE '$label$linka';";
+$cistitripDB = mysqli_query($link, $querytripDB);
 
 $zaslinky = fopen("$dir/Zaslinky.txt.txt", 'r');
 if ($zaslinky) {
@@ -456,7 +435,7 @@ if ($zaslinky) {
 		if ($verze == '1.8' || $verze == '1.9') {
 			$routeno = "1";
 			$linka_id = $zastavlin[1].$routeno;
-		}                
+		}	
 
 		if ($verze == '1.10' || $verze == '1.11') {
 			$linka_id = $zastavlin[1].$zastavlin[17];
@@ -469,13 +448,12 @@ if ($zaslinky) {
 		$najdipom = mysqli_fetch_row(mysqli_query($link, $hledejpom));
 		$stop_name = $najdipom[0];
     	$zastPK = $najdipom[1];
-		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";        
+		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";
 		
 		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
-		// echo "$query467<br/>";
 		$prikaz467 = mysqli_query($link, $query467);
+
 		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
-		// echo "$query469<br/>";
 		$prikaz469 = mysqli_query($link, $query469);
 
 		$query464 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id+';";
@@ -484,7 +462,8 @@ if ($zaslinky) {
 				$stopid = $row464[1];
 				$stopvazba = $row464[2];
 
-				$migrate = mysqli_query($link, "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';");
+				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';";
+				$migrate = mysqli_query($link, $querymig);
 			}
       	}
 
@@ -494,7 +473,8 @@ if ($zaslinky) {
 				$stopid = $row474[1];
 				$stopvazba = $row474[2];
 
-				$migrate = mysqli_query($link, "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';");
+				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';";
+				$migrate = mysqli_query($link, $querymig);
 			}
 		}
 	} 
@@ -557,33 +537,18 @@ if ($zasspoje) {
 
 		if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|') {
 			$query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$label$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
-			// echo "$query537<br/>";
 			$prikaz537 = mysqli_query($link, $query537);
 		}
 	}
 	fclose ($zasspoje);
 }
 
-$query528 = "SELECT * FROM linevazba ORDER BY id;";
-if ($result528 = mysqli_query($link, $query528)) {
-	while ($row528 = mysqli_fetch_row($result528)) {
-		$stop_id = $row528[1];
-		$stop_vazba = $row528[2];
-
-		$ready534 = "UPDATE linestopsDB SET stop_vazba = '$stop_vazba' WHERE stop_id = '$stop_id';";
-		$prikaz534 = mysqli_query($link, $ready534);
-		$ready536 = "UPDATE linestopsDB SET stop_vazba = '$stop_vazba' WHERE stop_id = 'F$stop_id';";
-		$prikaz536 = mysqli_query($link, $ready536);
-	}
-}
-
-$query542 = "INSERT INTO anal_done (route_id, datumod) VALUES ('$linka','$linkaod')";
-echo "$query542<br/>";
+$query542 = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka','$linkaod', '$linkado')";
 $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
 
-echo "<a href=\"routeedit.php?id=$route_id\">Editace linky</a>";
+echo "<a href=\"routeedit.php?id=$route_id\">Editace linky $linka</a>";
 
 mysqli_close ($link);
 ?>

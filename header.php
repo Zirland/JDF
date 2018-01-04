@@ -18,15 +18,17 @@ if (!$link) {
 <table style="width:100%; height:100%;">
 <tr>
 <td style="background-color:#cccccc;">
-<a href="list2.php?t=ro">&nbsp; &nbsp;</a>
+<a href="list.php">&nbsp; &nbsp;</a>
 </td>
 <td style="height:5px; background-color:#cccccc;">
 </td></tr>
 <tr><td style="width:100px; background-color:yellow; vertical-align:top;">
+<a href="list2.php">Neaktivní</a><br/>
 <a href="cisti.php">Čisti</a><br/>
 <a href="newstop.php">Newstop</a><br/>
 <a href="analist.php">Analýza</a><br/>
 <a href="_krok1.php">Manuální linka</a><br/>
 <a href="headsigns.php">Headsigns</a><br/>
+<a href="stoprename.php">Stop rename</a><br/>
 </td>
 <td>

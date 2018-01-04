@@ -2,6 +2,7 @@
 include 'header.php';
 
 $cisti4 = mysqli_query($link, "DELETE FROM analyza WHERE datumdo < current_date();");
+$cisti5 = mysqli_query($link, "DELETE FROM anal_done WHERE datumdo < current_date();");
 
 $dnes_den = date("j", time());
 $dnes_mesic = date("n", time());
@@ -77,7 +78,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 				if ($od_time > $today) {$label = "F";}
 				if ($od_time <= $today) {$label = "";}
-				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod\" target=\"_blank\">Generovat</a><br />";}
+				if ($halt == 0) {echo "$dir ($verze) $datumod > $datumdo $label > <a href=\"genroute.php?file=$dir&mode=$label&linkaod=$datumod&linkaodo=$datumdo\" target=\"_blank\">Generovat</a><br />";}
 				if ($od_time <= $today) {$halt = 1;}
 			}
 		}

@@ -65,6 +65,7 @@ switch ($action) {
 		if ($stopmisto != '') {$sortname .= "$stopmisto ";}
  		if ($stopcastobce != '') {$sortname .= "$stopcastobce ";}
  		$sortname .= $obec;
+		if ($stopstopcode != '') {$sortname .= " $stopstopcode";}
 
 		$query14 = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stop_code = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
 		$prikaz4 = mysqli_query($link, $query14);

@@ -20,6 +20,7 @@ if ($result4 = mysqli_query($link, $query4)) {
 		if ($misto != '') {$sortname .= "$misto ";}
  		if ($castobce != '') {$sortname .= "$castobce ";}
  		$sortname .= $obec;
+		if ($stop_code != '') {$sortname .= " $stop_code";}
 
 		$query14 = "UPDATE stop SET stop_name = '$stopname', sortname = '$sortname' WHERE stop_id = '$stop_id';";
 		// echo "$query14<br/>";
