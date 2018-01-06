@@ -30,5 +30,6 @@ if (!$link) {
 <a href="_krok1.php">Manuální linka</a><br/>
 <a href="headsigns.php">Headsigns</a><br/>
 <a href="stoprename.php">Stop rename</a><br/>
+<a href="vozovna.php">Vozovna</a><br/>
 </td>
 <td>

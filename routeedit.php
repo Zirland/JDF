@@ -21,6 +21,7 @@ switch ($action) {
 	break;
 
 	case "zastavky" :
+		$route = $_POST['route_id'];
 		$pocet = $_POST['pocet'];
 
 		for ($y = 0; $y < $pocet; $y++) {
@@ -61,8 +62,8 @@ if ($result50 = mysqli_query($link, $query50)) {
 }
 
 echo "<form method=\"post\" action=\"routeedit.php\" name=\"oprav\">
-		<input name=\"action\" value=\"oprav\" type=\"hidden\">
-		<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
+	<input name=\"action\" value=\"oprav\" type=\"hidden\">
+	<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
 echo "<td>Dopravce: <select name=\"dopravce\">";
 
 $query24 = "SELECT agency_id, agency_name FROM agency ORDER BY agency_id;";
@@ -113,14 +114,15 @@ if ($result79 = mysqli_query($link, $query79)) {
 echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a>";
 
 echo "<form method=\"post\" action=\"ukonci.php\" name=\"konec\">
-		<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
+	<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
 echo "Naposledy jede <input type=\"text\" name=\"datumod\" value=\"31122019\">";
 echo "<input type=\"submit\"></form><br/>";
 echo "<table>";
 echo "<tr><td>";
 
 echo "<form method=\"post\" action=\"routeedit.php\" name=\"zastavky\">
-		<input name=\"action\" value=\"zastavky\" type=\"hidden\">";
+	<input name=\"action\" value=\"zastavky\" type=\"hidden\">
+	<input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
 $z = 0;
 
 echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
