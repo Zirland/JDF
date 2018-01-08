@@ -1,6 +1,14 @@
 <?php
 include 'header.php';
 
+function getContrastYIQ($hexcolor){
+	$r = hexdec(substr($hexcolor,0,2));
+	$g = hexdec(substr($hexcolor,2,2));
+	$b = hexdec(substr($hexcolor,4,2));
+	$yiq = (($r*299)+($g*587)+($b*114))/1000;
+	return ($yiq >= 128) ? '000000' : 'FFFFFF';
+}
+
 $route = "XYZ";
 $route = $_GET['id'];
 $action = $_POST['action'];
@@ -13,7 +21,7 @@ switch ($action) {
 		$longname = $_POST['longname'];
 		$routetype = $_POST['routetype'];
 		$pozadi = $_POST['route_pozadi'];
-		$foreground = $_POST['foreground'];
+		$foreground = getContrastYIQ($pozadi);
 		$aktif = $_POST['aktif'];
 
 		$ready0 = "UPDATE route SET agency_id='$dopravce', route_short_name='$shortname', route_long_name='$longname', route_type='$routetype', route_color='$pozadi', route_text_color='$foreground', active='$aktif' WHERE (route_id = '$route');";
@@ -56,7 +64,6 @@ if ($result50 = mysqli_query($link, $query50)) {
 		$route_long_name = $row50[3];
 		$route_type = $row50[5];
 		$route_color = $row50[7];
-		$route_text_color = $row50[8];
 		$route_active = $row50[9];
 	}
 }
@@ -93,8 +100,7 @@ echo "</td><td style=\"background-color : #$route_color;\">Linka: <input type=\"
 
 echo "<input type=\"text\" name=\"longname\" value=\"$route_long_name\"></td>";
 
-echo "<td>Pozadí: <input type=\"text\" name=\"route_pozadi\" value=\"$route_color\"><br />";
-echo "Popředí: <input type=\"text\" name=\"foreground\" value=\"$route_text_color\"></td>";
+echo "<td>Pozadí: <input type=\"text\" name=\"route_pozadi\" value=\"$route_color\"></td>";
 
 echo "<td>Aktivní <input type=\"checkbox\" name=\"aktif\" value=\"1\"";
 if ($route_active == '1') {echo " CHECKED";}

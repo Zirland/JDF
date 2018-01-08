@@ -19,6 +19,15 @@ if ($result = mysqli_query($link, $query)) {
 	}
 }
 
+$query = "SELECT trip_id FROM stoptime WHERE (stop_id = '554821Z887' AND stop_sequence = '1');";
+if ($result = mysqli_query($link, $query)) {
+	while ($row = mysqli_fetch_row($result)) {
+		$trip_id = $row[0];
+
+		echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a><br/>";
+	}
+}
+
 
 echo "== Konec ==";
 include 'footer.php';

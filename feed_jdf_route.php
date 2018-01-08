@@ -14,7 +14,7 @@ $timestart = $now;
 echo "Start: $now\n";
 $prevnow = $now;
 
-$akt_route = "SELECT route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color FROM route WHERE (active='1');";
+$akt_route = "SELECT route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color FROM route WHERE (active='0');";
 
 if ($result69 = mysqli_query($link, $akt_route)) {
     while ($row69 = mysqli_fetch_row($result69)) {

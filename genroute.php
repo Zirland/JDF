@@ -81,8 +81,8 @@ if ($linky) {
 		$route_short_name = $route_no;
 		$route_long_name = $line[3];
 		$agency_id = $line[5];
-		$route_color = "0000FF";
-		$route_text_color = "FFFFFF";
+		$route_color = "2F91E0";
+		$route_text_color = "000000";
 
 		if ($verze == '1.8' || $verze == '1.9') {
 			$platnostod = $line[17];
