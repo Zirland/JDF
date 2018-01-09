@@ -7,15 +7,16 @@ $filtr = @$_POST['filtr'];
 echo "<form method=\"post\" action=\"station.php\" name=\"filtr\">
 	<input name=\"action\" value=\"filtr\" type=\"hidden\">";
 	echo "<select name=\"filtr\">";
-	$query0 = "SELECT stop_id, sortname FROM stop WHERE active=1 ORDER BY sortname;";
+	$query0 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname, pomcode;";
 	if ($result0 = mysqli_query($link, $query0)) {
 		while ($row0 = mysqli_fetch_row($result0)) {
 			$kod = $row0[0];
 			$nazev = $row0[1];
+			$pomkod = $row0[2];
 
 			echo "<option value=\"$kod\"";
 			if ($kod == $filtr) {echo " SELECTED";}
-			echo ">$nazev</option>";
+			echo ">$nazev $pomkod</option>";
 		}
 		mysqli_free_result($result0);
 	}	

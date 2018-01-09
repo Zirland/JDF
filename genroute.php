@@ -548,7 +548,7 @@ $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
 
-echo "<a href=\"routeedit.php?id=$route_id\">Editace linky $linka</a>";
+echo "<a href=\"routeedit.php?id=$label$route_id\">Editace linky $linka</a>";
 
 mysqli_close ($link);
 ?>
