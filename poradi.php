@@ -2,9 +2,13 @@
 include 'header.php';
 
 $trip_id = $_GET['id'];
+$odd = $trip_id % 2;
 
 $r = 1;
-$query7 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time;";
+
+if ($odd == 1) {$query7 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time,zastav_id;";}
+if ($odd == 0) {$query7 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time,zastav_id DESC;";}
+
 if ($result7 = mysqli_query($link, $query7)) {
 	while ($row7 = mysqli_fetch_row($result7)) {
 		$trip_id = $row7[0];
@@ -35,7 +39,7 @@ if ($result31 = mysqli_query($link, $query31)) {
 		$shape.=$stop_id."|";
 	}
 }
-$query38 = "UPDATE trip SET shape_id='$shape', active = '1' WHERE trip_id='$trip_id';";
+$query38 = "UPDATE trip SET shape_id='$shape' WHERE trip_id='$trip_id';";
 $prikaz38 = mysqli_query($link, $query38);
 
 mysqli_close ($link);

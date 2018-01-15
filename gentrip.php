@@ -61,9 +61,15 @@ $query55 = "SELECT trip_id FROM trip WHERE route_id = '$route';";
 if ($result55 = mysqli_query($link, $query55)) {
 	while ($row55 = mysqli_fetch_row($result55)) {
 		$trip_id = $row55[0];
-		
+
+		$odd = $trip_id % 2;
+
 		$r = 1;
-		$query511 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time;";
+
+
+		if ($odd == 1) {$query511 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time, zastav_id;";}
+		if ($odd == 0) {$query511 = "SELECT trip_id,stop_id,arrival_time FROM stoptime WHERE trip_id='$trip_id' ORDER BY arrival_time, zastav_id DESC;";}
+
 		if ($result511 = mysqli_query($link, $query511)) {
 			while ($row511 = mysqli_fetch_row($result511)) {
 				$trip_id = $row511[0];

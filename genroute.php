@@ -360,7 +360,13 @@ if ($spoje) {
 			$wheelchair=1;
 		}
 
-		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','0');";
+		$bike = 0;
+		if (strpos($PK, '-27-') !== false) {
+		// cyklista
+			$bike=1;
+		}
+
+		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '$matrix', '$label$trip_id', '', '$smer', '$wheelchair','$bike', '0');";
 		$prikaz64 = mysqli_query($link, $query64);
 
 		$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$label$trip_id');";
