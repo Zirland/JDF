@@ -3,7 +3,9 @@ include 'header.php';
 
 $route_id = $_GET['route'];
 
-$prikaz3 = mysqli_query($link, "INSERT INTO ignorace VALUES ('$route_id');");
+$query4 = "INSERT INTO ignorace VALUES ('$route_id');";
+echo "$query4<br/>";
+$prikaz3 = mysqli_query($link, $query4);
 
 echo "== Konec ==";
 include 'footer.php';
