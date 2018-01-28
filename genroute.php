@@ -430,7 +430,7 @@ if ($zastavky) {
 	fclose ($zastavky);
 }
 
-$querystopDB = "DELETE FROM linestopsDB WHERE stop_id LIKE '$label$linka';";
+$querystopDB = "DELETE FROM linestopsDB WHERE stop_linka LIKE '$label$linka';";
 $cististopDB = mysqli_query($link, $querystopDB);
 
 $querytripDB = "DELETE FROM triptimesDB WHERE trip_id LIKE '$label$linka';";

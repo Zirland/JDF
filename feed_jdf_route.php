@@ -61,7 +61,7 @@ if ($result69 = mysqli_query ($link, $akt_route)) {
 				$adjust = substr ($aktual,-$vtydnu + 1).substr ($aktual,0,-$vtydnu + 1);
 				$dec = bindec ($adjust) + 1;
 
-				if ($dec != 1)  {
+				if ($dec != 1) {
 					$service_id = $dec;
 
 					$mark_cal = mysqli_query ($link, "INSERT INTO cal_use (trip_id, kalendar) VALUES ('$trip_id', '$service_id');");
@@ -89,63 +89,64 @@ if ($result69 = mysqli_query ($link, $akt_route)) {
 					$query162 = "SELECT tvartrasy, complete FROM shapetvary WHERE shape_id = '$shape_id';";
 					if ($result162 = mysqli_query ($link, $query162)) {
 						while ($row162 = mysqli_fetch_row ($result162)) {
-						$tvartrasy = $row162[0];
-						$kompltrasa = $row162[1];
-						if ($kompltrasa != 1) {
-							$smaz182 = "DELETE FROM shape WHERE shape_id = '$shape_id';";
-							$smazanitrasy = mysqli_query ($link,$smaz182);
+							$tvartrasy = $row162[0];
+							$kompltrasa = $row162[1];
+							if ($kompltrasa != 1) {
+								$smaz182 = "DELETE FROM shape WHERE shape_id = '$shape_id';";
+								$smazanitrasy = mysqli_query ($link,$smaz182);
 
-							$i = 0;
-							$prevstop = "";
-							$vzdal = 0;
-							$komplet = 1;
+								$i = 0;
+								$prevstop = "";
+								$vzdal = 0;
+								$komplet = 1;
 
-							$output = explode('|', $tvartrasy);
+								$output = explode('|', $tvartrasy);
 
-							foreach ($output as $prujbod) {
-								$pom139 = mysqli_fetch_row (mysqli_query ($link, "SELECT stop_name,stop_lat,stop_lon FROM stop WHERE (stop_id='$prujbod');"));
-								$name = $pom139[0];
-								$lat = $pom139[1];
-								$lon = $pom139[2];
-								$i = $i + 1;
+								foreach ($output as $prujbod) {
+									$pom139 = mysqli_fetch_row (mysqli_query ($link, "SELECT stop_name,stop_lat,stop_lon FROM stop WHERE (stop_id='$prujbod');"));
+									$name = $pom139[0];
+									$lat = $pom139[1];
+									$lon = $pom139[2];
+									$i = $i + 1;
 
-								$result235 = mysqli_query ($link, "SELECT DELKA FROM DU_pom WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujbod');");
-								$pom235 = mysqli_fetch_row ($result235);
-								$ujeto = $pom235[0];
-								$radky = mysqli_num_rows ($result235);
-								$vzdal = $vzdal + $ujeto;
-								$prevstop = $prujbod;
+									$result235 = mysqli_query ($link, "SELECT DELKA FROM DU_pom WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujbod');");
+									$pom235 = mysqli_fetch_row ($result235);
+									$ujeto = $pom235[0];
+									$radky = mysqli_num_rows ($result235);
+									$vzdal = $vzdal + $ujeto;
+									$prevstop = $prujbod;
 
-								if ($lat != '' && $lon != '') {
-									if ($i == 1) {
-										$vzdal = 0;
-									} 
-									$query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i','$vzdal');";
-									$command = mysqli_query ($link, $query144);
+									if ($lat != '' && $lon != '') {
+										if ($i == 1) {
+											$vzdal = 0;
+										}
+										$query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i','$vzdal');";
+										$command = mysqli_query ($link, $query144);
+									}
 								}
 							}
+							$query217 = "UPDATE shapetvary SET complete = '$komplet' WHERE shape_id = '$shape_id';";
+							$command217 = mysqli_query ($link, $query217);
 						}
-						$query217 = "UPDATE shapetvary SET complete = '$komplet' WHERE shape_id = '$shape_id';";
-						$command217 = mysqli_query ($link, $query217);
 					}
-				}
 
-				$tripstops = "SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence,pickup_type,drop_off_type FROM stoptime WHERE (trip_id = '$trip_id');";
-				if ($result166 = mysqli_query ($link, $tripstops)) {
-					while ($row166 = mysqli_fetch_row ($result166)) {
-						$trip_id = $row166[0];
-						$arrival_time = $row166[1];
-						$departure_time = $row166[2];
-						$stop_id = $row166[3];
-						$stop_sequence = $row166[4];
-						$pickup_type = $row166[5];
-						$drop_off_type = $row166[6];
+					$tripstops = "SELECT trip_id,arrival_time,departure_time,stop_id,stop_sequence,pickup_type,drop_off_type FROM stoptime WHERE (trip_id = '$trip_id');";
+					if ($result166 = mysqli_query ($link, $tripstops)) {
+						while ($row166 = mysqli_fetch_row ($result166)) {
+							$trip_id = $row166[0];
+							$arrival_time = $row166[1];
+							$departure_time = $row166[2];
+							$stop_id = $row166[3];
+							$stop_sequence = $row166[4];
+							$pickup_type = $row166[5];
+							$drop_off_type = $row166[6];
 
-						$current = "$trip_id,$arrival_time,$departure_time,$stop_id,$stop_sequence,$pickup_type,$drop_off_type\n";
-						$file = 'stop_times.txt';
-						file_put_contents ($file, $current, FILE_APPEND);
+							$current = "$trip_id,$arrival_time,$departure_time,$stop_id,$stop_sequence,$pickup_type,$drop_off_type\n";
+							$file = 'stop_times.txt';
+							file_put_contents ($file, $current, FILE_APPEND);
 
-						$mark_stop = mysqli_query ($link, "INSERT INTO stop_use (trip_id, stop_id) VALUES ('$trip_id', '$stop_id');");
+							$mark_stop = mysqli_query ($link, "INSERT INTO stop_use (trip_id, stop_id) VALUES ('$trip_id', '$stop_id');");
+						}
 					}
 				}
 			}

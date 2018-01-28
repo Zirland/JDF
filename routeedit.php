@@ -146,7 +146,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
 		echo "<select name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
-		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
+		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec='Česká Lípa' ORDER BY sortname;";
 		if ($result82 = mysqli_query($link, $query82)) {
 			while ($row82 = mysqli_fetch_row($result82)) {
 				$stopid = $row82[0];
@@ -179,7 +179,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
 		echo "<select name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
-		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
+		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec='Česká Lípa' ORDER BY sortname;";
 		if ($result82 = mysqli_query($link, $query82)) {
 			while ($row82 = mysqli_fetch_row($result82)) {
 				$stopid = $row82[0];

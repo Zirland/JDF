@@ -54,7 +54,7 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 echo "<hr>";
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '505%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '265%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query($link, $query6)) {
 	while ($row6 = mysqli_fetch_row($result6)) {
 		$route_id = $row6[0];
