@@ -4,6 +4,9 @@ include 'header.php';
 $cisti4 = mysqli_query($link, "DELETE FROM analyza WHERE datumdo < current_date();");
 $cisti5 = mysqli_query($link, "DELETE FROM anal_done WHERE datumdo < current_date();");
 
+$cisti7 = mysqli_query($link, "DELETE FROM analyza WHERE CAST(route_id AS unsigned) < 100000;");
+$cisti8 = mysqli_query($link, "DELETE FROM analyza WHERE route_id IN (SELECT route_id FROM ignorace);");
+
 $dnes_den = date("j", time());
 $dnes_mesic = date("n", time());
 $dnes_rok = date("Y", time());
@@ -54,14 +57,14 @@ if ($result6 = mysqli_query($link, $query6)) {
 
 echo "<hr>";
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '265%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query($link, $query6)) {
 	while ($row6 = mysqli_fetch_row($result6)) {
 		$route_id = $row6[0];
 		$route_name = $row6[1];
 		$route_type = $row6[2];
 
-		echo "$route_id - $route_name ($route_type)<br />";
+		echo "$route_id - $route_name ($route_type) - <a href=\"ignorovat.php?route=$route_id\" target=\"_blank\">Ignorovat</a><br />";
 		
 		$halt = 0;
 		$label = "";
