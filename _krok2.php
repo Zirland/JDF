@@ -30,7 +30,7 @@ file_put_contents ($file, $current);
 
 
 $file = "$route_id/Linky.txt.txt";
-$current = "\"$route_id\",\"$route_long_name\",\"$agency_id\",\"$area_type\",\"$route_type\",\"0\",\"0\",\"0\",\"0\",\"\",\"\",\"\",\"\",\"$datumod\",\"$datumdo\",\"1\",\"1\";";
+$current = "\"$route_id\",\"$route_long_name\",\"$agencyid\",\"$area_type\",\"$route_type\",\"0\",\"0\",\"0\",\"0\",\"\",\"\",\"\",\"\",\"$datumod\",\"$datumdo\",\"1\",\"1\";";
 file_put_contents ($file, $current);
 
 $file = "$route_id/Spoje.txt.txt";
