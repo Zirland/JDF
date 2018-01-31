@@ -2,48 +2,64 @@
 include 'header.php';
 
 $route_id = $_POST['routeid'];
-$stanice = $_POST['input'];
+$jizda = $_POST['input'];
 
-$pole = preg_split("/\r\n|\n|\r/", $stanice);
+$pole = preg_split ("/\r\n|\n|\r/", $jizda);
 
-$x=1;
+$x = 1;
 $current0 = "";
 $current1 = "";
 
-foreach ($pole as $stanice) {
-	$stanice = rtrim($stanice);
+foreach ($pole as $jizda) {
+	$jizda = rtrim ($jizda);
 	if ($x == 1) {
-		echo "<b>$stanice</b><br>";
-		if ($stanice == 'Pracovní den') {$cal = "1\",\"";}
-		if ($stanice == 'Sobota + Neděle') {$cal = "8\",\"2";}
+		echo "<b>$jizda</b><br>";
+		if ($jizda == 'Pracovní den') {
+			$cal = "1\",\"";
+		}
+		if ($jizda == 'Sobota + Neděle') {
+			$cal = "8\",\"2";
+		}
+		if ($jizda == 'Denně') {
+			$cal = "\",\"";
+		}
 	}
 	if ($x == 2) {
-		$spoje = preg_split("/\t/", $stanice);
+		$spoje = preg_split ("/\t/", $jizda);
 		foreach ($spoje as $radek) {
 			$current0 .= "\"$route_id\",\"$radek\",\"$cal\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"1\";\n";
 			$DB24 = mysqli_query ($link, "INSERT INTO manspoje VALUES ($radek);");
 		}
 	}
 	if ($x>3) {
-		$jizda = preg_split("/\t/", $stanice);
+		$jizda = preg_split ("/\t/", $jizda);
 		$index = 0;
 		$zast = $x-3;
+		
+		$pk = "";
+		if (strpos ($jizda, '(') !== false) {
+			$pk="21";
+			$jizda = str_replace ("(", "", $jizda);
+		}
+		if (strpos ($jizda, ')') !== false) {
+			$pk="22";
+			$jizda = str_replace (")", "", $jizda);
+		}
+
 		foreach ($jizda as $prijezd) {
-			$casprijezd = substr($prijezd,0,2) . substr($prijezd,-2);
-			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"1\";\n";
+			$casprijezd = substr ($prijezd,0,2) . substr ($prijezd,-2);
+			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"$pk\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"1\";\n";
 			$index = $index+1;
 		}
 	}
-	$x=$x+1;
+	$x = $x + 1;
 }
 
-$file = $route_id."-Spoje.txt.txt";
-echo "$file - $current0";
-file_put_contents($file, $current0, FILE_APPEND);
+$file = "$route_id/Spoje.txt.txt";
+file_put_contents ($file, $current0, FILE_APPEND);
 
-$file = $route_id."-Zasspoje.txt.txt";
-echo "$file - $current1";
-file_put_contents($file, $current1, FILE_APPEND);
+$file = "$route_id/Zasspoje.txt.txt";
+file_put_contents ($file, $current1, FILE_APPEND);
 
 echo "SPOJE TABULKA<br/>";
 echo "<form action=\"_krok4.php\" method=\"post\">";
