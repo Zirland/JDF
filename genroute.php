@@ -12,7 +12,10 @@ $label = $_GET['mode'];
 $linkaod = $_GET['linkaod'];
 $linkado = $_GET['linkado'];
 $current = "";
-$dir = "data/".$dir;
+
+if ($dir < 100000) {
+	$dir = "data/".$dir;
+}
 
 $svatek = array ( 
 "24122017",
