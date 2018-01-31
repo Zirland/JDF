@@ -6,9 +6,16 @@ if (!$link) {
     exit;
 }
 
-$dir = $_GET['file'];
+$source = $_GET['file'];
+$imp = $_GET['imp'];
 
-$version = fopen("data/$dir/VerzeJDF.txt.txt", 'r');
+if ($imp != '') {
+	$dir = "$imp";
+} else {
+	$dir = "data/".$source;
+}
+
+$version = fopen("$dir/VerzeJDF.txt.txt", 'r');
 if ($version) {
 	while (($buffer0 = fgets($version, 4096)) !== false) {
 		$vrz = explode ('"', $buffer0);
@@ -17,7 +24,7 @@ if ($version) {
 	fclose($version);
 }
 
-$dopravci = fopen("data/$dir/Dopravci.txt.txt", 'r');
+$dopravci = fopen("$dir/Dopravci.txt.txt", 'r');
 if ($dopravci) {
 	while (($buffer1 = fgets($dopravci, 4096)) !== false) {
 		$dopr = explode ('"', $buffer1);
@@ -26,7 +33,7 @@ if ($dopravci) {
 	fclose ($dopravci);
 }
 
-$linky = fopen("data/$dir/Linky.txt.txt", 'r');
+$linky = fopen("$dir/Linky.txt.txt", 'r');
 if ($linky) {
 	while (($buffer2 = fgets($linky, 4096)) !== false) {
 		$line = explode ('"', $buffer2);
