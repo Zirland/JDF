@@ -61,5 +61,8 @@ echo "</td></tr>";
 echo "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Zapsat\"></td></tr>";
 echo "</table></form>";
 
+$DB64 = mysqli_query ($link, "TRUNCATE TABLE manspoje;");
+$DB65 = mysqli_query ($link, "TRUNCATE TABLE man_ck;");
+
 include 'footer.php';
 ?>
