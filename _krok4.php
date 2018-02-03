@@ -76,6 +76,6 @@ echo "<textarea name=\"input\" cols=\"80\" rows=\"30\"></textarea>";
 echo "<input type=\"submit\" value=\"Zapsat\">";
 echo "</form>";
 
-echo "<a href=\"_krok5.php?routeid=$routeid\">Přejít na časové kódy</a>";
+echo "<a href=\"_krok5.php?routeid=$route_id\">Přejít na časové kódy</a>";
 include 'footer.php';
 ?>
