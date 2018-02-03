@@ -31,7 +31,7 @@ if ($result20 = mysqli_query($link, $query20)) {
 		$kodod = $row20[2];
 		$koddo = $row20[3];
 
-		echo "|$negative|$typ|$kodod|$koddo|<br />";
+		echo "$negative\t$typ\t$kodod\t$koddo<br />";
 	}
 }
 
@@ -41,7 +41,17 @@ if ($result38 = mysqli_query($link, $query38)) {
 		$spoj = $row38[0];
 		$negative = $row38[1];
 
-		echo "$route_id|$spoj|$negative|$typ|$kodod|$koddo|<br />";
+		$query44 = "SELECT * FROM man_ck WHERE negative=$negative;";
+		if ($result20 = mysqli_query($link, $query20)) {
+			while ($row20 = mysqli_fetch_row($result20)) {
+				$negative = $row20[0];
+				$typ = $row20[1];
+				$kodod = $row20[2];
+				$koddo = $row20[3];
+
+				echo "$route_id|$spoj|$negative|$typ|$kodod|$koddo|<br />";
+			}
+		}
 	}
 }
 
