@@ -35,6 +35,20 @@ if ($result20 = mysqli_query($link, $query20)) {
 	}
 }
 
+echo "<hr>";
+
+$query38 = "SELECT * FROM manspoje WHERE kod != '0' ORDER BY spoj";
+if ($result38 = mysqli_query($link, $query38)) {
+	while ($row38 = mysqli_fetch_row($result38)) {
+		$spoj = $row38[0];
+		$negative = $row38[1];
+
+		echo "$route_id\t$spoj\t$negative<br />";
+	}
+}
+
+echo "<hr>";
+
 $query38 = "SELECT * FROM manspoje WHERE kod != '0' ORDER BY spoj";
 if ($result38 = mysqli_query($link, $query38)) {
 	while ($row38 = mysqli_fetch_row($result38)) {
@@ -54,6 +68,8 @@ if ($result38 = mysqli_query($link, $query38)) {
 		}
 	}
 }
+
+echo "<hr>";
 
 echo "NOVÝ KÓD<br/>";
 echo "<form action=\"_krok5.php\" method=\"post\">";
@@ -80,12 +96,9 @@ echo "<input type=\"submit\" value=\"Zapsat\">";
 echo "</form>";
 
 
-echo "<hr>";
-
 echo "Nepovolené kombinace: 5,6,7,8 | 5,6,7 | 5,6,8 | 5,6 | 5,7 | 5,8 | 5,7,8 | 6,7,8 | 6,7 | 6,8 | 7,8 | 1,7 | 1,8 | 1,7,8<br />";
 
-// "$linka","$spoj","$X","$NEG","$TYP","$OD","$DO","","1";
-
+echo "<hr>";
 
 $file = $route_id."-Zasspoje.txt.txt";
 echo "$file - $current1";
