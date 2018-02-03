@@ -42,12 +42,12 @@ if ($result38 = mysqli_query($link, $query38)) {
 		$negative = $row38[1];
 
 		$query44 = "SELECT * FROM man_ck WHERE negative=$negative;";
-		if ($result20 = mysqli_query($link, $query20)) {
-			while ($row20 = mysqli_fetch_row($result20)) {
-				$negative = $row20[0];
-				$typ = $row20[1];
-				$kodod = $row20[2];
-				$koddo = $row20[3];
+		if ($result44 = mysqli_query($link, $query44)) {
+			while ($row44 = mysqli_fetch_row($result44)) {
+				$negative = $row44[0];
+				$typ = $row44[1];
+				$kodod = $row44[2];
+				$koddo = $row44[3];
 
 				echo "$route_id|$spoj|$negative|$typ|$kodod|$koddo|<br />";
 			}
