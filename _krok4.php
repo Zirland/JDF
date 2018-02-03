@@ -48,7 +48,7 @@ foreach ($pole as $jizda) {
 
 		foreach ($jizda as $prijezd) {
 			$casprijezd = substr ($prijezd,0,2) . substr ($prijezd,-2);
-			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"$pk\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"1\";\n";
+			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"$pk\",\"\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"\",\"\",\"1\";\n";
 			$index = $index+1;
 		}
 	}
