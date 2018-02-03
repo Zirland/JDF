@@ -5,7 +5,7 @@ $route_id = $_GET['routeid'];
 $action = $_POST['action'];
 $act2 = $_GET['action'];
 
-if ($action = '') {
+if (!isset($action)) {
 	$action = $act2;
 }
 
