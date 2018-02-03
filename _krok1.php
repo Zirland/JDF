@@ -20,7 +20,7 @@ echo "<tr><td>Číslo linky</td><td>Název trasy</td></tr>";
 echo "<tr><td><input type=\"text\" name=\"routeid\"></td><td><input name=\"fullname\" value=\"\" type=\"text\"></td></tr>";
 echo "<tr><td>Jede od</td><td>Jede do</td></tr>";
 
-$jedeod = date ("dmY", time());
+$jedeod = date ("dmY", time ());
 
 echo "<tr><td><input name=\"jedeod\" value=\"$jedeod\" type=\"text\"></td><td><input name=\"jededo\" value=\"31122018\" type=\"text\"></td></tr>";
 echo "<tr><td>Charakter dopravy</td><td>Dopravní prostředek</td></tr>";

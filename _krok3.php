@@ -15,7 +15,7 @@ foreach ($pole as $stanice) {
 		$znam="18";
 		$stanice = str_replace ("[x]", "", $stanice);
 	}
-		
+
 	$stanice = rtrim ($stanice);
 	$stanice = ltrim ($stanice);
 

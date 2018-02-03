@@ -15,7 +15,7 @@ $route_short_name = $_POST['shortname'];
 
 mkdir ($route_id);
 
-$today = date ("dmY", time());
+$today = date ("dmY", time ());
 $file = "$route_id/VerzeJDF.txt.txt";
 $current = "\"1.11\",\"\",\"\",\"\",\"$today\",\"\";";
 file_put_contents ($file, $current);
@@ -27,7 +27,6 @@ $agencyurl = $pomoc31[1];
 $file = "$route_id/Dopravci.txt.txt";
 $current = "\"$agencyid\",\"\",\"$agencyname\",\"1\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"$agencyurl\",\"1\";";
 file_put_contents ($file, $current);
-
 
 $file = "$route_id/Linky.txt.txt";
 $current = "\"$route_id\",\"$route_long_name\",\"$agencyid\",\"$area_type\",\"$route_type\",\"0\",\"0\",\"0\",\"0\",\"\",\"\",\"\",\"\",\"$datumod\",\"$datumdo\",\"1\",\"1\";";

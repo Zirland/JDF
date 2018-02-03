@@ -16,6 +16,7 @@ switch ($action) {
 		$pole = preg_split ("/\r\n|\n|\r/", $vstup);
 
 		foreach ($pole as $route) {
+			$DB19 = mysqli_query ($link, "DELETE FROM analyza WHERE dir=$route;");
 			echo "Linka $route > <a href=\"sort.php?imp=$route\" target=\"_blank\">Generovat</a><br/>";
 		}
 	break;

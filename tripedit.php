@@ -16,12 +16,12 @@ switch ($action) {
 
 		$ready0 = "UPDATE trip SET route_id='$linka', direction_id='$smer', block_id='$blok', wheelchair_accessible='$invalida', bikes_allowed='$cyklo', active='$aktif' WHERE (trip_id = '$trip');";
 
-		$aktualz0 = mysqli_query($link, $ready0);
+		$aktualz0 = mysqli_query ($link, $ready0);
 	break;
-	
+
 	case "zastavky" :
 		$trip = $_POST['trip_id'];
-		$pocet = $_POST['pocet'];	
+		$pocet = $_POST['pocet'];
 
 		for ($y = 0; $y < $pocet; $y++) {
 			$$ind = $y;
@@ -31,8 +31,8 @@ switch ($action) {
 			$departure_time = $_POST[$depindex];
 			$rzmindex = "rezim".${$ind};
 			$rzm = $_POST[$rzmindex];
-			$pickup_type = substr($rzm,0,1);
-			$drop_off_type = substr($rzm,1,1);
+			$pickup_type = substr ($rzm,0,1);
+			$drop_off_type = substr ($rzm,1,1);
 			$seqindex = "poradi".${$ind};
 			$stop_sequence = $_POST[$seqindex];
 			$stpidindex = "stop_id".${$ind};
@@ -43,59 +43,63 @@ switch ($action) {
 			$reroute = $_POST[$rertindex];
 			$zstidindex = "zastav_id".${$ind};
 			$zastav_id = $_POST[$zstidindex];
-		
+
 			$delindex = "delete".${$ind};
 			$delete = $_POST[$delindex];
-		
+
 			if ($reroute == 1) {
 				$query54 = "UPDATE stoptime SET stop_id = '$stop2_id' WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
-				$prikaz54 = mysqli_query($link, $query54);
+				$prikaz54 = mysqli_query ($link, $query54);
 
 				$query72 = "UPDATE triptimesDB SET stop_vazba = '$stop2_id' WHERE ((trip_id = '$trip') AND (zastav_id = '$zastav_id'));";
-				$prikaz72 = mysqli_query($link, $query72);
+				$prikaz72 = mysqli_query ($link, $query72);
 
 				$query75 = "INSERT INTO tripvazba (zastav_id, trip_id, stop_vazba) VALUES ('$zastav_id','$trip','$stop2_id');";
-				$prikaz75 = mysqli_query($link, $query75);
+				$prikaz75 = mysqli_query ($link, $query75);
 			}
-			
+
 			switch ($delete) {
 				case 1 : 
 					$query58 = "DELETE FROM stoptime WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
-					$prikaz58 = mysqli_query($link, $query58);
+					$prikaz58 = mysqli_query ($link, $query58);
 				break;
-				
+
 				default : 
 					$ready1 = "UPDATE stoptime SET arrival_time='$arrival_time', departure_time='$departure_time', pickup_type='$pickup_type', drop_off_type='$drop_off_type' WHERE ((trip_id ='$trip') AND (stop_sequence = '$stop_sequence'));";
-					$aktualz1 = mysqli_query($link, $ready1);
+					$aktualz1 = mysqli_query ($link, $ready1);
 				break;
 			}
 		}
 
-		$pom163 = mysqli_fetch_row(mysqli_query($link, "SELECT max(stop_sequence) FROM stoptime WHERE (trip_id = '$trip');"));
+		$pom163 = mysqli_fetch_row (mysqli_query ($link, "SELECT max(stop_sequence) FROM stoptime WHERE (trip_id = '$trip');"));
 		$max_trip = $pom163[0];
 
-		$pomfinstop=mysqli_fetch_row(mysqli_query($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip' AND stop_sequence='$max_trip');"));
+		$pomfinstop=mysqli_fetch_row (mysqli_query ($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip' AND stop_sequence='$max_trip');"));
 		$finstop=$pomfinstop[0];
-		$pomfinstopparent=mysqli_fetch_row(mysqli_query($link, "SELECT parent_station FROM stop WHERE stop_id='$finstop';"));
+		$pomfinstopparent=mysqli_fetch_row (mysqli_query ($link, "SELECT parent_station FROM stop WHERE stop_id='$finstop';"));
 		$finstopparent=$pomfinstopparent[0];
-		if ($finstopparent == '') {$finstopid = $finstop;} else {$finstopid = $finstopparent;}
+		if ($finstopparent == '') {
+			$finstopid = $finstop;
+		} else {
+			$finstopid = $finstopparent;
+		}
 
 		$query180 = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
-		$result180 = mysqli_query($link, $query180);
-		$pomhead = mysqli_fetch_row($result180);
+		$result180 = mysqli_query ($link, $query180);
+		$pomhead = mysqli_fetch_row ($result180);
 		$headsign = $pomhead[0];
 
 		$query72 = "SELECT stop_id FROM stoptime WHERE trip_id='$trip' ORDER BY stop_sequence;";
-		if ($result72 = mysqli_query($link, $query72)) {
+		if ($result72 = mysqli_query ($link, $query72)) {
 			$shape="";
-			while ($row72 = mysqli_fetch_row($result72)) {
+			while ($row72 = mysqli_fetch_row ($result72)) {
 				$stop_id = $row72[0];
 				$shape.=$stop_id."|";
 			}
 		}
 
 		$query67 = "UPDATE trip SET trip_headsign = '$headsign', shape_id = '$shape' WHERE trip_id='$trip';";
-		$prikaz67 = mysqli_query($link, $query67);	
+		$prikaz67 = mysqli_query ($link, $query67);
 	break;
 	
 	case "grafikon" :
@@ -114,31 +118,35 @@ switch ($action) {
 					$mtrx = $_POST[$index];
 			
 					switch ($mtrx) {
-						case 1 : $grafi.="0";break;
-						case 0 : $grafi.="1";break;			
+						case 1:
+							$grafi.="0";
+						break;
+						case 0:
+							$grafi.="1";
+						break;
 					}
 				}
 			break;
-			
+
 			default :
 				for ($v = 0; $v < 406; $v++) {
 					$$ind = $v;
 					$index = "grafikon".${$ind};
 					$mtrx = $_POST[$index];
-					$grafi.=$mtrx;
+					$grafi .= $mtrx;
 				}
 			break;
 		}
-		
+
 		if ($denne == 1) {
 			$grafi = "";
 			for ($i = 0; $i < 406; $i++) {
-				$grafi.="1";
+				$grafi .= "1";
 			}
 		}
-		
+
 		if ($altern == "1") {
-			$pom84 = mysqli_fetch_row(mysqli_query($link, "SELECT matice FROM trip WHERE (trip_id = '$proti');"));
+			$pom84 = mysqli_fetch_row (mysqli_query ($link, "SELECT matice FROM trip WHERE (trip_id = '$proti');"));
 		 	$matice = $pom84[0];
 
 			$grafi = "";
@@ -146,18 +154,22 @@ switch ($action) {
 			$grafikon = str_split($matice);
 			for ($w = 0; $w < 406; $w++) {
 				switch ($grafikon[$w]) {
-				case 0 : $grafi.="1"; break;
-				case 1 : $grafi.="0"; break;
-				}			
+				case 0:
+					$grafi .= "1";
+				break;
+				case 1:
+					$grafi .= "0";
+				break;
+				}
 			}
 		}
-		
+
 		$operace = "UPDATE trip SET matice='$grafi' WHERE (trip_id = '$trip');";
-		$vykonej = mysqli_query($link, $operace) or die(mysqli_error());
+		$vykonej = mysqli_query ($link, $operace) or die (mysqli_error ());
 	break;
 }
 
-$hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip_id='$trip');"));
+$hlavicka = mysqli_fetch_row (mysqli_query ($link, "SELECT * FROM trip WHERE (trip_id='$trip');"));
 $trip_id = $hlavicka[2];
 $linka = $hlavicka[0];
 $matice = $hlavicka[1];
@@ -183,48 +195,66 @@ echo "</table>";
 echo "<table>";
 echo "<tr>";
 
-echo "<form method=\"post\" action=\"tripedit.php\" name=\"hlava\">
-	<input name=\"action\" value=\"hlava\" type=\"hidden\">
-	<input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"tripedit.php\" name=\"hlava\"><input name=\"action\" value=\"hlava\" type=\"hidden\"><input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
 echo "<td>$trip_id</td><td>Linka: <select name=\"route_id\">";
 
 $query45 = "SELECT route_id, route_short_name, route_long_name FROM route ORDER BY route_short_name;";
-if ($result45 = mysqli_query($link, $query45)) {
-	while ($row45 = mysqli_fetch_row($result45)) {
+if ($result45 = mysqli_query ($link, $query45)) {
+	while ($row45 = mysqli_fetch_row ($result45)) {
 		$roid = $row45[0];
 		$roshname = $row45[1];
 		$rolgname = $row45[2];
 
 		echo "<option value=\"$roid\"";
-		if ($roid == $linka) {echo " SELECTED";}
+		if ($roid == $linka) {
+			echo " SELECTED";
+		}
 		echo ">$roshname - $rolgname</option>";
 	}
 }
 
 echo "</select></td><td>Směr: $trip_headsign<br />";
 echo "<select name=\"smer\"><option value=\"0\"";
-if ($smer=='0') {echo " SELECTED";}
+if ($smer=='0') {
+	echo " SELECTED";
+}
 echo ">Odchozí</option><option value=\"1\"";
-if ($smer=='1') {echo " SELECTED";}
+if ($smer=='1') {
+	echo " SELECTED";
+}
 echo ">Příchozí</option></select></td>";
 echo "<td>Blok <input type=\"text\" name=\"block_id\" value=\"$blok\"><br/>";
 echo "Invalida: <select name=\"invalida\"><option value=\"0\"";
-if ($invalida == '0') {echo " SELECTED";}
+if ($invalida == '0') {
+	echo " SELECTED";
+}
 echo "></option><option value=\"1\"";
-if ($invalida == '1') {echo " SELECTED";}
+if ($invalida == '1') {
+	echo " SELECTED";
+}
 echo ">Vlak vhodný pro přepravu</option><option value=\"2\"";
-if ($invalida == '2') {echo " SELECTED";}
+if ($invalida == '2') {
+	echo " SELECTED";
+}
 echo ">Vlak neumožňuje přepravu</option></select><br />";
 echo "Cyklo: <select name=\"cyklo\"><option value=\"0\"";
-if ($cyklo == '0') {echo " SELECTED";}
+if ($cyklo == '0') {
+	echo " SELECTED";
+}
 echo "></option><option value=\"1\"";
-if ($cyklo == '1') {echo " SELECTED";}
+if ($cyklo == '1') {
+	echo " SELECTED";
+}
 echo ">Vlak vhodný pro přepravu</option><option value=\"2\"";
-if ($cyklo == '2') {echo " SELECTED";}
+if ($cyklo == '2') {
+	echo " SELECTED";
+}
 echo ">Vlak neumožňuje přepravu</option></select>";
 echo "</td>";
 echo "<td>Aktivní <input type=\"checkbox\" name=\"aktif\" value=\"1\"";
-if ($aktif == '1') {echo " CHECKED";}
+if ($aktif == '1') {
+	echo " CHECKED";
+}
 echo "></td><td><input type=\"submit\"></td></tr></form>";
 echo "</table>";
 
@@ -233,15 +263,13 @@ echo "<tr><td>";
 echo "<table>";
 echo "<tr><th>Stanice</th><th>Příjezd</th><th><Odjezd</th><th>Režim</th><th></th></tr>";
 
-echo "<form method=\"post\" action=\"tripedit.php\" name=\"zastavky\">
-	<input name=\"action\" value=\"zastavky\" type=\"hidden\">
-	<input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"tripedit.php\" name=\"zastavky\"><input name=\"action\" value=\"zastavky\" type=\"hidden\"><input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
 $z = 0;
 
 $query108 = "SELECT stoptime.stop_id,stoptime.arrival_time,stoptime.departure_time,stoptime.pickup_type,stoptime.drop_off_type,stoptime.stop_sequence, stop.stop_name, stop.pomcode, stoptime.zastav_id FROM stoptime LEFT JOIN stop ON stoptime.stop_id = stop.stop_id WHERE (stoptime.trip_id = '$trip_id') ORDER BY stoptime.stop_sequence;";
 
-if ($result108 = mysqli_query($link, $query108)) {
-	while ($row108 = mysqli_fetch_row($result108)) {
+if ($result108 = mysqli_query ($link, $query108)) {
+	while ($row108 = mysqli_fetch_row ($result108)) {
 		$stop_id = $row108[0];
 		$arrival_time = $row108[1];
 		$departure_time = $row108[2];
@@ -252,21 +280,19 @@ if ($result108 = mysqli_query($link, $query108)) {
 		$kod_stanice = $row108[7];
 		$zastav_id = $row108[8];
 
-		echo "<tr><td><input name=\"stop_id$z\" value=\"$stop_id\" type=\"hidden\">
-			<input name=\"zastav_id$z\" value=\"$zastav_id\" type=\"hidden\">
-			<input name=\"poradi$z\" value=\"$stop_sequence\" type=\"hidden\">
-			<input type=\"checkbox\" name=\"reroute$z\" value=\"1\">
-			<select name=\"stop2_id$z\">";
+		echo "<tr><td><input name=\"stop_id$z\" value=\"$stop_id\" type=\"hidden\"><input name=\"zastav_id$z\" value=\"$zastav_id\" type=\"hidden\"><input name=\"poradi$z\" value=\"$stop_sequence\" type=\"hidden\"><input type=\"checkbox\" name=\"reroute$z\" value=\"1\"><select name=\"stop2_id$z\">";
 		$query194 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
-	
-		if ($result194 = mysqli_query($link, $query194)) {
-			while ($row194 = mysqli_fetch_row($result194)) {
+
+		if ($result194 = mysqli_query ($link, $query194)) {
+			while ($row194 = mysqli_fetch_row ($result194)) {
 				$stopid = $row194[0];
 				$sortname = $row194[1];
 				$stopcode = $row194[2];
 
 				echo "<option value=\"$stopid\"";
-				if ($stopid == $stop_id) {echo " SELECTED";}
+				if ($stopid == $stop_id) {
+					echo " SELECTED";
+				}
 				echo ">$sortname $stopcode</option>";
 			}
 		}
@@ -277,13 +303,19 @@ if ($result108 = mysqli_query($link, $query108)) {
 		echo "<td><input type=\"text\" name=\"leave$z\" value=\"$departure_time\"></td>";
 		echo "<td><select name=\"rezim$z\"><option value=\"00\"></option>";
 		echo "<option value=\"01\"";
-		if ($drop_off_type == 1) {echo " SELECTED";}
+		if ($drop_off_type == 1) {
+			echo " SELECTED";
+		}
 		echo ">Pouze výstup</option>";
 		echo "<option value=\"10\"";
-		if ($pickup_type == 1) {echo " SELECTED";}
+		if ($pickup_type == 1) {
+			echo " SELECTED";
+		}
 		echo ">Pouze nástup</option>";
 		echo "<option value=\"33\"";
-		if ($drop_off_type == 3) {echo " SELECTED";}
+		if ($drop_off_type == 3) {
+			echo " SELECTED";
+		}
 		echo ">Zastavuje na znamení</option>";
 		echo "<select></td>";
 		echo "<td><input type=\"checkbox\" name=\"delete$z\" value=\"1\"></td></tr>";
@@ -298,37 +330,44 @@ echo "</table>";
 
 echo "</td></tr></table>";
 
-echo "<form method=\"post\" action=\"tripedit.php\" name=\"grafikon\">
-	<input name=\"action\" value=\"grafikon\" type=\"hidden\">
-	<input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"tripedit.php\" name=\"grafikon\"><input name=\"action\" value=\"grafikon\" type=\"hidden\"><input name=\"trip_id\" value=\"$trip_id\" type=\"hidden\">";
 
 echo "<input type=\"checkbox\" name=\"denne\" value=\"1\"> Jede denně";
 echo "<input type=\"checkbox\" name=\"invert\" value=\"1\"> Invertuj";
 echo "<input type=\"checkbox\" name=\"altern\" value=\"1\"> Alternace <input type=\"text\" name=\"proti\" value=\"\">";
 
 // Matice začíná 3.12.2017 
-$matice_start = mktime(0,0,0,12,3,2017);
-$grafikon = str_split($matice);
+$matice_start = mktime (0,0,0,12,3,2017);
+$grafikon = str_split ($matice);
 echo "<table border=\"1\"><tr><td>";
 // 3.12.2017 je 0;
 
 for ($u = 0; $u < 406; $u++) {
 		$datum=$matice_start+($u*86400);
-	$datum_format = date("d.m.", $datum);
-	$denvtydnu = date('w',$datum);
-	if ($grafikon[$u] == "1") {echo "<span style=\"background-color:green;\">";}
+	$datum_format = date ("d.m.", $datum);
+	$denvtydnu = date ('w',$datum);
+	if ($grafikon[$u] == "1") {
+		echo "<span style=\"background-color:green;\">";
+	}
 	echo "$datum_format<br /><input type=\"radio\" name=\"grafikon$u\" value=\"0\"";
-	if ($grafikon[$u] == "0") {echo " CHECKED";}
+	if ($grafikon[$u] == "0") {
+		echo " CHECKED";
+	}
 	echo "><input type=\"radio\" name=\"grafikon$u\" value=\"1\"";
-	if ($grafikon[$u] == "1") {echo " CHECKED";}
+	if ($grafikon[$u] == "1") {
+		echo " CHECKED";
+	}
 	echo "><br />";
-	if ($grafikon[$u] == "1") {echo "</span>";}
-	if ($denvtydnu == "0") {echo "</td><td>";}
+	if ($grafikon[$u] == "1") {
+		echo "</span>";
+	}
+	if ($denvtydnu == "0") {
+		echo "</td><td>";
+	}
 }
 
 echo "</td></tr></table>";
 echo "<input type=\"submit\"></form>";
-
 
 include 'footer.php';
 ?>
