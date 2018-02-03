@@ -23,6 +23,7 @@ switch ($action) {
 	break;
 }
 
+$i = 1;
 $query20 = "SELECT * FROM man_ck ORDER BY negative";
 if ($result20 = mysqli_query($link, $query20)) {
 	while ($row20 = mysqli_fetch_row($result20)) {
@@ -31,7 +32,8 @@ if ($result20 = mysqli_query($link, $query20)) {
 		$kodod = $row20[2];
 		$koddo = $row20[3];
 
-		echo "$negative\t$typ\t$kodod\t$koddo<br />";
+		echo "$negative ($i)\t$typ\t$kodod\t$koddo<br />";
+		$i = i + 1;
 	}
 }
 
@@ -49,12 +51,14 @@ if ($result38 = mysqli_query($link, $query38)) {
 
 echo "<hr>";
 
+
 $query38 = "SELECT * FROM manspoje WHERE kod != '0' ORDER BY spoj";
 if ($result38 = mysqli_query($link, $query38)) {
 	while ($row38 = mysqli_fetch_row($result38)) {
 		$spoj = $row38[0];
 		$negative = $row38[1];
 
+$j = 1;
 		$query44 = "SELECT * FROM man_ck WHERE negative=$negative;";
 		if ($result44 = mysqli_query($link, $query44)) {
 			while ($row44 = mysqli_fetch_row($result44)) {
@@ -63,7 +67,8 @@ if ($result38 = mysqli_query($link, $query38)) {
 				$kodod = $row44[2];
 				$koddo = $row44[3];
 
-				echo "$route_id|$spoj|$negative|$typ|$kodod|$koddo|<br />";
+				echo "\"$route_id\",\"$spoj\",\"$j\",\"$negative\",\"$typ\",\"$kodod\",\"$koddo\",\"\",\"1\";<br />";
+				$j = $j + 1;
 			}
 		}
 	}
