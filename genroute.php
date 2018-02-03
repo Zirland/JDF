@@ -64,14 +64,14 @@ if ($dopravci) {
 		$dopr_name = $dopr[5];
 		$dopr_url = $dopr[23];
 		if ($dopr_url == '') {$dopr_url = "andreas.zirland.org";}
-		
+
 		$cistiag = mysqli_query ($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
 		$query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
 		$prikaz21 = mysqli_query ($link, $query21);	
 	}
 	fclose ($dopravci);
 }
-	
+
 $linky = fopen ("$dir/Linky.txt.txt", 'r');
 if ($linky) {
 	while (($buffer2 = fgets ($linky, 4096)) !== false) {
@@ -88,7 +88,7 @@ if ($linky) {
 			$platnostdo = $line[19];
 			$linkano = "1";
 			$route_type = "3";
-		}	
+		}
 
 		if ($verze == '1.10' || $verze == '1.11') {
 			$typ = $line[9];
@@ -129,7 +129,7 @@ if ($linky) {
 	}
 	fclose ($linky);
 }
-	
+
 $spoje = fopen ("$dir/Spoje.txt.txt", 'r');
 if ($spoje) {
 	while (($buffer3 = fgets ($spoje, 4096)) !== false) {
@@ -137,21 +137,23 @@ if ($spoje) {
 		$trip = explode (',', $newbuffer3);
 
 		if ($verze == '1.8' || $verze == '1.9') {
-			$routeno = "1";		    
-			$lastPK = explode (';', $trip[11]);					
+			$routeno = "1";
+			$lastPK = explode (';', $trip[11]);
 			$PK = "-".$trip[2]."-".$trip[3]."-".$trip[4]."-".$trip[5]."-".$trip[6]."-".$trip[7]."-".$trip[8]."-".$trip[9]."-".$trip[10]."-".$lastPK[0]."-";
-		}			
+		}
 
 		if ($verze == '1.10' || $verze == '1.11') {
 			$routeno = explode (';', $trip[13]);
 			$PK = "-".$trip[2]."-".$trip[3]."-".$trip[4]."-".$trip[5]."-".$trip[6]."-".$trip[7]."-".$trip[8]."-".$trip[9]."-".$trip[10]."-".$trip[11]."-";
 		}
-		
+
 		$route_id = $trip[0].$routeno[0];
 		$trip_no = $trip[1];
 		$trip_id = $route_id.$trip_no;
-		$smer = ($trip_no % 2)+1;
-		if ($smer == 2) {$smer = 0;}
+		$smer = ($trip_no % 2) + 1;
+		if ($smer == 2) {
+			$smer = 0;
+		}
 		$matrix = "";
 		$startformat = "2017-12-03"; // vždy neděle!
 		$Ystart = substr ($startformat,0,4);
@@ -176,25 +178,25 @@ if ($spoje) {
 				$index = $dy + ($wk * 7);
 				$matrix[$index] = 1;
 			}
-			
+
 			$dy = 2;
 			for ($wk = 0; $wk < 58; $wk++) {
 				$index = $dy + ($wk * 7);
 				$matrix[$index] = 1;
 			}
-			
+
 			$dy = 3;
 			for ($wk = 0; $wk < 58; $wk++) {
 				$index = $dy + ($wk * 7);
 				$matrix[$index] = 1;
 			}
-			
+
 			$dy = 4;
 			for ($wk = 0; $wk < 58; $wk++) {
 				$index = $dy + ($wk * 7);
 				$matrix[$index] = 1;
 			}
-			
+
 			$dy = 5;
 			for ($wk = 0; $wk < 58; $wk++) {
 				$index = $dy + ($wk * 7);
@@ -237,7 +239,7 @@ if ($spoje) {
 				$matrix[$index] = 1;
 			}
 		}
-	
+
 		if (strpos ($PK, '-7-') !== false) {
 		// pátek
 			$dy = 5;
@@ -246,7 +248,7 @@ if ($spoje) {
 				$matrix[$index] = 1;
 			}
 		}
-			
+
 		if (strpos ($PK, '-8-') !== false) {
 		// sobota
 			$dy = 6;
@@ -255,7 +257,7 @@ if ($spoje) {
 				$matrix[$index] = 1;
 			}
 		}
-		
+
 		foreach ($svatek as $datumsvatek1) { 
 			$Dods1 = substr ($datumsvatek1,0,2); $Mods1 = substr ($datumsvatek1,2,2); $Yods1 = substr ($datumsvatek1,-4); $timesvatek1 = mktime (0,0,0,$Mods1, $Dods1, $Yods1); 
 			$dnusvatek1 = round (($timesvatek1 - $maticestart) / 86400); 
@@ -273,7 +275,7 @@ if ($spoje) {
 			$index = $dy + ($wk * 7);
 				$matrix[$index] = 1;
 			}
-	
+
 			foreach ($svatek as $datumsvatek1) { 
 				$Dods1 = substr ($datumsvatek1,0,2); $Mods1 = substr ($datumsvatek1,2,2); $Yods1 = substr ($datumsvatek1,-4); $timesvatek1 = mktime (0,0,0,$Mods1, $Dods1, $Yods1); 
 				$dnusvatek1 = round (($timesvatek1 - $maticestart) / 86400); 
@@ -315,14 +317,14 @@ if ($spoje) {
 							$zacdnu = round (($timeod - $maticestart) / 86400); 
 							$Ddo = substr ($datumdo,0,2); $Mdo = substr ($datumdo,2,2); $Ydo = substr ($datumdo,-4); $timedo = mktime (0,0,0,$Mdo, $Ddo, $Ydo); 
 							$kondnu = round (($timedo - $maticestart) / 86400); 
-				
+
 							for ($g = 0; $g < 406; $g++) {
 								if ($g >= $zacdnu && $g <= $kondnu) {
 									$matrix[$g] = 1;
 								}
 							}
 						break;
-		
+
 						case "2" :
 							$Dod = substr ($datumod,0,2); $Mod = substr ($datumod,2,2); $Yod = substr ($datumod,-4); $timeod = mktime (0,0,0,$Mod, $Dod, $Yod); 
 							$zacdnu = round (($timeod - $maticestart) / 86400); 
@@ -332,7 +334,7 @@ if ($spoje) {
 								}
 							}
 						break;
-			
+
 						case "3" :
 							$Dod = substr ($datumod,0,2); $Mod = substr ($datumod,2,2); $Yod = substr ($datumod,-4); $timeod = mktime (0,0,0,$Mod, $Dod, $Yod); 
 							$zacdnu = round (($timeod - $maticestart) / 86400);
@@ -346,13 +348,13 @@ if ($spoje) {
 								}
 							} 
 						break;
-			
+
 						case "4" :
 							$Dod = substr ($datumod,0,2); $Mod = substr ($datumod,2,2); $Yod = substr ($datumod,-4); $timeod = mktime (0,0,0,$Mod, $Dod, $Yod); 
 							$zacdnu = round (($timeod - $maticestart) / 86400); 
 							$Ddo = substr ($datumdo,0,2); $Mdo = substr ($datumdo,2,2); $Ydo = substr ($datumdo,-4); $timedo = mktime (0,0,0,$Mdo, $Ddo, $Ydo); 
 							$kondnu = round (($timedo - $maticestart) / 86400); 
-				
+
 							for ($g = 0; $g < 406; $g++) {
 								if ($g >= $zacdnu && $g <= $kondnu) {
 									$matrix[$g] = 0;
@@ -360,25 +362,25 @@ if ($spoje) {
 							}
 
 						break;
-		
+
 						case "5" : $current .= "* Spoj $caskod_trip_id jede jen v lichých týdnech\n"; break;
-			
+
 						case "6" : $current .= "* Spoj $caskod_trip_id jede jen v sudých týdnech\n"; break;
-			
+
 						case "7" : $current .= "* Spoj $caskod_trip_id jede jen v lichých týdnech od $datumod do $datumdo\n"; break;
-		
+
 						case "8" : $current .= "* Spoj $caskod_trip_id jede jen v sudých týdnech od $datumod do $datumdo\n"; break;
 					}
 				}
 			}
 			fclose ($caskody);
 		}
-	
+
 		$Dplod = substr ($platnostod,0,2); $Mplod = substr ($platnostod,2,2); $Yplod = substr ($platnostod,-4); $timeplod = mktime (0,0,0,$Mplod, $Dplod, $Yplod); 
 		$zacplat = round (($timeplod - $maticestart) / 86400); 
 		$Dpldo = substr ($platnostdo,0,2); $Mpldo = substr ($platnostdo,2,2); $Ypldo = substr ($platnostdo,-4); $timepldo = mktime (0,0,0,$Mpldo, $Dpldo, $Ypldo); 
 		$konplat = round (($timepldo - $maticestart) / 86400); 
-				
+
 		for ($g = 0; $g < 406; $g++) {
 			if ($g < $zacplat || $g > $konplat) {
 				$matrix[$g] = 0;
@@ -408,7 +410,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 	$oznacnik = fopen ("$dir/Oznacniky.txt.txt", 'r');
 	if ($oznacnik) {
 		fclose ($oznacnik);
-	}	
+	}
 
 	$spojskup = fopen ("$dir/SpojSkup.txt.txt", 'r');
 	if ($spojskup) {
@@ -427,7 +429,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 			$koddopravy = $linext[2];
 			$oznaclin = $linext[3];
 			$prefer = $linext[4];
-				
+
 			$queryex = "DELETE FROM exter WHERE linka = '$label$linka';";
 			$cistiex = mysqli_query ($link, $queryex);
 
@@ -435,7 +437,7 @@ if ($verze == '1.10' || $verze == '1.11') {
 			$prikaz1213 = mysqli_query ($link, $query1213);
 		}
 		fclose ($extlinka);
-	}	
+	}
 }
 
 $zastavky = fopen ("$dir/Zastavky.txt.txt", 'r');
@@ -451,7 +453,7 @@ if ($zastavky) {
 		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";
 
 		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$zastav_no', '$zast_name', '$zastPK');";
-		$prikaz236 = mysqli_query ($link, $query236);     
+		$prikaz236 = mysqli_query ($link, $query236);
 	}
 	fclose ($zastavky);
 }
@@ -484,7 +486,7 @@ if ($zaslinky) {
 		$stop_name = $najdipom[0];
 		$zastPK = $najdipom[1];
 		$stopPK = $zastPK.$zastavlin[11]."-".$zastavlin[13]."-".$zastavlin[15]."-";
-		
+
 		$query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
 		$prikaz467 = mysqli_query ($link, $query467);
 
@@ -500,7 +502,7 @@ if ($zaslinky) {
 				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';";
 				$migrate = mysqli_query ($link, $querymig);
 			}
-      	}
+		}
 
 		$query474 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id-';";
 		if ($result474 = mysqli_query ($link, $query474)) {
@@ -512,7 +514,7 @@ if ($zaslinky) {
 				$migrate = mysqli_query ($link, $querymig);
 			}
 		}
-	} 
+	}
 	fclose ($zaslinky);
 }
 
@@ -521,7 +523,7 @@ if ($zasspoje) {
 	while (($buffer8 = fgets ($zasspoje, 4096)) !== false) {
 		$newbuffer8 = str_replace ('"','', $buffer8);
 		$zastspoj = explode (',', $newbuffer8);
-		
+
 		if ($verze == '1.8' || $verze == '1.9') {
 			$routeno = "1";
 		}
@@ -529,7 +531,7 @@ if ($zasspoje) {
 		if ($verze == '1.10') {
 			$routeno = explode (';', $zastspoj[11]);
 		}
-		
+
 		if ($verze == '1.11') {
 			$routeno = explode (';', $zastspoj[14]);
 		}
@@ -547,7 +549,7 @@ if ($zasspoje) {
 		}
 
 		$zastav_id = $linka.$zastav_poradi."P".$zastav_code.$direct;
-		
+
 		if ($verze == '1.8' || $verze == '1.9') {
 			$km = $zastspoj[7];
 			$prijezd = $zastspoj[8];
@@ -555,7 +557,7 @@ if ($zasspoje) {
 			$odjezd = $lastodj[0];
 			$tripstopPK = "-".$zastspoj[5]."-".$zastspoj[6]."-";
 		}
-	
+
 		if ($verze == '1.10') {
 			$km = $zastspoj[8];
 			$prijezd = $zastspoj[9];
@@ -563,7 +565,7 @@ if ($zasspoje) {
 			$tripstopPK = "-".$zastspoj[6]."-".$zastspoj[7]."-";
 		}
 
-		if ($verze == '1.11') {			
+		if ($verze == '1.11') {
 			$km = $zastspoj[9];
 			$prijezd = $zastspoj[10];
 			$odjezd = $zastspoj[11];

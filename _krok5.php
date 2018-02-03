@@ -3,6 +3,11 @@ include 'header.php';
 
 $route_id = $_GET['routeid'];
 $action = $_POST['action'];
+$act2 = $_GET['action'];
+
+if ($action = '') {
+	$action = $act2;
+}
 
 switch ($action) {
 	case 'newcode' :
@@ -105,16 +110,7 @@ echo "Nepovolené kombinace: 5,6,7,8 | 5,6,7 | 5,6,8 | 5,6 | 5,7 | 5,8 | 5,7,8 |
 
 echo "<hr>";
 
-$file = $route_id."-Zasspoje.txt.txt";
-echo "$file - $current1";
-// file_put_contents($file, $current1, FILE_APPEND);
-
-echo "SPOJE TABULKA<br/>";
-echo "<form action=\"_krok4.php\" method=\"post\">";
-echo "<input type=\"hidden\" name=\"routeid\" value=\"$route_id\">";
-echo "<textarea name=\"input\" cols=\"80\" rows=\"30\"></textarea>";
-echo "<input type=\"submit\" value=\"Zapsat\">";
-echo "</form>";
+echo "<a href=\"_krok5.php?routeid=$route_id&action=export\">Exportovat kódy</a>";
 
 include 'footer.php';
 ?>
