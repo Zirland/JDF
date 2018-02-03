@@ -20,7 +20,7 @@ foreach ($pole as $jizda) {
 		if ($jizda == 'Sobota + Neděle') {
 			$cal = "8\",\"2";
 		}
-		if ($jizda == 'Denně') {
+		if ($jizda == 'Jede denně') {
 			$cal = "\",\"";
 		}
 	}
@@ -28,7 +28,15 @@ foreach ($pole as $jizda) {
 		$spoje = preg_split ("/\t/", $jizda);
 		foreach ($spoje as $radek) {
 			$current0 .= "\"$route_id\",\"$radek\",\"$cal\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"1\";\n";
-			$DB24 = mysqli_query ($link, "INSERT INTO manspoje VALUES ($radek);");
+			$DB24 = mysqli_query ($link, "INSERT INTO manspoje VALUES ($radek,'');");
+		}
+	}
+	if ($x == 3) {
+		$kody = preg_split ("/\t/", $jizda);
+		$index = 0;
+		foreach ($kody as $kod) {
+			$DB37 = mysqli_query ($link, "UPDATE manspoje SET kod=$kod WHERE spoj = $spoje[$index];");
+			$index = $index + 1;
 		}
 	}
 	if ($x>3) {
@@ -36,20 +44,20 @@ foreach ($pole as $jizda) {
 		$index = 0;
 		$zast = $x-3;
 		
-		$pk = "";
-		if (strpos ($jizda, '(') !== false) {
-			$pk="21";
-			$jizda = str_replace ("(", "", $jizda);
-		}
-		if (strpos ($jizda, ')') !== false) {
-			$pk="22";
-			$jizda = str_replace (")", "", $jizda);
-		}
-
 		foreach ($jizda as $prijezd) {
+			$pk = "";
+			if (strpos ($prijezd, '(') !== false) {
+				$pk="21";
+				$prijezd = str_replace ("(", "", $prijezd);
+			}
+			if (strpos ($prijezd, ')') !== false) {
+				$pk="22";
+				$prijezd = str_replace (")", "", $prijezd);
+			}
+
 			$casprijezd = substr ($prijezd,0,2) . substr ($prijezd,-2);
 			$current1 .= "\"$route_id\",\"$spoje[$index]\",\"$zast\",\"$zast\",\"\",\"\",\"$pk\",\"\",\"\",\"\",\"$casprijezd\",\"$casprijezd\",\"\",\"\",\"1\";\n";
-			$index = $index+1;
+			$index = $index + 1;
 		}
 	}
 	$x = $x + 1;
