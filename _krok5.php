@@ -42,6 +42,8 @@ switch ($action) {
 
 						$current .= "\"$route_id\",\"$spoj\",\"$j\",\"$negative\",\"$typ\",\"$kodod\",\"$koddo\",\"\",\"1\";\n";
 						$j = $j + 1;
+					}
+				}
 			}
 		}
 		$file = "$route_id/Caskody.txt.txt";
@@ -84,7 +86,7 @@ if ($result38 = mysqli_query($link, $query38)) {
 		$spoj = $row38[0];
 		$negative = $row38[1];
 
-$j = 1;
+		$j = 1;
 		$query44 = "SELECT * FROM man_ck WHERE negative=$negative;";
 		if ($result44 = mysqli_query($link, $query44)) {
 			while ($row44 = mysqli_fetch_row($result44)) {
