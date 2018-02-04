@@ -26,6 +26,11 @@ switch ($action) {
 
 		$ready0 = "UPDATE route SET agency_id='$dopravce', route_short_name='$shortname', route_long_name='$longname', route_type='$routetype', route_color='$pozadi', route_text_color='$foreground', active='$aktif' WHERE (route_id = '$route');";
 		$aktualz0 = mysqli_query ($link, $ready0);
+
+		$ready1 = "DELETE FROM barvy WHERE route_id = '$route';";
+		$del1 = mysqli_query ($link, $ready1);
+		$ready2 = "INSERT INTO barvy VALUES ('$route', '$pozadi');";
+		$aktualz2 = mysqli_query ($link, $ready2);
 	break;
 
 	case "zastavky" :

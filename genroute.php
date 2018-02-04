@@ -63,7 +63,9 @@ if ($dopravci) {
 		$dopr_id = $dopr[1];
 		$dopr_name = $dopr[5];
 		$dopr_url = $dopr[23];
-		if ($dopr_url == '') {$dopr_url = "andreas.zirland.org";}
+		if ($dopr_url == '') {
+			$dopr_url = "andreas.zirland.org";
+		}
 
 		$cistiag = mysqli_query ($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
 		$query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
@@ -80,7 +82,6 @@ if ($linky) {
 		$route_short_name = $route_no;
 		$route_long_name = $line[3];
 		$agency_id = $line[5];
-		$route_color = "017DC2";
 		$route_text_color = "000000";
 
 		if ($verze == '1.8' || $verze == '1.9') {
@@ -93,12 +94,24 @@ if ($linky) {
 		if ($verze == '1.10' || $verze == '1.11') {
 			$typ = $line[9];
 			switch ($typ) {
-				case "A" : $route_type = "3"; break;
-				case "E" : $route_type = "0"; break;
-				case "L" : $route_type = "6"; break;
-				case "M" : $route_type = "1"; break;
-				case "P" : $route_type = "4"; break;
-				case "T" : $route_type = "5"; break;
+				case "A":
+					$route_type = "3";
+				break;
+				case "E":
+					$route_type = "0";
+				break;
+				case "L":
+					$route_type = "6";
+				break;
+				case "M":
+					$route_type = "1";
+				break;
+				case "P":
+					$route_type = "4";
+				break;
+				case "T":
+					$route_type = "5";
+				break;
 			}
 		}
 
@@ -117,6 +130,18 @@ if ($linky) {
 		$route_long_name = str_replace (" - "," – ",$route_long_name);
 
 		$route_id = $route_no.$linkano;
+
+		$query134 = "SELECT route_color FROM barvy WHERE route_id = 'route_id';";
+		if ($result134 = mysqli_query ($link, $query87)) {
+			$row134 = mysqli_fetch_row ($result134);
+			$radku134 = mysqli_num_rows ($result134);
+		}
+		if ($radku134 > 0) {
+			$route_color = $row134[0];
+		} else {
+			$route_color = "017DC2";
+		}
+
 		$queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
 		$cistiro = mysqli_query ($link, $queryro);
 
