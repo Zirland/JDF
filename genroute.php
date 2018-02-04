@@ -328,7 +328,7 @@ if ($spoje) {
 				$linka = $caskod[0].$routeno[0];
 				$spoj = $caskod[1];
 				$caskod_trip_id = $linka.$spoj;
-				$poradikodu = $caskod[2]
+				$poradikodu = $caskod[2];
 				$typkodu = $caskod[4];
 				$datumod = $caskod[5];
 				$datumdo = $caskod[6];
