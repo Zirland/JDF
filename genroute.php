@@ -335,7 +335,6 @@ if ($spoje) {
 				if ($datumdo == "") {
 					$datumdo = $datumod;
 				}
-
 				if ($trip_id == $caskod_trip_id) {
 					switch ($typkodu) {
 						case "1" :
@@ -367,6 +366,7 @@ if ($spoje) {
 							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
 							echo "* Spoj $caskod_trip_id jede pouze dne $datumod<br/>"; 
 							if ($poradikodu == "1") {
+								$matrix = "";
 								for ($i = 0; $i < 406; $i++) {
 									$matrix .= "0";
 								}
