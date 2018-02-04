@@ -328,6 +328,7 @@ if ($spoje) {
 				$linka = $caskod[0].$routeno[0];
 				$spoj = $caskod[1];
 				$caskod_trip_id = $linka.$spoj;
+				$poradikodu = $caskod[2]
 				$typkodu = $caskod[4];
 				$datumod = $caskod[5];
 				$datumdo = $caskod[6];
@@ -365,11 +366,15 @@ if ($spoje) {
 							$zacdnu = round (($timeod - $maticestart) / 86400);
 							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
 							echo "* Spoj $caskod_trip_id jede pouze dne $datumod<br/>"; 
+							if ($poradikodu == "1") {
+								for ($i = 0; $i < 406; $i++) {
+									$matrix .= "0";
+								}
+							}
+							
 							for ($g = 0; $g < 406; $g++) {
 								if ($g == $zacdnu) {
 									$matrix[$g] = 1;
-								} else {
-									$matrix[$g] = 0;
 								}
 							} 
 						break;
