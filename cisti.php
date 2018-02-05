@@ -8,7 +8,7 @@ if ($result = mysqli_query ($link, $query)) {
 		$trip_id = $row[1];
 
 		$matice_start = mktime (0,0,0,12,3,2017);
-		$matice_end = mktime (0,0,0,12,8,2018);
+		$matice_end = mktime (0,0,0,1,12,2019);
 
 		$dnes_den = date ("d", time ());
 		$dnes_mesic = date ("m", time ());

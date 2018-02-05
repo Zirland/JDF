@@ -364,7 +364,6 @@ if ($spoje) {
 							$Dod = substr ($datumod,0,2); $Mod = substr ($datumod,2,2); $Yod = substr ($datumod,-4); $timeod = mktime (0,0,0,$Mod, $Dod, $Yod); 
 							$zacdnu = round (($timeod - $maticestart) / 86400);
 							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
-							echo "* Spoj $caskod_trip_id jede pouze dne $datumod<br/>"; 
 							if ($poradikodu == "1") {
 								$matrix = "";
 								for ($i = 0; $i < 406; $i++) {
