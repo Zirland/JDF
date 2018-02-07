@@ -10,7 +10,7 @@ echo "<th>Přepravce</th>
 <th>Typ</th>
 <th></th>";
 echo "</tr>";
-$query = "SELECT * FROM route WHERE active=1 ORDER BY route_short_name";
+$query = "SELECT * FROM route WHERE active=1 ORDER BY agency_id, CAST(route_short_name as unsigned)";
 if ($result = mysqli_query ($link, $query)) {
 	while ($row = mysqli_fetch_row ($result)) {
 		$route_id = $row[0];

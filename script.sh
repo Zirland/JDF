@@ -15,7 +15,7 @@ rm JDF.zip
 
 curl http://localhost/JDF/dbprepare.php
 
-for i in {1..25000}
+for i in {1..12000}
 do
 	mkdir $i
 	chmod 777 $i

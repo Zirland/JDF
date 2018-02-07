@@ -7,10 +7,9 @@ if (!$link) {
 }
 
 $source = $_GET['file'];
-$imp = $_GET['imp'];
 
-if ($imp != '') {
-	$dir = "$imp";
+if ($source > 99999) {
+	$dir = "$source";
 } else {
 	$dir = "data/".$source;
 }
@@ -86,7 +85,7 @@ if ($linky) {
 
 $datumod = substr ($platnostod, -4)."-".substr ($platnostod, 2,2)."-".substr ($platnostod, 0,2);
 $datumdo = substr ($platnostdo, -4)."-".substr ($platnostdo, 2,2)."-".substr ($platnostdo, 0,2);
-$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce) VALUES ('$dir', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce');";
+$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce) VALUES ('$source', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce');";
 $prikaz68 = mysqli_query ($link, $query68);
 
 mysqli_close ($link);

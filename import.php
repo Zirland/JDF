@@ -17,7 +17,7 @@ switch ($action) {
 
 		foreach ($pole as $route) {
 			$DB19 = mysqli_query ($link, "DELETE FROM analyza WHERE dir=$route;");
-			echo "Linka $route > <a href=\"sort.php?imp=$route\" target=\"_blank\">Generovat</a><br/>";
+			echo "Linka $route > <a href=\"sort.php?file=$route\" target=\"_blank\">Generovat</a><br/>";
 		}
 	break;
 }

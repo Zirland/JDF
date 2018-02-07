@@ -19,7 +19,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 		$route_name = $row6[1];
 		$route_type = $row6[2];
 
-//		echo "<span style=\"background-color:#dd0000;\">$route_id - $route_name ($route_type)</span><br />";
+		echo "<span style=\"background-color:#dd0000;\">$route_id - $route_name ($route_type)</span><br />";
 
 		$halt = 0;
 		$label = "";
@@ -41,7 +41,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 				$od_time = mktime (0,0,0,$od_mesic,$od_den,$od_rok);
 
 				if ($platnost > 0) {
-					break;
+//					break;
 					echo "<span style=\"background-color:#dddddd;\">";
 				}
 				if ($od_time > $today) {
@@ -67,7 +67,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 
 echo "<hr>";
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '425%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
+$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id LIKE '%' AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query ($link, $query6)) {
 	while ($row6 = mysqli_fetch_row ($result6)) {
 		$route_id = $row6[0];
