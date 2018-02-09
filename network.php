@@ -13,15 +13,26 @@ if ($result9 = mysqli_query ($link, $query9)) {
 	while ($row9 = mysqli_fetch_row ($result9)) {
 		$stop_id = $row9[0];
 		$trip_id = $row9[1];
-		
+
 		if ($trip_id != $oldtrip) {
-		    $oldstop = 0;
+			$oldstop = 0;
+			$oldlat = "";
+			$oldlon = "";
 		}
-		
-		$insert = mysqli_query ($link, "INSERT INTO du (stop1, stop2) VALUES ('$oldstop', '$stop_id');");
-		
+
+		$coord = mysqli_fetch_row (mysqli_query ($link, "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$stop_id';"));
+		$stop_lat = $coord[0];
+		$stop_lon = $coord[1];
+
+		$prujezdy = $oldlon.",".$oldlat.";".$stop_lon.",".$stoplat;
+
+		$insert_query = "INSERT INTO du (stop1, stop2, via, path, final) VALUES ('$oldstop', '$stop_id', '', '$prujezdy', '1');";
+		$insert_action = mysqli_query ($link, $insert_query);
+
 		$oldtrip = $trip_id;
 		$oldstop = $stop_id;
+		$oldlat = $stop_lat;
+		$oldlon = $stop_lon;
 	}
 }
 
