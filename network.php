@@ -8,7 +8,7 @@ if (!$link) {
 
 $oldtrip = 0;
 
-$query9 = "SELECT stop_id, trip_id FROM stoptime ORDER BY trip_id, stop_sequence LIMIT 5;";
+$query9 = "SELECT stop_id, trip_id FROM stoptime ORDER BY trip_id, stop_sequence;";
 if ($result9 = mysqli_query ($link, $query9)) {
 	while ($row9 = mysqli_fetch_row ($result9)) {
 		$stop_id = $row9[0];
@@ -18,11 +18,16 @@ if ($result9 = mysqli_query ($link, $query9)) {
 		    $oldstop = 0;
 		}
 		
-		echo "$oldtrip | $trip_id<br/>";
+		$insert = mysqli_query ($link, "INSERT INTO du (stop1, stop2) VALUES ('$oldstop', '$stop_id');");
 		
 		$oldtrip = $trip_id;
+		$oldstop = $stop_id;
 	}
 }
+
+$clean1 = mysqli_query ($link, "DELETE FROM du WHERE stop1=0;");
+
+$clean2 = mysqli_query ($link, "DELETE FROM du WHERE du_id NOT IN (SELECT MAX(du_id) FROM du GROUP BY stop1, stop2 HAVING MAX(du_id) IS NOT NULL);");
 
 mysqli_close ($link);
 ?>
