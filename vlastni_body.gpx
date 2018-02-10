@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
+            <metadata>
+                <name>Vlastní body z Mapy.cz</name>
+            </metadata><wpt lon="14.5460955799" lat="50.0502193719">
+                        <name>New  POI</name>
+                    </wpt>
+                    <wpt lon="14.4520251453" lat="50.0810728222">
+                        <name>New  POI</name>
+                    </wpt>
+                    <wpt lon="14.3902270496" lat="50.0202282518">
+                        <name>New  POI</name>
+                    </wpt>
+                    <wpt lon="14.5646350086" lat="50.0158166885">
+                        <name>New  POI</name>
+                    </wpt>
+                    </gpx>
