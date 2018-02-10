@@ -97,33 +97,33 @@ if ($result69 = mysqli_query ($link, $akt_route)) {
 
 								$i = 0;
 								$prevstop = "";
-								$vzdal = 0;
 								$komplet = 1;
 
 								$output = explode('|', $tvartrasy);
 
-								foreach ($output as $prujbod) {
-									$pom139 = mysqli_fetch_row (mysqli_query ($link, "SELECT stop_name,stop_lat,stop_lon FROM stop WHERE (stop_id='$prujbod');"));
-									$name = $pom139[0];
-									$lat = $pom139[1];
-									$lon = $pom139[2];
-									$i = $i + 1;
+								foreach ($output as $prujstop) {
+									$query107 = "SELECT path FROM du WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujstop');";
+									$result235 = mysqli_query ($link, $query107);
 
-									$result235 = mysqli_query ($link, "SELECT DELKA FROM DU_pom WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujbod');");
 									$pom235 = mysqli_fetch_row ($result235);
-									$ujeto = $pom235[0];
-									$radky = mysqli_num_rows ($result235);
-									$vzdal = $vzdal + $ujeto;
-									$prevstop = $prujbod;
+									$linie = $pom235[0];
 
+									$body = explode(';', $linie);
+
+									foreach ($body as $point) {
+										$sourad = explode(',', $point);
+										$lon = $sourad[0];
+										$lat = $sourad[1];
+										
 									if ($lat != '' && $lon != '') {
-										if ($i == 1) {
-											$vzdal = 0;
-										}
-										$query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i','$vzdal');";
-										$command = mysqli_query ($link, $query144);
+	                                                                                $i = $i + 1;
+											$query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i',0);";
+        	                                                                        $command = mysqli_query ($link, $query144);
+                	                                                        }
 									}
+									$prevstop = $prujstop;
 								}
+
 							}
 							$query217 = "UPDATE shapetvary SET complete = '$komplet' WHERE shape_id = '$shape_id';";
 							$command217 = mysqli_query ($link, $query217);

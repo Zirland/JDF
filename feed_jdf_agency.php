@@ -31,7 +31,7 @@ $current = "stop_id,stop_code,stop_name,stop_lat,stop_lon,location_type,parent_s
 file_put_contents ($file, $current);
 
 $file = 'shapes.txt';
-$current = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled\n";
+$current = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence\n";
 file_put_contents ($file, $current);
 
 $agency_trunc = mysqli_query ($link, "TRUNCATE TABLE ag_use;");
