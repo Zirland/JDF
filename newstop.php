@@ -4,6 +4,13 @@ include 'header.php';
 $parent_id = @$_GET['id'];
 $action = @$_POST['action'];
 
+$getlat = @$_GET['getlat'];
+$getlon = @$_GET['getlon'];
+$getobec = @$_GET['getobec'];
+$getcastobce = @$_GET['getcastobce'];
+$getmisto = @$_GET['getmisto'];
+$getpomcode = @$_GET['getpomcode'];
+
 switch ($action) {
 	case 'nova' :
 		$stopcode = $_POST['stopcode'];
@@ -96,7 +103,7 @@ if ($result53 = mysqli_query ($link, $query53)) {
 		echo "<option value=\"$kodobce\">$nazevobce $kodokres</option>";
 	}
 }
-echo "</select></td><td><input name=\"castobce\" value=\"\" type=\"text\"></td><td><input name=\"misto\" value=\"\" type=\"text\"></td><td><input name=\"pomcode\" value=\"\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\"></td><td><input name=\"stoplon\" type=\"text\"></td></tr>";
+echo "</select>$getobec</td><td><input name=\"castobce\" value=\"$getcastobce\" type=\"text\"></td><td><input name=\"misto\" value=\"$getmisto\" type=\"text\"></td><td><input name=\"pomcode\" value=\"$getpomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" value=\"$getlat\" type=\"text\"></td><td><input name=\"stoplon\" value=\"$getlon\" type=\"text\"></td></tr>";
 echo "<tr><td>0:<input type=\"radio\" name=\"parent\" value=\"0\"";
 if ($parent == "0") {
 	echo " CHECKED";

@@ -25,13 +25,17 @@ if (!$link) {
 <tr><td style="width:100px; background-color:yellow; vertical-align:top;">
 <a href="list2.php">Neaktivní</a><br/>
 <a href="cisti.php">Čisti</a><br/>
+STOPS<br/>
 <a href="newstop.php">Newstop</a><br/>
+<a href="imported.php">Imported</a><br/>
+<a href="stoprename.php">Stop rename</a><br/>
+LINKY<br/>
 <a href="analist.php">Analýza</a><br/>
 <a href="_krok1.php">Manuální linka</a><br/>
 <a href="import.php">Import linky</a><br/>
 <a href="headsigns.php">Headsigns</a><br/>
-<a href="stoprename.php">Stop rename</a><br/>
 <a href="vozovna.php">Vozovna</a><br/>
+TRASY<br/>
 <a href="trasa.php">Trasy</a><br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
 </td>
