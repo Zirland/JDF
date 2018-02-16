@@ -10,6 +10,7 @@ $getobec = @$_GET['getobec'];
 $getcastobce = @$_GET['getcastobce'];
 $getmisto = @$_GET['getmisto'];
 $getpomcode = @$_GET['getpomcode'];
+$getid = @$_GET['getid'];
 
 switch ($action) {
 	case 'nova' :
@@ -21,6 +22,7 @@ switch ($action) {
 		$kodobec = $_POST['kodobec'];
 		$castobce = $_POST['castobce'];
 		$misto = $_POST['misto'];
+		$impid = $_POST['impid'];
 
 		$pom18 = mysqli_fetch_row (mysqli_query ($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
 		$obec = $pom18[0];
@@ -50,8 +52,8 @@ switch ($action) {
 			$stopname .= ", ".$misto;
 		}
 
-		if ($stop_code != '') {
-			$stopname .= " (".$stop_code.")";
+		if ($stopcode != '') {
+			$stopname .= " (".$stopcode.")";
 		}
 
 		$sortname = "";
@@ -62,16 +64,18 @@ switch ($action) {
  			$sortname .= "$castobce ";
  		}
  		$sortname .= $obec;
-		if ($stop_code != '') {
-			$sortname .= " $stop_code";
+		if ($stopcode != '') {
+			$sortname .= " $stopcode";
 		}
 
 		$query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, parent_station, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','$parent','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
-		echo $query14;
-		$prikaz4 = mysqli_query ($link, $query14);
+		$prikaz14 = mysqli_query ($link, $query14);
 		
-		$deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stop_id%'));";
+		$deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stopid|%'));";
 		$prikaz19 = mysqli_query ($link, $deaktivace);
+
+		$delimport = "DELETE FROM importstop WHERE id='$impid';";
+		$prikazdel = mysqli_query ($link, $delimport);
 	break;
 
 	case 'sub' :
@@ -87,8 +91,7 @@ switch ($action) {
 echo "<table>";
 echo "<tr><td colspan=\"4\">Insert new stop</td></tr>";
 
-echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\">
-		<input name=\"action\" value=\"nova\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\"><input name=\"action\" value=\"nova\" type=\"hidden\"><input name=\"impid\" value=\"$getid\" type=\"hidden\">";
 		
 
 echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
