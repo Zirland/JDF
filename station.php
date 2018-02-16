@@ -64,7 +64,7 @@ switch ($action) {
 				<input name=\"filtr\" value=\"$filtr\" type=\"hidden\">
 				<input name=\"spoj$x\" value=\"$trip_id\" type=\"hidden\">";
 				echo "<tr>";
-				echo "<td>$cislo</td>";
+				echo "<td>$trip_id</td>";
 				$row8 = mysqli_fetch_row(mysqli_query($link, "SELECT route_short_name,route_color,route_text_color FROM route WHERE (route_id = '$routedata') ORDER BY route_short_name;"));
 				$route_short_name = $row8[0];
 				$route_color = $row8[1];

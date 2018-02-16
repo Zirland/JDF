@@ -32,5 +32,7 @@ if (!$link) {
 <a href="headsigns.php">Headsigns</a><br/>
 <a href="stoprename.php">Stop rename</a><br/>
 <a href="vozovna.php">Vozovna</a><br/>
+<a href="trasa.php">Trasy</a><br/>
+<a href="misstrasa.php">Chybějící trasy</a><br/>
 </td>
 <td>

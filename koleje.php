@@ -1,23 +1,6 @@
 <?php
 include 'header.php';
 
-function distance ($lat1, $lon1, $lat2, $lon2) {
-	$pi80 = M_PI / 180;
-	$lat1 *= $pi80;
-	$lon1 *= $pi80;
-	$lat2 *= $pi80;
-	$lon2 *= $pi80;
-
-	$r = 6372.797; // mean radius of Earth in km
-	$dlat = $lat2 - $lat1;
-	$dlon = $lon2 - $lon1;
-	$a = sin ($dlat / 2) * sin ($dlat / 2) + cos ($lat1) * cos ($lat2) * sin ($dlon / 2) * sin ($dlon / 2);
-	$c = 2 * atan2 (sqrt ($a), sqrt (1 - $a));
-	$km = $r * $c;
-
-	return $km;
-}
-
 $action = @$_POST['action'];
 $from = @$_POST['from'];
 $to = @$_POST['to'];
@@ -25,9 +8,9 @@ $via = @$_POST['via'];
 $pass = @$_POST['pass'];
 $path = @$_POST['path'];
 
-echo "<form method=\"post\" action=\"trasa.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"koleje.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
 echo "Odkud: <select name=\"from\">";
-$query0 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du WHERE final = 1) ORDER BY stop_name;";
+$query0 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du WHERE final = 2) ORDER BY stop_name;";
 if ($result0 = mysqli_query ($link, $query0)) {
 	while ($row0 = mysqli_fetch_row ($result0)) {
 		$kodf = $row0[0];
@@ -56,9 +39,9 @@ switch ($action) {
 		$action = "kam";
 
 	case "odkud":
-		echo "<form method=\"post\" action=\"trasa.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+		echo "<form method=\"post\" action=\"koleje.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
 		echo "Kam: <select name=\"to\">";
-		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 1) ORDER BY stop_name;";
+		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 2) ORDER BY stop_name;";
 		echo $query1;
 		if ($result1 = mysqli_query ($link, $query1)) {
 			while ($row1 = mysqli_fetch_row ($result1)) {
@@ -81,9 +64,9 @@ switch ($action) {
 	break;
 
 	case "kam" : 
-		echo "<form method=\"post\" action=\"trasa.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+		echo "<form method=\"post\" action=\"koleje.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
 		echo "Kam: <select name=\"to\">";
-		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 1) ORDER BY stop_name;";
+		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 2) ORDER BY stop_name;";
 		echo $query1;
 		if ($result1 = mysqli_query ($link, $query1)) {
 			while ($row1 = mysqli_fetch_row ($result1)) {
@@ -235,7 +218,7 @@ switch ($action) {
 		echo "context.stroke();";
 		echo "</script>";
 
-		echo "<form method=\"post\" action=\"trasa.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input name=\"via\" value=\"$via\" type=\"hidden\"><input name=\"pass\" value=\"$pass\" type=\"hidden\"><input name=\"path\" value=\"$trasa\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
+		echo "<form method=\"post\" action=\"koleje.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input name=\"via\" value=\"$via\" type=\"hidden\"><input name=\"pass\" value=\"$pass\" type=\"hidden\"><input name=\"path\" value=\"$trasa\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
 	break;
 }
 

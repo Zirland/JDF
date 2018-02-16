@@ -131,8 +131,8 @@ if ($linky) {
 
 		$route_id = $route_no.$linkano;
 
-		$query134 = "SELECT route_color FROM barvy WHERE route_id = 'route_id';";
-		if ($result134 = mysqli_query ($link, $query87)) {
+		$query134 = "SELECT route_color FROM barvy WHERE route_id = '$route_id';";
+		if ($result134 = mysqli_query ($link, $query134)) {
 			$row134 = mysqli_fetch_row ($result134);
 			$radku134 = mysqli_num_rows ($result134);
 		}
@@ -141,7 +141,6 @@ if ($linky) {
 		} else {
 			$route_color = "017DC2";
 		}
-
 		$queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
 		$cistiro = mysqli_query ($link, $queryro);
 

@@ -31,6 +31,40 @@ switch ($action) {
 		$del1 = mysqli_query ($link, $ready1);
 		$ready2 = "INSERT INTO barvy VALUES ('$route', '$pozadi');";
 		$aktualz2 = mysqli_query ($link, $ready2);
+
+		$oldtrip = 0;
+		$oldstop = 0;
+
+		$query12 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
+		if ($result12 = mysqli_query ($link, $query12)) {
+		        while ($row12 = mysqli_fetch_row ($result12)) {
+                		$stop_id = $row12[0];
+		                $trip_id = $row12[1];
+
+		                $query19 = "SELECT final FROM du WHERE stop1 = '$oldstop' AND stop2 = '$stop_id';";
+		                if ($result19 = mysqli_query ($link, $query19)) {
+		                        $hit = mysqli_num_rows ($result19);
+		                }
+
+		                if ($hit == 0) {
+		                        $coord = mysqli_fetch_row (mysqli_query ($link, "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$stop_id';"));
+		                        $stop_lat = $coord[0];
+		                        $stop_lon = $coord[1];
+
+		                        $prujezdy = $oldlon.",".$oldlat.";".$stop_lon.",".$stop_lat;
+
+		                        if ($trip_id == $oldtrip) {
+		                                $insert_query = "INSERT INTO du (stop1, stop2, via, path, final) VALUES ('$oldstop', '$stop_id', '', '$prujezdy', '0');";
+						echo "$insert_query<br/>";
+		                                $insert_action = mysqli_query ($link, $insert_query);
+		                        }
+		                }
+		                $oldtrip = $trip_id;
+		                $oldstop = $stop_id;
+		                $oldlat = $stop_lat;
+		                $oldlon = $stop_lon;
+		        }
+		}
 	break;
 
 	case "zastavky" :
@@ -262,7 +296,8 @@ if ($result80 = mysqli_query ($link, $query80)) {
 		if ($trip_aktif == '1') {
 			echo "<span style=\"background-color:green;\">";
 		}
-		echo "$from - $trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
+//		echo "$from - ";
+		echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {
 			echo "</span>";
 		}
@@ -291,7 +326,8 @@ if ($result96 = mysqli_query ($link, $query96)) {
 		if ($trip_aktif == '1') {
 			echo "<span style=\"background-color:green;\">";
 		}
-		echo "$from - $trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
+//		echo "$from - ";
+		echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {
 			echo "</span>";
 		}
