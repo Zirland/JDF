@@ -4,6 +4,7 @@ include 'header.php';
 $action = @$_POST['action'];
 $from = @$_POST['from'];
 $to = @$_POST['to'];
+$du_id = @$_POST['du_id'];
 $path = @$_POST['path'];
 
 echo "<form method=\"post\" action=\"trasaedit.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
@@ -29,11 +30,137 @@ echo "</select>";
 echo "<input type=\"submit\"></form>";
 
 switch ($action) {
+	case "edit":
+		$du_id = $_POST['du_id'];
+		$pocet = $_POST['pocet'];
+		$start = $_POST['start'];
+		$end = $_POST['end'];
+		$newpoint = $_POST['newpoint'];
+
+		$path = "";
+		for ($y = 1; $y < $pocet; $y++) {
+			$$ind = $y;
+			$delindex = "delete".${$ind};
+			$delete = $_POST[$delindex];
+			$xindex = "x".${$ind};
+			$ptx = $_POST[$xindex];
+			$yindex = "y".${$ind};
+			$pty = $_POST[$yindex];
+
+			if ($delete != "1") {$path .= "$ptx,$pty;";}
+		}
+		$path = substr($path, 0, -1);
+
+		if ($start == "1") {
+			$query54 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
+			if ($result54 = mysqli_query($link, $query54)) {
+				$row54 = mysqli_fetch_row($result54);
+				$lat = $row54[0];
+				$lon = $row54[1];
+			}
+			$path = "$lon,$lat;".$path; 
+		}
+
+		if ($end == "1") {
+			$query64 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
+			if ($result64 = mysqli_query($link, $query64)) {
+				$row64 = mysqli_fetch_row($result64);
+				$lat = $row64[0];
+				$lon = $row64[1];
+			}
+			$path = $path.";$lon,$lat"; 
+		}
+
+		$body = explode (";", $path);
+
+		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"edit\"><input name=\"action\" value=\"edit\" type=\"hidden\"><input name=\"du_id\" value=\"$du_id\" type=\"hidden\">";
+
+		$j = 0;
+		$xmin = 20;
+		$xmax = 0;
+		$ymin = 60;
+		$ymax = 0;
+		foreach ($body as $point) {
+			$j = $j + 1;
+			$point = explode (",", $point);
+			$pt_x = $point[0];
+			$pt_y = $point[1];
+			
+			if ($pt_x < $xmin) {
+				$xmin = $pt_x;
+			}
+			if ($pt_y < $ymin) {
+				$ymin = $pt_y;
+			}
+			if ($pt_x > $xmax) {
+				$xmax = $pt_x;
+			}
+			if ($pt_y > $ymax) {
+				$ymax = $pt_y;
+			}
+
+			echo "$j | <input type=\"hidden\" name=\"x$j\" value=\"$pt_x\">$pt_x | <input type=\"hidden\" name=\"y$j\" value=\"$pt_y\">$pt_y | <input type=\"checkbox\" name=\"delete$j\" value=\"1\"><br/>";
+
+		}
+		echo "<input type=\"checkbox\" name=\"start\" value=\"1\"><select name=\"newpoint\">";
+		$query229 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
+		if ($result229 = mysqli_query ($link, $query229)) {
+			while ($row229 = mysqli_fetch_row ($result229)) {
+				$kodn = $row229[0];
+				$nazevn = $row229[1];
+				$coden = $row229[2];
+				echo "<option value=\"$kodn\">$nazevn $coden $kodn</option>";
+			}
+			mysqli_free_result($result1);
+		} else {
+			echo "Error description: " . mysqli_error($link);
+		}
+
+		echo "</select><input type=\"checkbox\" name=\"end\" value=\"1\">";
+		$count = $j + 1;
+		echo "<input type=\"hidden\" name=\"pocet\" value=\"$count\">";
+		echo "<input type=\"submit\"></form>";
+
+		$deltax = $xmax - $xmin;
+		$deltay = $ymax - $ymin;
+
+		echo "<canvas id=\"a\" width=\"800\" height=\"600\">";
+		echo "This text is displayed if your browser does not support HTML5 Canvas.";
+		echo "</canvas>";
+		echo "<script type='text/javascript'>";
+		echo "	var a_canvas = document.getElementById(\"a\");";
+		echo "	var context = a_canvas.getContext(\"2d\");";
+
+		$i = 0;
+		foreach ($body as $point) {
+			$point = explode (",", $point);
+			$pt_x = $point[0];
+			$pt_y = $point[1];
+			
+			$coorx = 784 * (($pt_x - $xmin) / $deltax) + 8;
+			$coory = 600 - (584 * (($pt_y - $ymin) / $deltay) + 8);
+			if ($i == 0) {
+				echo "context.beginPath();";
+				echo "context.moveTo($coorx,$coory);";
+			}
+			if ($i > 0) {
+				echo "context.lineTo($coorx,$coory);";
+			}
+			$i = $i + 1;
+		}
+		echo "context.strokeStyle = \"#000\";";
+		echo "context.stroke();";
+		echo "</script>";
+
+		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"du_id\" value=\"$du_id\" type=\"hidden\"><input name=\"path\" value=\"$path\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
+	break;
+
+
 	case "uloz":
-		$query51 = "UPDATE du SET via = '$pass', path = '$path', final = '1' WHERE stop1 = '$from' AND stop2 = '$to';";
-		$zapis51 = mysqli_query ($link, $query51);
-		$query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartasy LIKE '%$from|$to|%';";
-		$zapis54 = mysqli_query ($link, $query54);
+		$query159 = "UPDATE du SET path = '$path', final = '1' WHERE du_id = '$du_id';";
+		$zapis159 = mysqli_query ($link, $query159);
+		$query162 = "UPDATE shapetvary SET complete = '0' WHERE tvartasy LIKE '%$from|$to|%';";
+		$zapis162 = mysqli_query ($link, $query162);
 		$action = "kam";
 
 	case "odkud":
@@ -108,6 +235,8 @@ switch ($action) {
 		
 		$body = explode (";", $path);
 
+		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"edit\"><input name=\"action\" value=\"edit\" type=\"hidden\"><input name=\"du_id\" value=\"$du_id\" type=\"hidden\">";
+
 		$j = 0;
 		$xmin = 20;
 		$xmax = 0;
@@ -132,9 +261,27 @@ switch ($action) {
 				$ymax = $pt_y;
 			}
 
-			echo "$j | $pt_x | $pt_y<br/>";
+			echo "$j | <input type=\"hidden\" name=\"x$j\" value=\"$pt_x\">$pt_x | <input type=\"hidden\" name=\"y$j\" value=\"$pt_y\">$pt_y | <input type=\"checkbox\" name=\"delete$j\" value=\"1\"><br/>";
 
 		}
+		echo "<input type=\"checkbox\" name=\"start\" value=\"1\"><select name=\"newpoint\">";
+		$query229 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
+		if ($result229 = mysqli_query ($link, $query229)) {
+			while ($row229 = mysqli_fetch_row ($result229)) {
+				$kodn = $row229[0];
+				$nazevn = $row229[1];
+				$coden = $row229[2];
+				echo "<option value=\"$kodn\">$nazevn $coden $kodn</option>";
+			}
+			mysqli_free_result($result1);
+		} else {
+			echo "Error description: " . mysqli_error($link);
+		}
+
+		echo "</select><input type=\"checkbox\" name=\"end\" value=\"1\">";
+		$count = $j + 1;
+		echo "<input type=\"hidden\" name=\"pocet\" value=\"$count\">";
+		echo "<input type=\"submit\"></form>";
 
 		$deltax = $xmax - $xmin;
 		$deltay = $ymax - $ymin;
@@ -163,12 +310,9 @@ switch ($action) {
 			}
 			$i = $i + 1;
 		}
-//		echo "context.closePath();";
 		echo "context.strokeStyle = \"#000\";";
 		echo "context.stroke();";
 		echo "</script>";
-
-		echo "<form method=\"post\" action=\"trasa.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input name=\"via\" value=\"$via\" type=\"hidden\"><input name=\"pass\" value=\"$pass\" type=\"hidden\"><input name=\"path\" value=\"$trasa\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
 	break;
 }
 

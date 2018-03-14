@@ -59,6 +59,10 @@ if ($result1 = mysqli_query ($link, $query1)) {
 	}
 }
 
+
+$query66 = "DELETE FROM du WHERE stop1 = '0';";
+$prikaz66 = mysqli_query($link, $query66);
+
 echo "== Konec ==";
 include 'footer.php';
 ?>

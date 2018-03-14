@@ -17,11 +17,11 @@ if ($result7 = mysqli_query ($link, $query7)) {
 		$zacdnu = round (($timeod - $maticestart) / 86400); 
 		$Ddo = substr ($datumdo,0,2); $Mdo = substr ($datumdo,2,2); $Ydo = substr ($datumdo,-4); $timedo = mktime (0,0,0,$Mdo, $Ddo, $Ydo); 
 		$kondnu = round (($timedo - $maticestart) / 86400); 
-				
+
 		for ($g=0; $g<406; $g++) {
 			if ($g>$zacdnu && $g <=$kondnu) {$matice[$g] = 0;}
 		}
-		
+
 		$operace = "UPDATE trip SET matice='$matice' WHERE (trip_id = '$trip_id');";
 		$vykonej = mysqli_query ($link, $operace) or die (mysqli_error ());
 	}

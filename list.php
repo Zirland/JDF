@@ -77,8 +77,13 @@ if ($result = mysqli_query ($link, $query)) {
 				echo "<td></td>";
 			break;
 		}
-		echo "<td><a href=\"routeedit.php?id=$route_id\">Detaily</a></td>
-		</tr>";
+		echo "<td><a href=\"routeedit.php?id=$route_id\">Detaily</a>";
+
+		if (strpos ($route_id, 'F') !== false) {
+			echo " <a href=\"migrace.php?route=$route_id\"> Migrace</a>";
+		}
+
+		echo "</td></tr>";
 	}
 	mysqli_free_result ($result);
 }

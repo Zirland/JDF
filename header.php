@@ -38,5 +38,6 @@ LINKY<br/>
 TRASY<br/>
 <a href="trasa.php">Trasy</a><br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
+<a href="trasaedit.php">Editace trasy</a><br/>
 </td>
 <td>

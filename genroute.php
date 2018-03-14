@@ -521,24 +521,24 @@ if ($zaslinky) {
 		$query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
 		$prikaz469 = mysqli_query ($link, $query469);
 
-		$query464 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id+';";
+		$query464 = "SELECT * FROM linevazba WHERE stop_id = '$stop_id+';";
 		if ($result464 = mysqli_query ($link, $query464)) {
 			while ($row464 = mysqli_fetch_row($result464)) {
 				$stopid = $row464[1];
 				$stopvazba = $row464[2];
 
-				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';";
+				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '%$stopid';";
 				$migrate = mysqli_query ($link, $querymig);
 			}
 		}
 
-		$query474 = "SELECT * FROM linevazba WHERE stop_id = '$label$stop_id-';";
+		$query474 = "SELECT * FROM linevazba WHERE stop_id = '$stop_id-';";
 		if ($result474 = mysqli_query ($link, $query474)) {
 			while ($row474 = mysqli_fetch_row($result474)) {
 				$stopid = $row474[1];
 				$stopvazba = $row474[2];
 
-				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id = '$stopid';";
+				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '%$stopid';";
 				$migrate = mysqli_query ($link, $querymig);
 			}
 		}
