@@ -2,61 +2,64 @@
             <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
             <metadata>
                 <name>Vlastní body z Mapy.cz</name>
-            </metadata><wpt lon="12.8294724226" lat="50.223134011">
-                        <name>Karlovy Vary,, V Lučinách -</name>
+            </metadata><wpt lon="12.8585904837" lat="50.3183879703">
+                        <name>Hroznětín,, sušárna D</name>
                     </wpt>
-                    <wpt lon="12.8329646587" lat="50.2248707414">
-                        <name>Karlovy Vary,, Lipová -</name>
+                    <wpt lon="12.8587406874" lat="50.3185730428">
+                        <name>Hroznětín,, sušárna N</name>
                     </wpt>
-                    <wpt lon="12.8233543038" lat="50.2252522856">
-                        <name>Karlovy Vary,, Tesco R</name>
+                    <wpt lon="12.8624770045" lat="50.3265948594">
+                        <name>Merklín,, náves R</name>
                     </wpt>
-                    <wpt lon="12.8107640147" lat="50.2146293968">
-                        <name>Karlovy Vary, Tašovice, Hradištní -</name>
+                    <wpt lon="12.862739861" lat="50.3265874833">
+                        <name>Merklín,, náves L</name>
                     </wpt>
-                    <wpt lon="12.8159165382" lat="50.2255379409">
-                        <name>Karlovy Vary,, Loketská -</name>
+                    <wpt lon="12.8602024913" lat="50.3293253481">
+                        <name>Merklín,, ObÚ N</name>
                     </wpt>
-                    <wpt lon="12.9566051066" lat="50.3098746389">
-                        <name>Ostrov,, Borecká -</name>
+                    <wpt lon="12.8599905968" lat="50.3294266015">
+                        <name>Merklín,, ObÚ D</name>
                     </wpt>
-                    <wpt lon="12.9520171881" lat="50.3101743758">
-                        <name>Ostrov,, Luční -</name>
+                    <wpt lon="12.851563096" lat="50.3366236389">
+                        <name>Merklín,, Papírny N</name>
                     </wpt>
-                    <wpt lon="14.0352407098" lat="50.6603729725">
-                        <name>Ústí nad Labem,, Lidické nám. -</name>
+                    <wpt lon="12.8527647257" lat="50.3354729712">
+                        <name>Merklín,, Papírny D</name>
                     </wpt>
-                    <wpt lon="14.0368768573" lat="50.659424141">
-                        <name>Ústí nad Labem,, Penny H</name>
+                    <wpt lon="12.8447180986" lat="50.3389786184">
+                        <name>Merklín, Pstruží, osada R</name>
                     </wpt>
-                    <wpt lon="14.1085401177" lat="50.6603763252">
-                        <name>Ústí nad Labem, Svádov, točna -</name>
+                    <wpt lon="12.8445866704" lat="50.339070484">
+                        <name>Merklín, Pstruží, osada L</name>
                     </wpt>
-                    <wpt lon="14.0668585896" lat="50.6525811553">
-                        <name>Ústí nad Labem,, Kojetická -</name>
+                    <wpt lon="12.8366607428" lat="50.3411840647">
+                        <name>Merklín, Pstruží, most R</name>
                     </wpt>
-                    <wpt lon="14.0199843049" lat="50.6866961718">
-                        <name>Ústí nad Labem, Petrovická</name>
+                    <wpt lon="12.8364863992" lat="50.3413724899">
+                        <name>Merklín, Pstruží, most L</name>
                     </wpt>
-                    <wpt lon="14.2046651244" lat="50.77111803">
-                        <name>Děčín,, Ústecká -</name>
+                    <wpt lon="12.8292900324" lat="50.3441988677">
+                        <name>Merklín, Pstruží, Papírny R</name>
                     </wpt>
-                    <wpt lon="14.1997137666" lat="50.7716611773">
-                        <name>Děčín,, Poštovní -</name>
+                    <wpt lon="12.8294080496" lat="50.344208926">
+                        <name>Merklín, Pstruží, Papírny L</name>
                     </wpt>
-                    <wpt lon="14.1933086514" lat="50.7450047135">
-                        <name>Děčín, Boletice nad Labem, Vítězství -</name>
+                    <wpt lon="12.8234548867" lat="50.3468737006">
+                        <name>Merklín, Pstruží, rest. L</name>
                     </wpt>
-                    <wpt lon="14.1878369451" lat="50.7919232547">
-                        <name>Děčín,, Luční H</name>
+                    <wpt lon="12.8230981529" lat="50.346930027">
+                        <name>Merklín, Pstruží, rest. R</name>
                     </wpt>
-                    <wpt lon="14.1868928075" lat="50.7911366969">
-                        <name>Děčín,, Luční S</name>
+                    <wpt lon="12.8031210601" lat="50.3532895446">
+                        <name>Pernink, Rybná, rozc. 1.5 L</name>
                     </wpt>
-                    <wpt lon="14.186501205" lat="50.7907973975">
-                        <name>Děčín,, Sv. Čecha L</name>
+                    <wpt lon="12.8026972711" lat="50.3533579409">
+                        <name>Pernink, Rybná, rozc. 1.5 R</name>
                     </wpt>
-                    <wpt lon="14.1865441203" lat="50.7906143367">
-                        <name>Děčín,, Sv. Čecha N</name>
+                    <wpt lon="12.7895061672" lat="50.3593955934">
+                        <name>Pernink,, školní louka N</name>
+                    </wpt>
+                    <wpt lon="12.7891199291" lat="50.3597067297">
+                        <name>Pernink,, školní louka D</name>
                     </wpt>
                     </gpx>
