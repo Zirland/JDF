@@ -2,52 +2,73 @@
             <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
             <metadata>
                 <name>Vlastní body z Mapy.cz</name>
-            </metadata><wpt lon="12.8754401207" lat="50.2663269639">
-                        <name>Otovice,, V březinkách N</name>
+            </metadata><wpt lon="12.8544129431" lat="50.1486309618">
+                        <name>Teplička,, D</name>
                     </wpt>
-                    <wpt lon="12.8753596544" lat="50.266219005">
-                        <name>Otovice,, V březinkách D</name>
+                    <wpt lon="12.8542613983" lat="50.1496240497">
+                        <name>Teplička,, N</name>
                     </wpt>
-                    <wpt lon="12.8785072267" lat="50.2717477083">
-                        <name>Sadov, Podlesí, N</name>
+                    <wpt lon="12.8510642052" lat="50.1259394735">
+                        <name>Bečov n.Teplou, Krásný Jez, N</name>
                     </wpt>
-                    <wpt lon="12.8784522414" lat="50.2718026936">
-                        <name>Sadov, Podlesí, D</name>
+                    <wpt lon="12.8506779671" lat="50.1246184856">
+                        <name>Bečov n.Teplou, Krásný Jez, D</name>
                     </wpt>
-                    <wpt lon="12.8657600284" lat="50.2877933532">
-                        <name>Hroznětín, Velký Rybník, L</name>
+                    <wpt lon="12.8469228745" lat="50.1058282703">
+                        <name>Bečov n.Teplou, Vodná, D</name>
                     </wpt>
-                    <wpt lon="12.8657653928" lat="50.2876927704">
-                        <name>Hroznětín, Velký Rybník, R</name>
+                    <wpt lon="12.8469228745" lat="50.1056338102">
+                        <name>Bečov n.Teplou, Vodná, N</name>
                     </wpt>
-                    <wpt lon="12.8583651781" lat="50.290916115">
-                        <name>Hroznětín, Ruprechtov, rozc. N</name>
+                    <wpt lon="12.8406733274" lat="50.0883416086">
+                        <name>Bečov n.Teplou,, N</name>
                     </wpt>
-                    <wpt lon="12.8581559658" lat="50.2909523249">
-                        <name>Hroznětín, Ruprechtov, rozc. D</name>
+                    <wpt lon="12.840410471" lat="50.0884790719">
+                        <name>Bečov n.Teplou,, D</name>
                     </wpt>
-                    <wpt lon="12.8961843252" lat="50.3120358288">
-                        <name>Hroznětín, Bystřice, R</name>
+                    <wpt lon="12.9207855463" lat="50.0726339221">
+                        <name>Krásné Údolí,, L</name>
                     </wpt>
-                    <wpt lon="12.8960233927" lat="50.3120941669">
-                        <name>Hroznětín, Bystřice, L</name>
+                    <wpt lon="12.9210484028" lat="50.0725447387">
+                        <name>Krásní Údolí,, R</name>
                     </wpt>
-                    <wpt lon="12.8826284409" lat="50.3091202676">
-                        <name>Hroznětín,, U Budků R</name>
+                    <wpt lon="12.9550534487" lat="50.0690632313">
+                        <name>Útvina,, R</name>
                     </wpt>
-                    <wpt lon="12.8823360801" lat="50.3092094511">
-                        <name>Hroznětín,, U Budků L</name>
+                    <wpt lon="12.9560244083" lat="50.0692422688">
+                        <name>Útvina,, L</name>
                     </wpt>
-                    <wpt lon="12.8727042675" lat="50.3091732413">
-                        <name>Hroznětín,, nám. R</name>
+                    <wpt lon="12.9844933748" lat="50.0596359372">
+                        <name>Toužim,, nám. L</name>
                     </wpt>
-                    <wpt lon="12.8717440367" lat="50.3095246106">
-                        <name>Hroznětín,, nám. L</name>
+                    <wpt lon="12.9849225283" lat="50.0596305728">
+                        <name>Toužim,, nám. R</name>
                     </wpt>
-                    <wpt lon="12.8611063957" lat="50.3134245425">
-                        <name>Hroznětín,, žel. zast. N</name>
+                    <wpt lon="12.9895332456" lat="50.0561115146">
+                        <name>Toužim,, aut. st. -</name>
                     </wpt>
-                    <wpt lon="12.8611761332" lat="50.3131060302">
-                        <name>Hroznětín,, žel. zast. D</name>
+                    <wpt lon="13.0589005351" lat="49.9948941171">
+                        <name>Bezvěrov,, D</name>
+                    </wpt>
+                    <wpt lon="13.0601450801" lat="49.994404614">
+                        <name>Bezvěrov,, N</name>
+                    </wpt>
+                    <wpt lon="13.1491246819" lat="49.8823781312">
+                        <name>Úněšov,, D</name>
+                    </wpt>
+                    <wpt lon="13.1502887607" lat="49.8818249255">
+                        <name>Úněšov,, N</name>
+                    </wpt>
+                    <wpt lon="13.3661314845" lat="49.7756114602">
+                        <name>Plzeň,, Severka L</name>
+                    </wpt>
+                    <wpt lon="13.3666142821" lat="49.7747196257">
+                        <name>Plzeň,, Severka D</name>
+                    </wpt>
+                    <wpt lon="13.3627438545" lat="49.7464431077">
+                        <name>Plzeň,, CAN V</name>
+                    </wpt>
+                    <wpt lon="13.3631461859" lat="49.7468038648">
+                        <name>Plzeň,, CAN</name>
                     </wpt>
                     </gpx>
