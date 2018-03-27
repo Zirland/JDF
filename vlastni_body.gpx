@@ -2,73 +2,67 @@
             <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
             <metadata>
                 <name>Vlastní body z Mapy.cz</name>
-            </metadata><wpt lon="12.8544129431" lat="50.1486309618">
-                        <name>Teplička,, D</name>
+            </metadata><wpt lon="12.7518452704" lat="50.2072452754">
+                        <name>Nové Sedlo, Loučky, R</name>
                     </wpt>
-                    <wpt lon="12.8542613983" lat="50.1496240497">
-                        <name>Teplička,, N</name>
+                    <wpt lon="12.7516387403" lat="50.2072660625">
+                        <name>Nové Sedlo, Loučky, L</name>
                     </wpt>
-                    <wpt lon="12.8510642052" lat="50.1259394735">
-                        <name>Bečov n.Teplou, Krásný Jez, N</name>
+                    <wpt lon="12.7459873259" lat="50.2079574019">
+                        <name>Nové Sedlo,, rozc. R</name>
                     </wpt>
-                    <wpt lon="12.8506779671" lat="50.1246184856">
-                        <name>Bečov n.Teplou, Krásný Jez, D</name>
+                    <wpt lon="12.7447991073" lat="50.2084998786">
+                        <name>Nové Sedlo,, rozc. L</name>
                     </wpt>
-                    <wpt lon="12.8469228745" lat="50.1058282703">
-                        <name>Bečov n.Teplou, Vodná, D</name>
+                    <wpt lon="12.7406685054" lat="50.2131072432">
+                        <name>Nové Sedlo,, Družba -</name>
                     </wpt>
-                    <wpt lon="12.8469228745" lat="50.1056338102">
-                        <name>Bečov n.Teplou, Vodná, N</name>
+                    <wpt lon="12.7349795401" lat="50.2070595324">
+                        <name>Nové Sedlo,, kino L</name>
                     </wpt>
-                    <wpt lon="12.8406733274" lat="50.0883416086">
-                        <name>Bečov n.Teplou,, N</name>
+                    <wpt lon="12.7343975008" lat="50.2060832083">
+                        <name>Nové Sedlo,, kino N</name>
                     </wpt>
-                    <wpt lon="12.840410471" lat="50.0884790719">
-                        <name>Bečov n.Teplou,, D</name>
+                    <wpt lon="12.7418057621" lat="50.1896211505">
+                        <name>Loket,, Střelecká L</name>
                     </wpt>
-                    <wpt lon="12.9207855463" lat="50.0726339221">
-                        <name>Krásné Údolí,, L</name>
+                    <wpt lon="12.7400247753" lat="50.189672783">
+                        <name>Loket,, Střelecká R</name>
                     </wpt>
-                    <wpt lon="12.9210484028" lat="50.0725447387">
-                        <name>Krásní Údolí,, R</name>
+                    <wpt lon="12.7217911184" lat="50.1823315769">
+                        <name>Staré Sedlo,, R</name>
                     </wpt>
-                    <wpt lon="12.9550534487" lat="50.0690632313">
-                        <name>Útvina,, R</name>
+                    <wpt lon="12.7200369537" lat="50.1818112284">
+                        <name>Staré Sedlo,, L</name>
                     </wpt>
-                    <wpt lon="12.9560244083" lat="50.0692422688">
-                        <name>Útvina,, L</name>
+                    <wpt lon="12.7123121917" lat="50.1803997159">
+                        <name>Staré Sedlo,, lanovka L</name>
                     </wpt>
-                    <wpt lon="12.9844933748" lat="50.0596359372">
-                        <name>Toužim,, nám. L</name>
+                    <wpt lon="12.7132697403" lat="50.1804406196">
+                        <name>Staré Sedlo,, lanovka R</name>
                     </wpt>
-                    <wpt lon="12.9849225283" lat="50.0596305728">
-                        <name>Toužim,, nám. R</name>
+                    <wpt lon="12.6711161435" lat="50.1765031368">
+                        <name>Sokolov, Těšovice, R</name>
                     </wpt>
-                    <wpt lon="12.9895332456" lat="50.0561115146">
-                        <name>Toužim,, aut. st. -</name>
+                    <wpt lon="12.6693405211" lat="50.1771455258">
+                        <name>Sokolov, Těšovice, L</name>
                     </wpt>
-                    <wpt lon="13.0589005351" lat="49.9948941171">
-                        <name>Bezvěrov,, D</name>
+                    <wpt lon="12.6486633718" lat="50.1764541864">
+                        <name>Sokolov,, banka D</name>
                     </wpt>
-                    <wpt lon="13.0601450801" lat="49.994404614">
-                        <name>Bezvěrov,, N</name>
+                    <wpt lon="12.6477138698" lat="50.1769369841">
+                        <name>Sokolov,, banka N</name>
                     </wpt>
-                    <wpt lon="13.1491246819" lat="49.8823781312">
-                        <name>Úněšov,, D</name>
+                    <wpt lon="12.6421026886" lat="50.185521394">
+                        <name>Sokolov,, Terminál -</name>
                     </wpt>
-                    <wpt lon="13.1502887607" lat="49.8818249255">
-                        <name>Úněšov,, N</name>
+                    <wpt lon="12.3792918026" lat="50.0748085231">
+                        <name>Cheb,, aut. nádr. -</name>
                     </wpt>
-                    <wpt lon="13.3661314845" lat="49.7756114602">
-                        <name>Plzeň,, Severka L</name>
+                    <wpt lon="12.3490472138" lat="50.12101762">
+                        <name>Františkovy Lázně,, městské sady N</name>
                     </wpt>
-                    <wpt lon="13.3666142821" lat="49.7747196257">
-                        <name>Plzeň,, Severka D</name>
-                    </wpt>
-                    <wpt lon="13.3627438545" lat="49.7464431077">
-                        <name>Plzeň,, CAN V</name>
-                    </wpt>
-                    <wpt lon="13.3631461859" lat="49.7468038648">
-                        <name>Plzeň,, CAN</name>
+                    <wpt lon="12.3490069807" lat="50.1208352298">
+                        <name>Františkovy Lázně,, městské sady D</name>
                     </wpt>
                     </gpx>
