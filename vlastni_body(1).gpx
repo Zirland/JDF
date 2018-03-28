@@ -2,64 +2,28 @@
             <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
             <metadata>
                 <name>Vlastní body z Mapy.cz</name>
-            </metadata><wpt lon="12.8585904837" lat="50.3183879703">
-                        <name>Hroznětín,, sušárna D</name>
+            </metadata><wpt lon="13.3125758171" lat="50.1319482923">
+                        <name>Lubenec,, Karlovarská R</name>
                     </wpt>
-                    <wpt lon="12.8587406874" lat="50.3185730428">
-                        <name>Hroznětín,, sušárna N</name>
+                    <wpt lon="13.3123371005" lat="50.1320374757">
+                        <name>Lubenec,, Karlovarská L</name>
                     </wpt>
-                    <wpt lon="12.8624770045" lat="50.3265948594">
-                        <name>Merklín,, náves R</name>
+                    <wpt lon="14.3214793503" lat="50.0754247606">
+                        <name>Praha,, Karlovarská R</name>
                     </wpt>
-                    <wpt lon="12.862739861" lat="50.3265874833">
-                        <name>Merklín,, náves L</name>
+                    <wpt lon="14.3241266906" lat="50.0754817575">
+                        <name>Praha,, Karlovarská L</name>
                     </wpt>
-                    <wpt lon="12.8602024913" lat="50.3293253481">
-                        <name>Merklín,, ObÚ N</name>
+                    <wpt lon="14.4030573964" lat="50.0971660763">
+                        <name>Praha,, Hradčanská L</name>
                     </wpt>
-                    <wpt lon="12.8599905968" lat="50.3294266015">
-                        <name>Merklín,, ObÚ D</name>
+                    <wpt lon="14.4059300423" lat="50.0973431021">
+                        <name>Praha,, Hradčanská R</name>
                     </wpt>
-                    <wpt lon="12.851563096" lat="50.3366236389">
-                        <name>Merklín,, Papírny N</name>
+                    <wpt lon="14.4409114122" lat="50.0896753371">
+                        <name>Praha,, Florenc V</name>
                     </wpt>
-                    <wpt lon="12.8527647257" lat="50.3354729712">
-                        <name>Merklín,, Papírny D</name>
-                    </wpt>
-                    <wpt lon="12.8447180986" lat="50.3389786184">
-                        <name>Merklín, Pstruží, osada R</name>
-                    </wpt>
-                    <wpt lon="12.8445866704" lat="50.339070484">
-                        <name>Merklín, Pstruží, osada L</name>
-                    </wpt>
-                    <wpt lon="12.8366607428" lat="50.3411840647">
-                        <name>Merklín, Pstruží, most R</name>
-                    </wpt>
-                    <wpt lon="12.8364863992" lat="50.3413724899">
-                        <name>Merklín, Pstruží, most L</name>
-                    </wpt>
-                    <wpt lon="12.8292900324" lat="50.3441988677">
-                        <name>Merklín, Pstruží, Papírny R</name>
-                    </wpt>
-                    <wpt lon="12.8294080496" lat="50.344208926">
-                        <name>Merklín, Pstruží, Papírny L</name>
-                    </wpt>
-                    <wpt lon="12.8234548867" lat="50.3468737006">
-                        <name>Merklín, Pstruží, rest. L</name>
-                    </wpt>
-                    <wpt lon="12.8230981529" lat="50.346930027">
-                        <name>Merklín, Pstruží, rest. R</name>
-                    </wpt>
-                    <wpt lon="12.8031210601" lat="50.3532895446">
-                        <name>Pernink, Rybná, rozc. 1.5 L</name>
-                    </wpt>
-                    <wpt lon="12.8026972711" lat="50.3533579409">
-                        <name>Pernink, Rybná, rozc. 1.5 R</name>
-                    </wpt>
-                    <wpt lon="12.7895061672" lat="50.3593955934">
-                        <name>Pernink,, školní louka N</name>
-                    </wpt>
-                    <wpt lon="12.7891199291" lat="50.3597067297">
-                        <name>Pernink,, školní louka D</name>
+                    <wpt lon="14.4409006834" lat="50.0893487781">
+                        <name>Praha,, Florenc</name>
                     </wpt>
                     </gpx>
