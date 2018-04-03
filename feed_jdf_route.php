@@ -31,7 +31,7 @@ if ($result69 = mysqli_query ($link, $akt_route)) {
 		if ($result85 = mysqli_query ($link, $akt_trip)) {
 			while ($row85 = mysqli_fetch_row ($result85)) {
 				$route_id = $row85[0];
-				$matice = "0".$row85[1];
+				$matice = $row85[1];
 				$trip_id = $row85[2];
 				$trip_headsign = $row85[3];
 				$direction_id = $row85[4];
@@ -115,11 +115,11 @@ if ($result69 = mysqli_query ($link, $akt_route)) {
 										$lon = $sourad[0];
 										$lat = $sourad[1];
 										
-									if ($lat != '' && $lon != '') {
-	                                                                                $i = $i + 1;
+										if ($lat != '' && $lon != '') {
+											$i = $i + 1;
 											$query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i',0);";
-        	                                                                        $command = mysqli_query ($link, $query144);
-                	                                                        }
+											$command = mysqli_query ($link, $query144);
+										}
 									}
 									$prevstop = $prujstop;
 								}

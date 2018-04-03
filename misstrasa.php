@@ -143,6 +143,17 @@ switch ($action) {
 			}
 		}
 
+		$query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
+		if ($result146 = mysqli_query($link, $query146)) {
+			$count = mysqli_num_rows($result146);
+			while ($row146 = mysqli_fetch_row($result146)) {
+				$trip_id = $row146[0];
+
+				echo "$trip_id > ";
+			}
+			echo "$count<br/>";
+		} 
+
 		$prujezdy .= $tolon.",".$tolat;
 
 		echo "$prujezdy<br/>";

@@ -8,7 +8,7 @@ if (!$link) {
     exit;
 }
 
-$akt_trip = "SELECT route_id,matice,trip_id,trip_headsign,direction_id,shape_id,wheelchair_accessible,bikes_allowed FROM trip WHERE ((route_id = '5161911') AND (active='1'));";
+$akt_trip = "SELECT route_id,matice,trip_id,trip_headsign,direction_id,shape_id,wheelchair_accessible,bikes_allowed FROM trip WHERE ((route_id = 'F9150211') AND (active='1'));";
 if ($result85 = mysqli_query($link, $akt_trip)) {
 	while ($row85 = mysqli_fetch_row($result85)) {
 		$route_id = $row85[0];
@@ -19,9 +19,8 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
 		$shape_tvar = $row85[5];
 		$wheelchair_accessible = $row85[6];
 		$bikes_allowed = $row85[7];
-				
-				$matice = "0".$matice."000000000000000";
-				$matice_start = mktime(0,0,0,12,3,2017);
+
+		$matice_start = mktime(0,0,0,12,3,2017);
 		$dnes_den = date("d", time());
 		$dnes_mesic = date("m", time());
 		$dnes_rok = date("Y", time());

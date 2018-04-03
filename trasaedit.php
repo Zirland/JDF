@@ -9,7 +9,7 @@ $path = @$_POST['path'];
 
 echo "<form method=\"post\" action=\"trasaedit.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
 echo "Odkud: <select name=\"from\">";
-$query0 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du WHERE final = 1) ORDER BY stop_name;";
+$query0 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du) ORDER BY stop_name;";
 if ($result0 = mysqli_query ($link, $query0)) {
 	while ($row0 = mysqli_fetch_row ($result0)) {
 		$kodf = $row0[0];
@@ -157,7 +157,7 @@ switch ($action) {
 
 
 	case "uloz":
-		$query159 = "UPDATE du SET path = '$path', final = '1' WHERE du_id = '$du_id';";
+		$query159 = "UPDATE du SET path = '$path' WHERE du_id = '$du_id';";
 		$zapis159 = mysqli_query ($link, $query159);
 		$query162 = "UPDATE shapetvary SET complete = '0' WHERE tvartasy LIKE '%$from|$to|%';";
 		$zapis162 = mysqli_query ($link, $query162);
@@ -166,7 +166,7 @@ switch ($action) {
 	case "odkud":
 		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
 		echo "Kam: <select name=\"to\">";
-		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 1) ORDER BY stop_name;";
+		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from') ORDER BY stop_name;";
 		echo $query1;
 		if ($result1 = mysqli_query ($link, $query1)) {
 			while ($row1 = mysqli_fetch_row ($result1)) {

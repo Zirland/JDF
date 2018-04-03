@@ -4,7 +4,7 @@ include 'header.php';
 $query = "SELECT matice,trip_id FROM trip;";
 if ($result = mysqli_query ($link, $query)) {
 	while ($row = mysqli_fetch_row ($result)) {
-		$matice = "0".$row[0];
+		$matice = $row[0];
 		$trip_id = $row[1];
 
 		$matice_start = mktime (0,0,0,12,3,2017);
@@ -44,7 +44,8 @@ if ($result = mysqli_query ($link, $query)) {
 		if ($soucet == 0) {
 			echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a> = $soucet<br/>";
 
-			$prikaz = mysqli_query ($link, "UPDATE trip SET active=0 WHERE trip_id = '$trip_id';");
+//			$prikaz = mysqli_query ($link, "UPDATE trip SET active=0 WHERE trip_id = '$trip_id';");
+			$prikaz = mysqli_query ($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
 		}
 	}
 }
@@ -62,6 +63,57 @@ if ($result1 = mysqli_query ($link, $query1)) {
 
 $query66 = "DELETE FROM du WHERE stop1 = '0';";
 $prikaz66 = mysqli_query($link, $query66);
+
+
+// $query68 = "SELECT du_id, stop1, stop2 FROM du;";
+if ($result68 = mysqli_query($link, $query68)) {
+	while ($row68 = mysqli_fetch_row($result68)) {
+		$du_id = $row68[0];
+		$stop1 = $row68[1];
+		$stop2 = $row68[2];
+
+		$query75 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$stop1|$stop2|%';";
+		echo "$query75<br/>";
+		$hits = mysqli_num_rows(mysqli_query($link, $query75));
+		echo "$du_id = $hits<br/>";
+		if ($hits == 0) {
+			echo "$du_id<br/>";
+//			$purge_du = mysqli_query($link, "DELETE FROM du WHERE du_id = $du_id;");
+		}
+	}
+}
+
+// $query86 = "SELECT du_id, stop1, stop2 FROM du WHERE (final = 2);";
+if ($result86 = mysqli_query($link, $query86)) {
+	while ($row86 = mysqli_fetch_row($result86)) {
+		$du_id = $row86[0];
+		$stop1 = $row86[1];
+		$stop2 = $row86[2];
+
+		$query93 = "SELECT stop_lat, stop_lon FROM stop WHERE (stop_id = '$stop1');";
+		echo "$query93<br/>";
+		if ($result93 = mysqli_query($link, $query93)) {
+			while ($row93 = mysqli_fetch_row($result93)) {
+				$begin_lat = $row93[0];
+				$begin_lon = $row93[1];
+			}
+		}
+
+		$query102 = "SELECT stop_lat, stop_lon FROM stop WHERE (stop_id = '$stop2');";
+		echo "$query102<br/>";
+		if ($result102 = mysqli_query($link, $query102)) {
+			while ($row102 = mysqli_fetch_row($result102)) {
+				$end_lat = $row102[0];
+				$end_lon = $row102[1];
+			}
+		}
+
+		$cesta = "$begin_lon,$begin_lat;$end_lon,$end_lat";
+		echo "$cesta<br/>";
+
+		$rovnej_du = mysqli_query($link, "UPDATE du SET path = '$cesta' WHERE du_id = $du_id;");
+	}
+}
 
 echo "== Konec ==";
 include 'footer.php';

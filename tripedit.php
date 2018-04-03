@@ -306,12 +306,12 @@ if ($result108 = mysqli_query ($link, $query108)) {
 		if ($drop_off_type == 1) {
 			echo " SELECTED";
 		}
-		echo ">Pouze výstup</option>";
+		echo ">Pouze nástup</option>";
 		echo "<option value=\"10\"";
 		if ($pickup_type == 1) {
 			echo " SELECTED";
 		}
-		echo ">Pouze nástup</option>";
+		echo ">Pouze výstup</option>";
 		echo "<option value=\"33\"";
 		if ($drop_off_type == 3) {
 			echo " SELECTED";

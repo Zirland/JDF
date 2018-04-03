@@ -26,6 +26,7 @@ curl http://localhost/JDF/feed_jdf_route.php?oblast=91508
 curl http://localhost/JDF/feed_jdf_route.php?oblast=91509
 curl http://localhost/JDF/feed_jdf_route.php?oblast=91510
 curl http://localhost/JDF/feed_jdf_route.php?oblast=91511
+curl http://localhost/JDF/feed_jdf_route.pho?oblast=999
 
 curl http://localhost/JDF/feed_jdf_close.php
 
