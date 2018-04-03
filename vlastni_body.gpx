@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="mapy.cz">
+            <metadata>
+                <name>Vlastní body z Mapy.cz</name>
+            </metadata><wpt lon="12.873531729" lat="50.1651634276">
+                        <name>Stanovice,, R</name>
+                    </wpt>
+                    <wpt lon="12.8733587265" lat="50.1652626693">
+                        <name>Stanovice,, L</name>
+                    </wpt>
+                    <wpt lon="12.8864237666" lat="50.1442945004">
+                        <name>Stanovice, Dražov, N</name>
+                    </wpt>
+                    <wpt lon="12.8861515224" lat="50.1442703605">
+                        <name>Stanovice, Dražov, D</name>
+                    </wpt>
+                    <wpt lon="12.8874322772" lat="50.1290246844">
+                        <name>Stanovice, Hlinky, R</name>
+                    </wpt>
+                    <wpt lon="12.8876709938" lat="50.1291118562">
+                        <name>Stanovice, Hlinky, L</name>
+                    </wpt>
+                    <wpt lon="12.9367728531" lat="50.1342925429">
+                        <name>Bochov, Nové Kounice, L</name>
+                    </wpt>
+                    <wpt lon="12.9373629391" lat="50.1344259828">
+                        <name>Bochov, Nové Kounice, N</name>
+                    </wpt>
+                    <wpt lon="12.9480193555" lat="50.1378149539">
+                        <name>Bochov, Javorná, zámek R</name>
+                    </wpt>
+                    <wpt lon="12.9595769942" lat="50.1336246729">
+                        <name>Bochov, Javorná, V</name>
+                    </wpt>
+                    <wpt lon="12.9595126212" lat="50.1337359846">
+                        <name>Bochov, Javorná, -</name>
+                    </wpt>
+                    <wpt lon="12.9476881027" lat="50.1378893852">
+                        <name>Bochov, Javorná, zámek L</name>
+                    </wpt>
+                    <wpt lon="12.9433777928" lat="50.141948238">
+                        <name>Bochov, Rybničná, -</name>
+                    </wpt>
+                    <wpt lon="12.8848037124" lat="50.1893737167">
+                        <name>Kolová, Háje, Senhof L</name>
+                    </wpt>
+                    <wpt lon="12.8853106499" lat="50.1892054081">
+                        <name>Kolová Háje, Senhof N</name>
+                    </wpt>
+                    <wpt lon="12.8803566098" lat="50.1855368167">
+                        <name>Kolová, Háje, L</name>
+                    </wpt>
+                    <wpt lon="12.8807964921" lat="50.1855622977">
+                        <name>Kolová, Háje, R</name>
+                    </wpt>
+                    <wpt lon="12.8994297981" lat="50.1833166182">
+                        <name>Kolová,, L</name>
+                    </wpt>
+                    <wpt lon="12.899145484" lat="50.1833447814">
+                        <name>Kolová,, R</name>
+                    </wpt>
+                    <wpt lon="12.904613167" lat="50.1881117374">
+                        <name>Kolová,, ObÚ D</name>
+                    </wpt>
+                    <wpt lon="12.9038903117" lat="50.1874800771">
+                        <name>Kolová,, ObÚ N</name>
+                    </wpt>
+                    <wpt lon="12.924194634" lat="50.178103745">
+                        <name>Pila,, rozc. L</name>
+                    </wpt>
+                    <wpt lon="12.9241289198" lat="50.1781708002">
+                        <name>Pila,, rozc. R</name>
+                    </wpt>
+                    <wpt lon="12.9260708392" lat="50.1816080511">
+                        <name>Pila,, ObÚ D</name>
+                    </wpt>
+                    <wpt lon="12.9261781275" lat="50.1818548143">
+                        <name>Pila,, ObÚ N</name>
+                    </wpt>
+                    <wpt lon="12.9287973046" lat="50.1848032326">
+                        <name>Pila,, rest. N</name>
+                    </wpt>
+                    <wpt lon="12.9286940396" lat="50.1846972853">
+                        <name>Pila,, rest. D</name>
+                    </wpt>
+                    <wpt lon="12.9257073998" lat="50.1736103743">
+                        <name>Pila,, továrna L</name>
+                    </wpt>
+                    <wpt lon="12.9257650673" lat="50.1735406369">
+                        <name>Pila,, továrna R</name>
+                    </wpt>
+                    </gpx>
