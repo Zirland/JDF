@@ -35,6 +35,17 @@ switch ($action) {
 		$oldtrip = 0;
 		$oldstop = 0;
 
+		switch ($routetype) {
+			case '3':
+			case '5':
+				$activity = 0;
+			break;
+
+			default:
+				$activity = 2;
+			break;
+		}
+
 		$query12 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
 		if ($result12 = mysqli_query ($link, $query12)) {
 			while ($row12 = mysqli_fetch_row ($result12)) {
@@ -54,7 +65,7 @@ switch ($action) {
 					$prujezdy = $oldlon.",".$oldlat.";".$stop_lon.",".$stop_lat;
 
 					if ($trip_id == $oldtrip) {
-						$insert_query = "INSERT INTO du (stop1, stop2, via, path, final) VALUES ('$oldstop', '$stop_id', '', '$prujezdy', '0');";
+						$insert_query = "INSERT INTO du (stop1, stop2, via, path, final) VALUES ('$oldstop', '$stop_id', '', '$prujezdy', '$activity');";
 						echo "$insert_query<br/>";
 						$insert_action = mysqli_query ($link, $insert_query);
 					}

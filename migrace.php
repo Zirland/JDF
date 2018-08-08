@@ -32,7 +32,13 @@ if ($result20 = mysqli_query ($link, $query20)) {
 	}
 }
 
+$query35 = "DELETE FROM exter WHERE linka = '$newroute';";
+$command35 = mysqli_query ($link, $query35);
+
+$query38 = "UPDATE exter SET linka = '$newroute' WHERE linka = '$route';";
+$command38 = mysqli_query ($link, $query38);
+
 echo "Dokončeno";
 
 include 'footer.php';
-?>
+?> 

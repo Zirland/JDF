@@ -82,7 +82,7 @@ switch ($action) {
 
 		$deaktivace = "UPDATE shapetvary SET complete='0' WHERE (tvartrasy LIKE '%$stop_id|%'));";
 		$prikaz19 = mysqli_query ($link, $deaktivace);
-		$reroute = "UPDATE du SET final='0' WHERE (stop1='$stop_id') OR ($stop2='$stop_id');";
+		$reroute = "UPDATE du SET final='0' WHERE (stop1='$stop_id') OR (stop2='$stop_id');";
 		echo "$reroute<br/>";
 		$prikaz21 = mysqli_query ($link, $reroute);
 		$stop_id = $newstopid;
