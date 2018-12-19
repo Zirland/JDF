@@ -10,11 +10,11 @@ if ($result = mysqli_query ($link, $query)) {
 		
 		$prikaz = mysqli_query ($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
 		$prikaz2 = mysqli_query ($link, "DELETE FROM stoptime WHERE trip_id = '$trip_id';");
-			
+		$prikaz3 = mysqli_query($link, "DELETE FROM jizdy WHERE trip_id = '$trip_id';");
 	}
 }
 
-$prikaz3 = mysqli_query ($link, "DELETE FROM route WHERE route_id = '$route_id';");
+$prikaz4 = mysqli_query ($link, "DELETE FROM route WHERE route_id = '$route_id';");
 
 echo "== Konec ==";
 include 'footer.php';

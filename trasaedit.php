@@ -232,7 +232,7 @@ switch ($action) {
 			$du_id = $row102[0];
 			$path = $row102[1];
 		}
-		
+		echo "$du_id<br/>";
 		$body = explode (";", $path);
 
 		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"edit\"><input name=\"action\" value=\"edit\" type=\"hidden\"><input name=\"du_id\" value=\"$du_id\" type=\"hidden\">";

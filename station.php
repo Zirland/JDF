@@ -1,6 +1,57 @@
 <?php
 include 'header.php';
 
+function odjezdy ($date, $time) {
+	global $filtr, $i, $max, $link;
+
+	$query7 = "SELECT route.route_short_name, stoptime.departure_time, trip.trip_headsign, stoptime.pickup_type, stoptime.drop_off_type, route.route_color, route.route_text_color, stoptime.trip_id, trip.wheelchair_accessible, trip.bikes_allowed FROM stoptime LEFT JOIN trip ON stoptime.trip_id = trip.trip_id LEFT JOIN route on trip.route_id = route.route_id WHERE stop_id = '$filtr' AND departure_time > '$time' AND stoptime.trip_id IN (SELECT trip_id FROM jizdy WHERE datum = '$date') AND trip.trip_headsign NOT IN (SELECT stop_name FROM stop WHERE stop_id = '$filtr') ORDER BY departure_time;";
+	if ($result7 = mysqli_query($link, $query7)) {
+		while ($row7 = mysqli_fetch_row($result7)) {
+			$route_short_name = $row7[0];
+			$departure_time = $row7[1];
+			$trip_headsign = $row7[2];
+			$pickup_type = $row7[3];
+			$drop_off_type = $row7[4];
+			$route_color = $row7[5];
+			$route_text_color = $row7[6];
+			$trip_id = $row7[7];
+			$wheelchair = $row7[8];
+			$bikes = $row7[9];
+
+			if ($i == $max) {
+				break;
+			}
+
+			echo "<tr>";
+			echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">";
+			echo "$route_short_name";
+			echo "</td><td>";
+
+			$zde = substr($departure_time,0,5);
+			echo $zde;
+			echo "</td>";
+
+			echo "<td>$trip_headsign</td>";
+			echo"<td>";
+			if ($wheelchair == "1") {
+				echo "&#9855;\t";
+			}
+			if ($bikes == "1") {
+				echo "&#128690;\t";
+			}
+			if ($pickup_type == "1") {
+				echo "pouze výstup\t";
+			}
+			if ($drop_off_type == "1") {
+				echo "pouze nástup\t";
+			}
+			$i = $i+1;
+			echo "</tr>";
+		}
+		mysqli_free_result($result7);
+	}
+}
+
 $action = @$_POST['action'];
 $filtr = @$_POST['filtr'];
 
@@ -20,96 +71,47 @@ echo "<form method=\"post\" action=\"station.php\" name=\"filtr\">
 		}
 		mysqli_free_result($result0);
 	}	
-	echo "</select><select name=\"line\">";
-	echo "<input type=\"submit\"></form>";
+	echo "</select>";
+	echo "<input type=\"submit\" value=\"Vybrat zastávku\"></form>";
 
 switch ($action) {
 	case "filtr" : 
+		$time_start0 = microtime(true);
+		$query28 = "SELECT route_short_name FROM route WHERE route_id IN (SELECT SUBSTRING(trip_id, 1, 7) FROM stoptime WHERE stop_id = '$filtr') ORDER BY route_short_name;";
+		if ($result28 = mysqli_query($link, $query28)) {
+			while ($row28 = mysqli_fetch_row($result28)) {
+				$linka = $row28[0];
+
+				echo "$linka\t";
+			}
+			mysqli_free_result($result28);
+		}
+
+		echo "<hr>";
+
 		echo  "<table border=\"1\">";
 		echo "<tr>";
-		echo "<th>Vlak</th>
-		<th>Dopravce</th>
-		<th>Linka</th>
+		echo "<th>Linka</th>
 		<th>Čas</th>
 		<th>Cílová stanice</th>
 		<th>Poznámka</th>";
 		echo "</tr>";
 
-		$x = 0;
-		$now = date ("H:i:s", time());
-		$end = date ("H:i:s", time()+3600);
+		$curtime = date("H:i:s");
+		$curdate = date("Y-m-d");
+		$i = 0;
+		$max = 10;
 
- 		$now = "00:00:00";
-		$end = "24:00:00";
+		odjezdy($curdate, $curtime);
 
-		$query = "SELECT trip_id FROM stoptime WHERE (stop_id='$filtr' AND departure_time>='$now' AND departure_time<='$end') ORDER BY departure_time;";
-		echo $query;
-		if ($result = mysqli_query($link, $query)) {
-			while ($row = mysqli_fetch_row($result)) {
-				$trip_id = $row[0];
+		if ($i < $max) {
+			$druhyden = date("Y-m-d", strtotime("+1 day"));
 
-				$pom0 = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip_id = '$trip_id');"));
-				$routedata = $pom0[0];
-				$trip_headsign = $pom0[3];
-				$wheel = $pom0[8];
-				$bike = $pom0[9];
-				$jmeno = $pom0[4];
-		
-				$cislo = substr($trip_id, 0, -2);
-				$lomeni = substr($cislo, -1);
-				$cislo7 = $cislo."/".$lomeni;
+			odjezdy ($druhyden, "00:00:00");
+		}
+		echo "</table>";
 
-				echo "<form method=\"post\" action=\"station.php\" name=\"update\">
-				<input name=\"action\" value=\"update\" type=\"hidden\">
-				<input name=\"filtr\" value=\"$filtr\" type=\"hidden\">
-				<input name=\"spoj$x\" value=\"$trip_id\" type=\"hidden\">";
-				echo "<tr>";
-				echo "<td>$trip_id</td>";
-				$row8 = mysqli_fetch_row(mysqli_query($link, "SELECT route_short_name,route_color,route_text_color FROM route WHERE (route_id = '$routedata') ORDER BY route_short_name;"));
-				$route_short_name = $row8[0];
-				$route_color = $row8[1];
-				$route_text_color = $row8[2];
-				echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">";
-				echo "<select name=\"line$x\">";
-				$query84 = "SELECT route_id, route_short_name FROM route ORDER BY route_short_name;"; //WHERE route_id NOT LIKE 'L%' 
-				if ($result84 = mysqli_query ($link, $query84)) {
-					while ($row84 = mysqli_fetch_row($result84)) {
-						$route_id = $row84[0];
-						$route_short_name = $row84[1];
-
-						echo "<option value=\"$route_id\"";
-						if ($route_id == $routedata) {echo " SELECTED";}
-						echo ">$route_short_name</option>";
-					}
-				}
-				echo "</select></td><td>";
-		
-				$pom94 = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM stoptime WHERE ((trip_id = '$trip_id') AND (stop_id = '$filtr'));"));
-				$zde = $pom94[2];
-		
-				$zde = substr($zde,0,5);
-				echo $zde;
-				echo "</td>";
-		
-			        $pom92 = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM stoptime WHERE (trip_id = '$trip_id') ORDER BY stop_sequence DESC LIMIT 1;"));
-			        $clzst = $pom92[3];
-			        $pom93 = mysqli_fetch_row(mysqli_query($link, "SELECT stop_name FROM stop WHERE (stop_id = '$clzst');"));
-			        $kam = $pom93[0];
-
-				echo "<td>$kam</td>";
-				echo"<td></td>";
-				$x = $x+1;
-				echo "</tr>";
-			
-		}				
-	}
-	mysqli_free_result($result);
 }
-echo "<table>";
-
-echo "<input type=\"hidden\" name=\"pocet\" value=\"$x-1\">";
-echo "<input type=\"submit\">";
-echo "</form>";	
 
 include 'footer.php';
 ?>

@@ -88,7 +88,6 @@ switch ($action) {
 		echo "Přes: <select name=\"via\">";
 		echo "<option value=\"\">---</option>";
 		$query2 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
-		echo $query2;
 		if ($result2 = mysqli_query ($link, $query2)) {
 			while ($row2 = mysqli_fetch_row ($result2)) {
 				$kodv = $row2[0];
@@ -129,19 +128,22 @@ switch ($action) {
 		}
 
 
-		$prujezdy = $fromlon.",".$fromlat.";";
+		$prujezdy = $fromlon.",".$fromlat."|";
 		if ($via != "") {
 			$pass = $vialon.",".$vialat;
-			$prujezdy .= $pass.";";
+			$prujezdy .= $pass."|";
 		} else {
-			$query96 = "SELECT via FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
+			$query96 = "SELECT via,du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
 			$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
 			$pass = $pom96[0];
+			$du_id = $pom96[1];
 
 			if ($pass != "") {
-				$prujezdy .= $pass.";";
+				$prujezdy .= $pass."|";
 			}
 		}
+
+		echo "$du_id<br/>";
 
 		$query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
 		if ($result146 = mysqli_query($link, $query146)) {
@@ -156,8 +158,7 @@ switch ($action) {
 
 		$prujezdy .= $tolon.",".$tolat;
 
-		echo "$prujezdy<br/>";
-		$url = "https://router.project-osrm.org/route/v1/driving/$prujezdy?geometries=geojson&alternatives=false&steps=false&generate_hints=false&overview=full";
+		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
 
 		$contents = file_get_contents($url);
 //		$contents = utf8_encode($contents);
@@ -172,7 +173,6 @@ switch ($action) {
 			$trasa .= "$X,$Y;";
 		}
 		$trasa = substr ($trasa, 0, -1);
-
 		$body = explode (";", $trasa);
 
 		$xmin = 20;
@@ -197,7 +197,12 @@ switch ($action) {
 				$ymax = $pt_y;
 			}
 		}
-
+/*
+		$box = $results["bbox"];
+		$xmin = $box[0];
+		$ymin = $box[1];
+		$xmax = $box[2];
+		$ymax = $box[3];*/
 		$deltax = $xmax - $xmin;
 		$deltay = $ymax - $ymin;
 

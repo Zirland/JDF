@@ -13,6 +13,9 @@ if (!$link) {
 	echo "Debugging errno: ".mysqli_connect_errno ().PHP_EOL;
 	exit;
 }
+
+$token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
+
 ?>
 
 <table style="width:100%; height:100%;">
@@ -30,8 +33,10 @@ STOPS<br/>
 <a href="imported.php">Imported</a><br/>
 <a href="stoprename.php">Stop rename</a><br/>
 LINKY<br/>
-<a href="analist.php">Analýza</a><br/>
-<a href="_krok1.php">Manuální linka</a><br/>
+<a href="analist_fresh.php">Analýza fresh</a><br/>
+<a href="analist_regen.php">Analýza regen</a><br/>
+<a href="analist_new.php">Analýza new</a><br/>
+<a href="_step1.php">Manuální linka</a><br/>
 <a href="import.php">Import linky</a><br/>
 <a href="headsigns.php">Headsigns</a><br/>
 <a href="vozovna.php">Vozovna</a><br/>
@@ -39,5 +44,6 @@ TRASY<br/>
 <a href="trasa.php">Trasy</a><br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
 <a href="trasaedit.php">Editace trasy</a><br/>
+<a href="usek.php">Detail úseku</a><br/>
 </td>
 <td>

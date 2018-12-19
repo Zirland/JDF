@@ -21,6 +21,7 @@ switch ($action) {
 		$longname = $_POST['longname'];
 		$routetype = $_POST['routetype'];
 		$pozadi = $_POST['route_pozadi'];
+		$pozadi = substr($pozadi, 1);
 		$foreground = getContrastYIQ ($pozadi);
 		$aktif = $_POST['aktif'];
 
@@ -182,7 +183,7 @@ echo "</td><td style=\"background-color : #$route_color;\">Linka: <input type=\"
 
 echo "<input type=\"text\" name=\"longname\" value=\"$route_long_name\"></td>";
 
-echo "<td>Pozadí: <input type=\"text\" name=\"route_pozadi\" value=\"$route_color\"></td>";
+echo "<td>Pozadí: <input type=\"color\" name=\"route_pozadi\" value=\"#$route_color\"></td>";
 
 echo "<td>Aktivní <input type=\"checkbox\" name=\"aktif\" value=\"1\"";
 if ($route_active == '1') {

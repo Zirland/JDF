@@ -39,6 +39,7 @@ if ($linky) {
 		$route_no = $line[1];
 		$route_short_name = $route_no;
 		$route_long_name = $line[3];
+		$vyluka = 0;
 
 		if ($verze == '1.8' || $verze == '1.9') {
 			$platnostod = $line[17];
@@ -71,11 +72,13 @@ if ($linky) {
 		}
 
 		if ($verze == '1.10') {
+			$vyluka = $line[11];
 			$platnostod = $line[25];
 			$platnostdo = $line[27];
 		}
 
 		if ($verze == '1.11') {
+			$vyluka = $line[11];
 			$platnostod = $line[27];
 			$platnostdo = $line[29];
 		}
@@ -85,7 +88,7 @@ if ($linky) {
 
 $datumod = substr ($platnostod, -4)."-".substr ($platnostod, 2,2)."-".substr ($platnostod, 0,2);
 $datumdo = substr ($platnostdo, -4)."-".substr ($platnostdo, 2,2)."-".substr ($platnostdo, 0,2);
-$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce) VALUES ('$source', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce');";
+$query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce, vyluka) VALUES ('$source', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce', '$vyluka');";
 $prikaz68 = mysqli_query ($link, $query68);
 
 mysqli_close ($link);

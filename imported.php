@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 
-$query = "SELECT * FROM importstop;";
+$query = "SELECT * FROM importstop ORDER BY obec, castobce, misto, pomcode;";
 if ($result = mysqli_query ($link, $query)) {
 	while ($row = mysqli_fetch_row ($result)) {
 		$imp_id = $row[0];

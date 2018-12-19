@@ -145,25 +145,25 @@ switch ($action) {
 		}
 
 
-		$prujezdy = $fromlon.",".$fromlat.";";
+		$prujezdy = $fromlon.",".$fromlat."|";
 		if ($via != "") {
 			$pass = $vialon.",".$vialat;
-			$prujezdy .= $pass.";";
+			$prujezdy .= $pass."|";
 		} else {
 			$query96 = "SELECT via FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
 			$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
 			$pass = $pom96[0];
 
 			if ($pass != "") {
-				$prujezdy .= $pass.";";
+				$prujezdy .= $pass."|";
 			}
 		}
 
 		$prujezdy .= $tolon.",".$tolat;
 
-		echo "$prujezdy<br/>";
-		$url = "https://router.project-osrm.org/route/v1/driving/$prujezdy?geometries=geojson&alternatives=false&steps=false&generate_hints=false&overview=full";
+		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
 
+		echo $url;
 		$contents = file_get_contents($url);
 //		$contents = utf8_encode($contents);
 		$results = json_decode($contents, TRUE);
@@ -177,10 +177,9 @@ switch ($action) {
 			$trasa .= "$X,$Y;";
 		}
 		$trasa = substr ($trasa, 0, -1);
-
 		$body = explode (";", $trasa);
 
-		$xmin = 20;
+/*		$xmin = 20;
 		$xmax = 0;
 		$ymin = 60;
 		$ymax = 0;
@@ -202,7 +201,12 @@ switch ($action) {
 				$ymax = $pt_y;
 			}
 		}
-
+*/
+		$box = $results["bbox"];
+		$xmin = $box[0];
+		$ymin = $box[1];
+		$xmax = $box[2];
+		$ymax = $box[3];
 		$deltax = $xmax - $xmin;
 		$deltay = $ymax - $ymin;
 
