@@ -234,6 +234,7 @@ if ($spoje) {
 			$smer = 0;
 		}
 
+		echo "$trip_id<br/>";
 		$matrix = "";
 
 		$maticestart = date_create('1 week ago');
@@ -371,6 +372,12 @@ if ($spoje) {
 			}
 		}
 
+		$matrix2 = "";
+
+		for ($i = 0; $i < 420; $i++) {
+			$matrix2 .= "X";
+		}
+
 		$caskody = fopen ("$dir/Caskody.txt.txt", 'r');
 		if ($caskody) {
 			while (($buffer5 = fgets ($caskody, 4096)) !== false) {
@@ -395,7 +402,9 @@ if ($spoje) {
 					$datumdo = $datumod;
 				}
 
+				echo substr($trip_id, 0, -6) . " = " . $caskod_trip_id;
 				if (substr($trip_id, 0, -6) == $caskod_trip_id) {
+					echo "407: $caskod | $typkodu | $datumod | $datumdo<br/>";
 					switch ($typkodu) {
 						case "1" :
 							$timeod = date_create_from_format('dmY', $datumod);
@@ -407,14 +416,15 @@ if ($spoje) {
 							$kondnu = $kondiff->days;
 
 							if ($poradikodu == "1") {
-								$matrix = "";
+								$matrix2 = "";
 								for ($i = 0; $i < 420; $i++) {
-									$matrix .= "0";
+									$matrix2 .= "0";
 								}
 							}
+
 							for ($g = 0; $g < 420; $g++) {
 								if ($g >= $zacdnu && $g <= $kondnu) {
-									$matrix[$g] = 1;
+									$matrix2[$g] = 1;
 								}
 							}
 						break;
@@ -426,7 +436,7 @@ if ($spoje) {
 
 							for ($g = 0; $g < 420; $g++) {
 								if ($g == $zacdnu) {
-									$matrix[$g] = 1;
+									$matrix2[$g] = 2;
 								}
 							}
 						break;
@@ -436,17 +446,15 @@ if ($spoje) {
 							$zacdiff = date_diff($maticestart, $timeod);
 							$zacdnu = $zacdiff->days;
 
-							$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
 							if ($poradikodu == "1") {
-								$matrix = "";
+								$matrix2 = "";
 								for ($i = 0; $i < 420; $i++) {
-									$matrix .= "0";
+									$matrix2 .= "0";
 								}
 							}
-							
 							for ($g = 0; $g < 420; $g++) {
 								if ($g == $zacdnu) {
-									$matrix[$g] = 1;
+									$matrix2[$g] = 1;
 								}
 							} 
 						break;
@@ -462,7 +470,7 @@ if ($spoje) {
 
 							for ($g = 0; $g < 420; $g++) {
 								if ($g >= $zacdnu && $g <= $kondnu) {
-									$matrix[$g] = 0;
+									$matrix2[$g] = 0;
 								}
 							}
 
@@ -501,7 +509,20 @@ if ($spoje) {
 
 		for ($g = 0; $g < 420; $g++) {
 			if ($g < $zacplat || $g > $konplat) {
-				$matrix[$g] = 0;
+				$matrix2[$g] = "0";
+			}
+		}
+
+		$mixmatrix = "";
+		for ($g = 0; $g < 420; $g++) {
+			if ($matrix2[$g] == "X") {
+				$matrix2[$g] = 1;
+			}
+			$soucet = $matrix[$g] + $matrix2[$g];
+			if ($soucet < 2) {
+				$mixmatrix[$g] = 0;
+			} else {
+				$mixmatrix[$g] = 1;
 			}
 		}
 
@@ -522,17 +543,14 @@ if ($spoje) {
 			$totodatum = date_format($fixdate, 'Y-m-d');
 			$route = substr($trip_id, 0, 6);
 
-			if ($matrix[$h] == "1") {
+			if ($mixmatrix[$h] == "1") {
 				$query188 = "INSERT INTO jizdy (spoj, trip_id, datum) VALUES ('$tripspoj','$trip_id','$totodatum');";
 				$prikaz188 = mysqli_query($link, $query188);
 			} 
 		}
 
-		$query64 = "INSERT INTO trip (route_id, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '$trip_id', '', '$smer', '$wheelchair','$bike', '0');";
+		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '$wheelchair','$bike', '0');";
 		$prikaz64 = mysqli_query ($link, $query64);
-
-		$query368 = "INSERT INTO pomtrip (trip_id) VALUES ('$trip_id');";
-		$prikaz368 = mysqli_query ($link, $query368);
 	}
 	fclose ($spoje);
 }
@@ -671,7 +689,7 @@ if ($zasspoje) {
 		$spoj = $zastspoj[1];
 		$trip_find = $linka.$spoj;
 		$trip_id = "";
-		$query601 = "SELECT trip_id FROM jizdy WHERE spoj = '$trip_find';";
+		$query601 = "SELECT trip_id FROM trip WHERE route_id = '$label$linka';";
 		if ($result601 = mysqli_query($link, $query601)) {
 			while ($row601 = mysqli_fetch_row($result601)) {
 				$trip_id = $row601[0];
