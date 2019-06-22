@@ -36,10 +36,10 @@ $i = 1;
 $query36 = "SELECT * FROM man_ck ORDER BY negative";
 if ($result36 = mysqli_query ($link, $query36)) {
 	while ($row36 = mysqli_fetch_row ($result36)) {
-		$negative = $row36[0];
-		$typ = $row36[1];
-		$kodod = $row36[2];
-		$koddo = $row36[3];
+		$negative = $row36[1];
+		$typ = $row36[2];
+		$kodod = $row36[3];
+		$koddo = $row36[4];
 
 		echo "$negative ($i)\t$typ\t$kodod\t$koddo<br />";
 		$i = $i + 1;
@@ -48,7 +48,7 @@ if ($result36 = mysqli_query ($link, $query36)) {
 
 echo "<hr>";
 
-$query51 = "SELECT * FROM manspoje WHERE kod != '0' ORDER BY spoj";
+$query51 = "SELECT * FROM manspoje WHERE route_id = '$route_id' ORDER BY spoj";
 if ($result51 = mysqli_query ($link, $query51)) {
 	while ($row51 = mysqli_fetch_row ($result51)) {
 		$spoj = $row51[1];

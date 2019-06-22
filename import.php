@@ -3,9 +3,6 @@ include 'header.php';
 $action = @$_POST['action'];
 
 $svatek = array (
-"24122018",
-"25122018",
-"26122018",
 "01012019",
 "19042019",
 "22042019",
@@ -103,16 +100,24 @@ switch ($action) {
 		$route_id = $route_no.$linkano;
 
 		$queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
-		$cistiro = mysqli_query ($link, $queryro);
+		if (!mysqli_query($link,$queryro)) {
+			echo("Error description: " . mysqli_error($link)) . "<br/>";
+		}
 
 		$querytr = "DELETE FROM trip WHERE route_id = '$label$route_id';";
-		$cistitr = mysqli_query ($link, $querytr);
+		if (!mysqli_query($link,$querytr)) {
+			echo("Error description: " . mysqli_error($link)) . "<br/>";
+		}
 
 		$query111 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
-		$prikaz111 = mysqli_query ($link, $query111);
+		if (!mysqli_query($link,$query111)) {
+			echo("Error description: " . mysqli_error($link)) . "<br/>";
+		}
 
 		$query_jizdy = "DELETE FROM jizdy WHERE spoj LIKE '$route_id%' AND (datum BETWEEN '$platnost_od' AND '$platnost_do');";
-		$cisti_jizdy = mysqli_query($link, $query_jizdy);
+		if (!mysqli_query($link,$query_jizdy)) {
+			echo("Error description: " . mysqli_error($link)) . "<br/>";
+		}
 
 		$query117 = "SELECT * FROM mtrips WHERE route_id = '$route_no';";
 		if ($result117 = mysqli_query($link, $query117)) {
@@ -131,7 +136,9 @@ switch ($action) {
 				$dnes_format = date("Y-m-d", $dnes_datum);
 
 				$query133 = "INSERT INTO log(trip_id, datum) VALUES ('$tripspoj','$dnes_format');";
-				$prikaz133 = mysqli_query($link, $query133);
+				if (!mysqli_query($link,$query133)) {
+					echo("Error description: " . mysqli_error($link)) . "<br/>";
+				}
 				$logid = mysqli_insert_id($link);
 
 				$vznik = $logid;
@@ -284,7 +291,6 @@ switch ($action) {
 								$zacdiff = date_diff($maticestart, $timeod);
 								$zacdnu = $zacdiff->days;
 
-								$current .= "* Spoj $caskod_trip_id jede pouze dne $datumod\n"; 
 								if ($poradikodu == "1") {
 									$matrix = "";
 									for ($i = 0; $i < 420; $i++) {
@@ -359,12 +365,16 @@ switch ($action) {
 
 					if ($matrix[$h] == "1") {
 						$query363 = "INSERT INTO jizdy (spoj, trip_id, datum) VALUES ('$tripspoj','$trip_id','$totodatum');";
-						$prikaz363 = mysqli_query($link, $query363);
+						if (!mysqli_query($link,$query363)) {
+							echo("Error description: " . mysqli_error($link)) . "<br/>";
+						}
 					} 
 				}
 
 				$query368 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '0','0', '0');";
-				$prikaz368 = mysqli_query ($link, $query368);
+				if (!mysqli_query($link,$query368)) {
+					echo("Error description: " . mysqli_error($link)) . "<br/>";
+				}
 
 				$dep_hour = substr($depart, 0, 2);
 				$dep_min = substr($depart, 2, 2);
@@ -391,7 +401,9 @@ switch ($action) {
 						$dropoff = substr($rezim, 1,1);
 
 						$query391 = "INSERT INTO stoptime (trip_id, arrival_time, departure_time, stop_id, stop_sequence, pickup_type, drop_off_type) VALUES ('$trip_id', '$time', '$time', '$stop_id', '$stop_seq', '$pickup', '$dropoff');";
-						$prikaz391 = mysqli_query($link, $query391);
+						if (!mysqli_query($link,$query391)) {
+							echo("Error description: " . mysqli_error($link)) . "<br/>";
+						}
 					}
 				}
 
@@ -399,7 +411,9 @@ switch ($action) {
 				$row404 = mysqli_fetch_row (mysqli_query ($link, $query404));
 				$headsign = $row404[0];
 				$query408 = "UPDATE trip SET trip_headsign='$headsign' WHERE trip_id='$trip_id';";
-				$prikaz408 = mysqli_query ($link, $query408);
+				if (!mysqli_query($link,$query408)) {
+					echo("Error description: " . mysqli_error($link)) . "<br/>";
+				}
 
 				$shape="";
 				$query411 = "SELECT stop_id FROM stoptime WHERE trip_id='$trip_id' ORDER BY stop_sequence;";
@@ -410,7 +424,9 @@ switch ($action) {
 					}
 				}
 				$query418 = "UPDATE trip SET shape_id='$shape', active = '1' WHERE trip_id='$trip_id';";
-				$prikaz418 = mysqli_query ($link, $query418);
+				if (!mysqli_query($link,$query418)) {
+					echo("Error description: " . mysqli_error($link)) . "<br/>";
+				}
 			}
 		}
 

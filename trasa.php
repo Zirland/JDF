@@ -22,6 +22,7 @@ $action = @$_POST['action'];
 $from = @$_POST['from'];
 $to = @$_POST['to'];
 $via = @$_POST['via'];
+$via2 = @$_POST['via2'];
 $pass = @$_POST['pass'];
 $path = @$_POST['path'];
 
@@ -123,6 +124,7 @@ switch ($action) {
 
 		echo "</select>";
 
+		echo "<input type=\"text\" name=\"via2\">";
 		echo "<input type=\"submit\"></form>";
 
 		$query47 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$from';";
@@ -148,22 +150,26 @@ switch ($action) {
 		$prujezdy = $fromlon.",".$fromlat."|";
 		if ($via != "") {
 			$pass = $vialon.",".$vialat;
-			$prujezdy .= $pass."|";
+			$stred = $pass."|";
 		} else {
 			$query96 = "SELECT via FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
 			$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
 			$pass = $pom96[0];
 
 			if ($pass != "") {
-				$prujezdy .= $pass."|";
+				$stred = $pass."|";
 			}
 		}
 
-		$prujezdy .= $tolon.",".$tolat;
+		if ($via2 != "") {
+			$pass = $via2;
+			$stred = $pass."|";
+		}
+
+		$prujezdy .= $stred.$tolon.",".$tolat;
 
 		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
 
-		echo $url;
 		$contents = file_get_contents($url);
 //		$contents = utf8_encode($contents);
 		$results = json_decode($contents, TRUE);

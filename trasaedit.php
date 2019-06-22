@@ -9,7 +9,7 @@ $path = @$_POST['path'];
 
 echo "<form method=\"post\" action=\"trasaedit.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
 echo "Odkud: <select name=\"from\">";
-$query0 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du) ORDER BY stop_name;";
+$query0 = "SELECT stop_id, sortname, pomcode FROM stop WHERE stop_id IN (SELECT stop1 FROM du) ORDER BY sortname;";
 if ($result0 = mysqli_query ($link, $query0)) {
 	while ($row0 = mysqli_fetch_row ($result0)) {
 		$kodf = $row0[0];
@@ -36,6 +36,7 @@ switch ($action) {
 		$start = $_POST['start'];
 		$end = $_POST['end'];
 		$newpoint = $_POST['newpoint'];
+		$coord = $_POST['coord'];
 
 		$path = "";
 		for ($y = 1; $y < $pocet; $y++) {
@@ -51,24 +52,32 @@ switch ($action) {
 		}
 		$path = substr($path, 0, -1);
 
-		if ($start == "1") {
-			$query54 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
-			if ($result54 = mysqli_query($link, $query54)) {
-				$row54 = mysqli_fetch_row($result54);
-				$lat = $row54[0];
-				$lon = $row54[1];
+		if ($coord != "") {
+			if ($start == "1") {
+				$path = "$coord;".$path; 
 			}
-			$path = "$lon,$lat;".$path; 
-		}
-
-		if ($end == "1") {
-			$query64 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
-			if ($result64 = mysqli_query($link, $query64)) {
-				$row64 = mysqli_fetch_row($result64);
-				$lat = $row64[0];
-				$lon = $row64[1];
+			if ($end == "1") {
+				$path = $path.";$coord"; 
 			}
-			$path = $path.";$lon,$lat"; 
+		} else {
+			if ($start == "1") {
+				$query54 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
+				if ($result54 = mysqli_query($link, $query54)) {
+					$row54 = mysqli_fetch_row($result54);
+					$lat = $row54[0];
+					$lon = $row54[1];
+				}
+				$path = "$lon,$lat;".$path; 
+			}
+			if ($end == "1") {
+				$query64 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$newpoint';";
+				if ($result64 = mysqli_query($link, $query64)) {
+					$row64 = mysqli_fetch_row($result64);
+					$lat = $row64[0];
+					$lon = $row64[1];
+				}
+				$path = $path.";$lon,$lat"; 
+			}
 		}
 
 		$body = explode (";", $path);
@@ -103,7 +112,7 @@ switch ($action) {
 
 		}
 		echo "<input type=\"checkbox\" name=\"start\" value=\"1\"><select name=\"newpoint\">";
-		$query229 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
+		$query229 = "SELECT stop_id, sortname, pomcode FROM stop ORDER BY sortname;";
 		if ($result229 = mysqli_query ($link, $query229)) {
 			while ($row229 = mysqli_fetch_row ($result229)) {
 				$kodn = $row229[0];
@@ -116,7 +125,7 @@ switch ($action) {
 			echo "Error description: " . mysqli_error($link);
 		}
 
-		echo "</select><input type=\"checkbox\" name=\"end\" value=\"1\">";
+		echo "</select><input type=\"text\" name=\"coord\"><input type=\"checkbox\" name=\"end\" value=\"1\">";
 		$count = $j + 1;
 		echo "<input type=\"hidden\" name=\"pocet\" value=\"$count\">";
 		echo "<input type=\"submit\"></form>";
@@ -166,7 +175,7 @@ switch ($action) {
 	case "odkud":
 		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
 		echo "Kam: <select name=\"to\">";
-		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from') ORDER BY stop_name;";
+		$query1 = "SELECT stop_id, sortname, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from') ORDER BY sortname;";
 		echo $query1;
 		if ($result1 = mysqli_query ($link, $query1)) {
 			while ($row1 = mysqli_fetch_row ($result1)) {
@@ -191,7 +200,7 @@ switch ($action) {
 	case "kam" : 
 		echo "<form method=\"post\" action=\"trasaedit.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
 		echo "Kam: <select name=\"to\">";
-		$query1 = "SELECT stop_id, stop_name, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from') ORDER BY stop_name;";
+		$query1 = "SELECT stop_id, sortname, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from') ORDER BY sortname;";
 		echo $query1;
 		if ($result1 = mysqli_query ($link, $query1)) {
 			while ($row1 = mysqli_fetch_row ($result1)) {
@@ -265,7 +274,7 @@ switch ($action) {
 
 		}
 		echo "<input type=\"checkbox\" name=\"start\" value=\"1\"><select name=\"newpoint\">";
-		$query229 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
+		$query229 = "SELECT stop_id, sortname, pomcode FROM stop ORDER BY sortname;";
 		if ($result229 = mysqli_query ($link, $query229)) {
 			while ($row229 = mysqli_fetch_row ($result229)) {
 				$kodn = $row229[0];
@@ -278,7 +287,7 @@ switch ($action) {
 			echo "Error description: " . mysqli_error($link);
 		}
 
-		echo "</select><input type=\"checkbox\" name=\"end\" value=\"1\">";
+		echo "</select><input type=\"text\" name=\"coord\"><input type=\"checkbox\" name=\"end\" value=\"1\">";
 		$count = $j + 1;
 		echo "<input type=\"hidden\" name=\"pocet\" value=\"$count\">";
 		echo "<input type=\"submit\"></form>";

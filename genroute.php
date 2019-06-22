@@ -234,7 +234,6 @@ if ($spoje) {
 			$smer = 0;
 		}
 
-		echo "$trip_id<br/>";
 		$matrix = "";
 
 		$maticestart = date_create('1 week ago');
@@ -402,9 +401,7 @@ if ($spoje) {
 					$datumdo = $datumod;
 				}
 
-				echo substr($trip_id, 0, -6) . " = " . $caskod_trip_id;
 				if (substr($trip_id, 0, -6) == $caskod_trip_id) {
-					echo "407: $caskod | $typkodu | $datumod | $datumdo<br/>";
 					switch ($typkodu) {
 						case "1" :
 							$timeod = date_create_from_format('dmY', $datumod);
@@ -549,7 +546,7 @@ if ($spoje) {
 			} 
 		}
 
-		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '$wheelchair','$bike', '0');";
+		$query64 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active, spoj) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '$wheelchair','$bike', '0', '$tripspoj');";
 		$prikaz64 = mysqli_query ($link, $query64);
 	}
 	fclose ($spoje);
@@ -689,7 +686,7 @@ if ($zasspoje) {
 		$spoj = $zastspoj[1];
 		$trip_find = $linka.$spoj;
 		$trip_id = "";
-		$query601 = "SELECT trip_id FROM trip WHERE route_id = '$label$linka';";
+		$query601 = "SELECT trip_id FROM trip WHERE spoj = '$trip_find';";
 		if ($result601 = mysqli_query($link, $query601)) {
 			while ($row601 = mysqli_fetch_row($result601)) {
 				$trip_id = $row601[0];
