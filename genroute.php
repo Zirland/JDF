@@ -20,14 +20,6 @@ if ($dir < 100000) {
 }
 
 $svatek = array (
-"24122018",
-"25122018",
-"26122018",
-"01012019",
-"19042019",
-"22042019",
-"01052019",
-"08052019",
 "05072019",
 "06072019",
 "28092019",
@@ -77,7 +69,7 @@ $svatek = array (
 "26122022"
 );
 
-$cististop = mysqli_query ($link, "TRUNCATE TABLE pomstop;");
+//$cististop = mysqli_query ($link, "TRUNCATE TABLE pomstop;");
 
 $version = fopen ("$dir/VerzeJDF.txt.txt", 'r');
 if ($version) {
@@ -598,7 +590,7 @@ if ($zastavky) {
 		$lastPK = explode (';', $zastav[11]);
 		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";
 
-		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$zastav_no', '$zast_name', '$zastPK');";
+		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$route_id$zastav_no', '$zast_name', '$zastPK');";
 		$prikaz236 = mysqli_query ($link, $query236);
 	}
 	fclose ($zastavky);
@@ -627,7 +619,7 @@ if ($zaslinky) {
 		$zastporadi = $zastavlin[3];
 		$zastcode = $zastavlin[7];
 		$stop_id = $linka_id.$zastporadi."P".$zastcode;
-		$hledejpom = "SELECT stop_name, stop_PK FROM pomstop WHERE pom_cislo = '$zastcode';";
+		$hledejpom = "SELECT stop_name, stop_PK FROM pomstop WHERE pom_cislo = '$linka_id$zastcode';";
 		$najdipom = mysqli_fetch_row(mysqli_query ($link, $hledejpom));
 		$stop_name = $najdipom[0];
 		$zastPK = $najdipom[1];
