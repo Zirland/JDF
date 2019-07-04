@@ -2,7 +2,12 @@
 <html>
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<title>GTFS</title>
+	<title>JDF</title>
+	<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+	<script type="text/javascript">
+		Loader.lang = "cs";
+		Loader.load();
+	</script>
 </head>
 <body>
 

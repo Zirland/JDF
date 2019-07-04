@@ -51,7 +51,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 					echo "</span>";
 				}
 				if ($od_time <= $today && $vyluka == "0") {
-					$halt = 1;
+					// $halt = 1;
 				}
 			}
 		}

@@ -202,17 +202,12 @@ if ($result79 = mysqli_query ($link, $query79)) {
 }
 
 
-echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a>";
-
-echo "<form method=\"post\" action=\"ukonci.php\" name=\"konec\"><input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
-echo "Naposledy jede <input type=\"text\" name=\"datumod\" value=\"31122019\">";
-echo "<input type=\"submit\"></form><br/>";
-echo "<table>";
-echo "<tr><td>";
+echo "<a href=\"gentrip.php?route=$route_id\" target=\"_blank\">Generovat trasy</a><br/>";
 
 echo "<form method=\"post\" action=\"routeedit.php\" name=\"zastavky\"><input name=\"action\" value=\"zastavky\" type=\"hidden\"><input name=\"route_id\" value=\"$route_id\" type=\"hidden\">";
 $z = 0;
-
+echo "<table>";
+echo "<tr><td>";
 echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
 
 $query63 = "SELECT * FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '0') ORDER BY stop_poradi;";
@@ -225,7 +220,7 @@ if ($result63 = mysqli_query ($link, $query63)) {
 		echo "<tr><td>";
 		echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
 		echo "$stop_name</td><td>";
-		echo "<select name=\"stop_vazba$z\">";
+		echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
 		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
 		if ($result82 = mysqli_query ($link, $query82)) {
@@ -260,7 +255,7 @@ if ($result63 = mysqli_query ($link, $query63)) {
 		echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
 		echo "$stop_name</td><td>";
 
-		echo "<select name=\"stop_vazba$z\">";
+		echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
 		echo "<option value=\"\">---</option>";
 		$query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
 		if ($result82 = mysqli_query ($link, $query82)) {
@@ -281,7 +276,10 @@ if ($result63 = mysqli_query ($link, $query63)) {
 		echo "</td></tr>";
 	}
 }
-echo "</table><input type=\"hidden\" name=\"pocet\" value=\"$z-1\"><input type=\"submit\"></form></td></tr></table>";
+
+echo "</table><input type=\"hidden\" name=\"pocet\" value=\"$z-1\"><input type=\"submit\"></form>";
+echo "</td><td><div id=\"mapa\" style=\"width:1280px; height:960px;\"></div><br/><div id=\"text\"></div>";
+echo "</td></tr></table>";
 
 echo "<table>";
 echo "<tr><th>Linky odchozí</th><th>Linky příchozí</th></tr>";
@@ -294,21 +292,10 @@ if ($result80 = mysqli_query ($link, $query80)) {
 		$trip_headsign = $row80[3];
 		$trip_aktif = $row80[10];
 
-/*		$pomstartstop = mysqli_fetch_row (mysqli_query ($link, "SELECT MIN(stop_sequence) FROM stoptime WHERE (trip_id = '$trip_id');"));
-		$startstopno = $pomstartstop[0];
-
-		$pomfinstop=mysqli_fetch_row (mysqli_query ($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip_id' AND stop_sequence='$startstopno');"));
-		$finstopid=$pomfinstop[0];
-
-		$query15 = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
-		$result15 = mysqli_query ($link, $query15);
-		$pomhead = mysqli_fetch_row ($result15);
-		$from = $pomhead[0];
-*/
 		if ($trip_aktif == '1') {
 			echo "<span style=\"background-color:green;\">";
 		}
-//		echo "$from - ";
+
 		echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {
 			echo "</span>";
@@ -323,22 +310,11 @@ if ($result96 = mysqli_query ($link, $query96)) {
 		$trip_id = $row96[2];
 		$trip_headsign = $row96[3];
 		$trip_aktif = $row96[10];
-				
-/*		$pomstartstop = mysqli_fetch_row (mysqli_query ($link, "SELECT MIN(stop_sequence) FROM stoptime WHERE (trip_id = '$trip_id');"));
-		$startstopno = $pomstartstop[0];
 
-		$pomfinstop=mysqli_fetch_row (mysqli_query ($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip_id' AND stop_sequence='$startstopno');"));
-		$finstopid=$pomfinstop[0];
-
-		$query15 = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
-		$result15 = mysqli_query ($link, $query15);
-		$pomhead = mysqli_fetch_row ($result15);
-		$from = $pomhead[0];
-*/
 		if ($trip_aktif == '1') {
 			echo "<span style=\"background-color:green;\">";
 		}
-//		echo "$from - ";
+
 		echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
 		if ($trip_aktif == '1') {
 			echo "</span>";
@@ -347,5 +323,85 @@ if ($result96 = mysqli_query ($link, $query96)) {
 }
 echo "</td></tr></table>";
 
+?>
+
+
+<script type="text/javascript">
+	function SelectElement(id, valueToSelect)
+	{
+		var element = document.getElementById(id);
+		element.value = valueToSelect;
+	}
+
+	function addMarker(nazev, id, x, y) {
+		var options = {
+			title: nazev
+		};
+
+		var pozice = SMap.Coords.fromWGS84(Number(x), Number(y));
+		var marker = new SMap.Marker(pozice, id, options);
+		layer.addMarker(marker);
+		markers.push(pozice);
+	}
+
+	function select(e) {
+		var marker = e.target;
+		var id = marker.getId();
+
+		var focused = document.activeElement;
+		if (!focused || focused == document.body)
+			focused = null;
+		else if (document.querySelector)
+			focused = document.querySelector(":focus");
+
+		if (poradi == "")
+			oznaceno = focused.name;
+		else
+			oznaceno = "stop_vazba" + poradi;
+		document.getElementById("text").innerHTML = focused.name + ' = ' + oznaceno;
+		SelectElement(oznaceno, id);
+		poradi = oznaceno.replace(/stop_vazba/g,"");
+		poradi = Number(poradi) + 1;
+	}
+
+	var poradi = "";
+	var stred = SMap.Coords.fromWGS84(14.41, 50.08);
+	var mapa = new SMap(JAK.gel("mapa"));
+	mapa.addDefaultLayer(SMap.DEF_BASE).enable();
+
+	mapa.addControl(new SMap.Control.Sync());
+	var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
+	mapa.addControl(mouse);
+
+	var layer = new SMap.Layer.Marker();
+	mapa.addLayer(layer);
+	layer.enable();
+	var markers = [];
+
+<?php
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop WHERE obec = 'Opava' ORDER BY stop_id;";
+if ($result30 = mysqli_query($link, $query30)) {
+	while ($row30 = mysqli_fetch_row($result30)) {
+		$stop_id = $row30[0];
+		$stop_name = $row30[1];
+		$longitude = $row30[2];
+		$latitude = $row30[3];
+
+		echo "addMarker('$stop_name', '$stop_id', $longitude, $latitude);\n";
+	}
+}
+
+?>
+
+	var cz = mapa.computeCenterZoom(markers);
+	mapa.setCenterZoom(cz[0], cz[1]);
+
+	var signals = mapa.getSignals();
+	signals.addListener(window, "marker-click", select);
+
+</script>
+
+
+<?php
 include 'footer.php';
 ?>
