@@ -21,6 +21,12 @@ if (!$link) {
 
 $token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
 
+$filtr = $_POST['filtr'];
+
+if ($filtr != '') {
+	$query27 = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
+	$prikaz27 = mysqli_query($link, $query27);
+}
 ?>
 
 <table style="width:100%; height:100%;">
@@ -50,5 +56,35 @@ TRASY<br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
 <a href="trasaedit.php">Editace trasy</a><br/>
 <a href="usek.php">Detail úseku</a><br/>
+
+<hr/>
+
+<?php
+$query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
+if ($result63 = mysqli_query($link, $query63)) {
+	while ($row63 = mysqli_fetch_row($result63)) {
+		$value = $row63[0];
+	}
+}
+
+
+echo "<form method=\"post\" action=\"\" name=\"filtr\">";
+echo "<select name=\"filtr\">";
+
+$query74 = "SELECT obec FROM stop GROUP BY obec ORDER BY obec;";
+if ($result74 = mysqli_query($link, $query74)) {
+	while ($row74 = mysqli_fetch_row($result74)) {
+		$obec = $row74[0];
+
+		echo "<option value=\"$obec\"";
+		if ($obec == $value) {
+			echo " SELECTED";
+		}
+		echo ">$obec</option>";
+	}
+}
+
+echo "<input type=\"submit\"></form>";
+?>
 </td>
 <td>
