@@ -358,8 +358,8 @@ echo "</td></tr></table>";
 			oznaceno = focused.name;
 		else
 			oznaceno = "stop_vazba" + poradi;
-		document.getElementById("text").innerHTML = focused.name + ' = ' + oznaceno;
 		SelectElement(oznaceno, id);
+		document.getElementById(oznaceno).style = "background-color:green;";
 		poradi = oznaceno.replace(/stop_vazba/g,"");
 		poradi = Number(poradi) + 1;
 	}

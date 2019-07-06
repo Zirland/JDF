@@ -153,7 +153,7 @@ if ($linky) {
 
 		$route_id = $route_no.$linkano;
 
-		$query134 = "SELECT route_color FROM barvy WHERE route_id = '$route_id';";
+		$query134 = "SELECT route_color FROM barvy WHERE route_id = '$label$route_id';";
 		if ($result134 = mysqli_query ($link, $query134)) {
 			$row134 = mysqli_fetch_row ($result134);
 			$radku134 = mysqli_num_rows ($result134);
