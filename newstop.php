@@ -125,7 +125,7 @@ echo "</table>";
 		document.getElementById("stoplat").value = souradnice_y;
 		document.getElementById("stoplon").value = souradnice_x;
 
-		pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
+		var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
 		mapa.setCenter(pozice);
 	}
 
