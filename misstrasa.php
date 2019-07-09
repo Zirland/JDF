@@ -4,8 +4,6 @@ include 'header.php';
 $action = @$_POST['action'];
 $from = @$_POST['from'];
 $to = @$_POST['to'];
-$via = @$_POST['via'];
-$pass = @$_POST['pass'];
 $path = @$_POST['path'];
 
 echo "<form method=\"post\" action=\"misstrasa.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
@@ -32,7 +30,17 @@ echo "<input type=\"submit\"></form>";
 
 switch ($action) {
 	case "uloz":
-		$query51 = "UPDATE du SET via = '$pass', path = '$path', final = '1' WHERE stop1 = '$from' AND stop2 = '$to';";
+		$body = explode("),(", $path);
+		$pass = "";
+		foreach ($body as $point) {
+			$upr_point = str_replace(")", "", $point);
+			$upr_point2 = str_replace("(", "", $upr_point);
+
+			$pass .= $upr_point2.";";
+		}
+
+		$pass = substr($pass, 0, -1);
+		$query51 = "UPDATE du SET path = '$pass', final = '1' WHERE stop1 = '$from' AND stop2 = '$to';";
 		$zapis51 = mysqli_query ($link, $query51);
 		$query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartrasy LIKE '%$from|$to|%';";
 		$zapis54 = mysqli_query ($link, $query54);
@@ -85,27 +93,6 @@ switch ($action) {
 		}
 
 		echo "</select>";
-		echo "Přes: <select name=\"via\">";
-		echo "<option value=\"\">---</option>";
-		$query2 = "SELECT stop_id, stop_name, pomcode FROM stop ORDER BY stop_name;";
-		if ($result2 = mysqli_query ($link, $query2)) {
-			while ($row2 = mysqli_fetch_row ($result2)) {
-				$kodv = $row2[0];
-				$nazevv = $row2[1];
-				$codev = $row2[2];
-				echo "<option value=\"$kodv\"";
-				if ($kodv == $via) {
-					echo " SELECTED";
-				}
-				echo ">$nazevv $codev $kodv</option>";
-			}
-			mysqli_free_result($result2);
-		} else {
-			echo "Error description: " . mysqli_error($link);
-		}
-
-		echo "</select>";
-
 		echo "<input type=\"submit\"></form>";
 
 		$query47 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$from';";
@@ -120,30 +107,13 @@ switch ($action) {
 			$tolat = $row53[0];
 			$tolon = $row53[1];
 		}
-		$query128 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$via';";
-		if ($result128 = mysqli_query($link, $query128)) {
-			$row128 = mysqli_fetch_row($result128);
-			$vialat = $row128[0];
-			$vialon = $row128[1];
-		}
 
-
-		$prujezdy = $fromlon.",".$fromlat."|";
-		if ($via != "") {
-			$pass = $vialon.",".$vialat;
-			$prujezdy .= $pass."|";
-		} else {
-			$query96 = "SELECT via,du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
-			$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
-			$pass = $pom96[0];
-			$du_id = $pom96[1];
-
-			if ($pass != "") {
-				$prujezdy .= $pass."|";
-			}
-		}
-
+		$query96 = "SELECT du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
+		$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
+		$du_id = $pom96[0];
 		echo "$du_id<br/>";
+
+		$prujezdy = $fromlon.",".$fromlat."|".$tolon.",".$tolat;
 
 		$query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
 		if ($result146 = mysqli_query($link, $query146)) {
@@ -155,87 +125,56 @@ switch ($action) {
 			}
 			echo "$count<br/>";
 		} 
+?>
 
-		$prujezdy .= $tolon.",".$tolat;
+<div id="m" style="height:800px"></div>
 
-		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
+<script type="text/javascript">
+	function click(e, elm) {
+		var click_coords = SMap.Coords.fromEvent(e.data.event, m);
 
-		$contents = file_get_contents($url);
-//		$contents = utf8_encode($contents);
-		$results = json_decode($contents, TRUE);
+		skrz.push(click_coords);
+		sour = [];
+		sour.push(first);
+		var jizda = sour.concat(skrz);
+		jizda.push(last);
 
-		$trasa = "";
-		$souradnice = $results["routes"][0]["geometry"]["coordinates"];
-		foreach ($souradnice as $bod) {
-			$X = $bod[0];
-			$Y = $bod[1];
+		SMap.Route.route(jizda, {
+		geometry: true
+	}).then(nalezeno);
+}
 
-			$trasa .= "$X,$Y;";
-		}
-		$trasa = substr ($trasa, 0, -1);
-		$body = explode (";", $trasa);
+	var skrz = [];
+	var centerMap = SMap.Coords.fromWGS84(14.40, 50.08);
+	var m = new SMap(JAK.gel("m"), centerMap, 16);
+	var l = m.addDefaultLayer(SMap.DEF_BASE).enable();
+	m.addDefaultControls();
 
-		$xmin = 20;
-		$xmax = 0;
-		$ymin = 60;
-		$ymax = 0;
-		foreach ($body as $point) {
-			$point = explode (",", $point);
-			$pt_x = $point[0];
-			$pt_y = $point[1];
-			
-			if ($pt_x < $xmin) {
-				$xmin = $pt_x;
-			}
-			if ($pt_y < $ymin) {
-				$ymin = $pt_y;
-			}
-			if ($pt_x > $xmax) {
-				$xmax = $pt_x;
-			}
-			if ($pt_y > $ymax) {
-				$ymax = $pt_y;
-			}
-		}
-/*
-		$box = $results["bbox"];
-		$xmin = $box[0];
-		$ymin = $box[1];
-		$xmax = $box[2];
-		$ymax = $box[3];*/
-		$deltax = $xmax - $xmin;
-		$deltay = $ymax - $ymin;
+	m.getSignals().addListener(window, "map-click", click);
 
-		echo "<canvas id=\"a\" width=\"800\" height=\"600\">";
-		echo "This text is displayed if your browser does not support HTML5 Canvas.";
-		echo "</canvas>";
-		echo "<script type='text/javascript'>";
-		echo "	var a_canvas = document.getElementById(\"a\");";
-		echo "	var context = a_canvas.getContext(\"2d\");";
+	var nalezeno = function(route) {
+		var vrstva = new SMap.Layer.Geometry();
+		m.addLayer(vrstva).enable();
 
-		$i = 0;
-		foreach ($body as $point) {
-			$point = explode (",", $point);
-			$pt_x = $point[0];
-			$pt_y = $point[1];
-			
-			$coorx = 784 * (($pt_x - $xmin) / $deltax) + 8;
-			$coory = 600 - (584 * (($pt_y - $ymin) / $deltay) + 8);
-			if ($i == 0) {
-				echo "context.beginPath();";
-				echo "context.moveTo($coorx,$coory);";
-			}
-			if ($i > 0) {
-				echo "context.lineTo($coorx,$coory);";
-			}
-			$i = $i + 1;
-		}
-//		echo "context.closePath();";
-		echo "context.strokeStyle = \"#000\";";
-		echo "context.stroke();";
-		echo "</script>";
+		var coords = route.getResults().geometry;
+		document.getElementById("path").value = coords;
+		var cz = m.computeCenterZoom(coords);
+		m.setCenterZoom(cz[0], cz[1]);
+		var g = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, null, coords);
+		vrstva.addGeometry(g);
+	};
 
-		echo "<form method=\"post\" action=\"misstrasa.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input name=\"via\" value=\"$via\" type=\"hidden\"><input name=\"pass\" value=\"$pass\" type=\"hidden\"><input name=\"path\" value=\"$trasa\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
+	var first = SMap.Coords.fromWGS84(<?php echo "$fromlon, $fromlat"; ?>);
+	var last = SMap.Coords.fromWGS84(<?php echo "$tolon, $tolat"; ?>);
+	var coords = [first,last];
+
+	SMap.Route.route(coords, {
+		geometry: true
+	}).then(nalezeno);
+</script>
+
+<?php
+		echo "<form method=\"post\" action=\"misstrasa.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input id=\"path\" name=\"path\" value=\"\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
 	break;
 }
 

@@ -48,7 +48,9 @@ LINKY<br/>
 <a href="_step1.php">Manuální linka</a><br/>
 <a href="import.php">Import linky</a><br/>
 TRASY<br/>
+<a href="trasa.php">Trasy</a><br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
+<a href="usek.php">Detail úseku</a><br/>
 <hr/>
 
 <?php
