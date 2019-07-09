@@ -6,7 +6,7 @@
 	<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
 	<script type="text/javascript">
 		Loader.lang = "cs";
-		Loader.load();
+		Loader.load(null, {poi:true});
 	</script>
 </head>
 <body>
@@ -41,22 +41,14 @@ if ($filtr != '') {
 <a href="cisti.php">Čisti</a><br/>
 STOPS<br/>
 <a href="newstop.php">Newstop</a><br/>
-<a href="imported.php">Imported</a><br/>
-<a href="stoprename.php">Stop rename</a><br/>
 LINKY<br/>
 <a href="analist_fresh.php">Analýza fresh</a><br/>
 <a href="analist_regen.php">Analýza regen</a><br/>
 <a href="analist_new.php">Analýza new</a><br/>
 <a href="_step1.php">Manuální linka</a><br/>
 <a href="import.php">Import linky</a><br/>
-<a href="headsigns.php">Headsigns</a><br/>
-<a href="vozovna.php">Vozovna</a><br/>
 TRASY<br/>
-<a href="trasa.php">Trasy</a><br/>
 <a href="misstrasa.php">Chybějící trasy</a><br/>
-<a href="trasaedit.php">Editace trasy</a><br/>
-<a href="usek.php">Detail úseku</a><br/>
-
 <hr/>
 
 <?php

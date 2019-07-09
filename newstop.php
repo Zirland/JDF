@@ -129,8 +129,6 @@ echo "</table>";
 		mapa.setCenter(pozice);
 	}
 
-//	SelectElement(oznaceno, id);
-
 <?php
 	if (isset($stoplon) && isset($stoplat)) {
 		echo "var stred = SMap.Coords.fromWGS84($stoplon, $stoplat);\n";
@@ -161,11 +159,22 @@ echo "</table>";
 	layer.enable();
 
 	var options = {
-		title: "$misto"
+		title: ""
 	};
 	var marker = new SMap.Marker(stred, "myMarker", options);
 	marker.decorate(SMap.Marker.Feature.Draggable);
 	layer.addMarker(marker);
+
+	var layer2 = new SMap.Layer.Marker(undefined, {
+		poiTooltip: true
+	});
+	mapa.addLayer(layer2).enable();
+
+	var dataProvider = mapa.createDefaultDataProvider();
+	dataProvider.setOwner(mapa);
+	dataProvider.addLayer(layer2);
+	dataProvider.setMapSet(SMap.MAPSET_BASE);
+	dataProvider.enable();
 
 	var signals = mapa.getSignals();
 	signals.addListener(window, "marker-drag-stop", stop);
