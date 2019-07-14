@@ -115,6 +115,7 @@ switch ($action) {
 
 		$prujezdy = $fromlon.",".$fromlat."|".$tolon.",".$tolat;
 
+		echo "<details>";
 		$query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
 		if ($result146 = mysqli_query($link, $query146)) {
 			$count = mysqli_num_rows($result146);
@@ -123,7 +124,7 @@ switch ($action) {
 
 				echo "$trip_id > ";
 			}
-			echo "$count<br/>";
+			echo "<summary>$count</summary></details>";
 		} 
 ?>
 
