@@ -21,7 +21,9 @@ switch ($action) {
 			$upr_point = str_replace(")", "", $point);
 			$upr_point2 = str_replace("(", "", $upr_point);
 
-			$pass .= $upr_point2.";";
+			if ($upr_point2 != "") {
+				$pass .= $upr_point2.";";
+			}
 		}
 
 		$pass = substr($pass, 0, -1);
@@ -122,9 +124,15 @@ switch ($action) {
 		var marker = e.target;
 		var id = marker.getId();
 		vrstva.removeMarker(marker);
-		markers.splice(id, 1);
+		markers[id] = "()";
 
 		vystup();
+	}
+
+	function removePoint(id) {
+		markers[id] = "()";
+
+		vystup("1");
 	}
 
 	function start(e) {
@@ -148,13 +156,18 @@ switch ($action) {
 		vystup();
 	}
 
-	function vystup() {
-		var vystup = "";
-		for (var i = 0; i < markers.length; i++) {
-			vystup += i + ": " + markers[i] + "<br/>";
+	function vystup(open) {
+		var vystup = "<details";
+		if (open == "1") {
+			vystup += " open";
 		}
+		vystup += "><summary>Points</summary>";
+		for (var i = 0; i < markers.length; i++) {
+			vystup += i + ": " + markers[i] + "<input type=\"button\" onClick=\"removePoint(" + i + ")\"><br/>";
+		}
+		vystup += "</details>";
 
-//		document.getElementById("text").innerHTML = vystup;
+		document.getElementById("text").innerHTML = vystup;
 		document.getElementById("path").value = markers;
 	}
 

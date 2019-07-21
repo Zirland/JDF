@@ -358,6 +358,10 @@ echo "</td></tr></table>";
 			oznaceno = focused.name;
 		else
 			oznaceno = "stop_vazba" + poradi;
+		if (oldfocus != focused.name) {
+			oznaceno = focused.name;
+			oldfocus = focused.name;
+		}
 		SelectElement(oznaceno, id);
 		document.getElementById(oznaceno).style = "background-color:green;";
 		poradi = oznaceno.replace(/stop_vazba/g,"");
@@ -365,6 +369,7 @@ echo "</td></tr></table>";
 	}
 
 	var poradi = "";
+	var oldfocus = "";
 	var stred = SMap.Coords.fromWGS84(14.41, 50.08);
 	var mapa = new SMap(JAK.gel("mapa"));
 	mapa.addDefaultLayer(SMap.DEF_BASE).enable();
