@@ -146,6 +146,11 @@ switch ($action) {
 			$vialon = $row128[1];
 		}
 
+		$query96 = "SELECT du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
+		$pom96 = mysqli_fetch_row (mysqli_query ($link, $query96));
+		$du_id = $pom96[0];
+		echo "$du_id<br/>";
+
 
 		$prujezdy = $fromlon.",".$fromlat."|";
 		if ($via != "") {
@@ -168,7 +173,7 @@ switch ($action) {
 
 		$prujezdy .= $stred.$tolon.",".$tolat;
 
-		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
+//		$url = "https://api.openrouteservice.org/directions?api_key=$token&coordinates=$prujezdy&profile=driving-car&preference=fastest&format=json&units=m&language=en&geometry=true&geometry_format=geojson&geometry_simplify=false&instructions=false&instructions_format=text&roundabout_exits=&attributes=&maneuvers=&radiuses=&bearings=&continue_straight=&elevation=&extra_info=&optimized=true&options=%7B%7D&id=";
 
 		$contents = file_get_contents($url);
 //		$contents = utf8_encode($contents);

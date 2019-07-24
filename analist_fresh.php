@@ -12,7 +12,17 @@ $dnes_mesic = date ("n", time ());
 $dnes_rok = date ("Y", time ());
 $today = mktime (0,0,0,$dnes_mesic,$dnes_den,$dnes_rok);
 
-$list = "103,289,421,425,505,515,516,556,557,558,595,872,875,876,877,878,905,910,915";
+$list_arr = [];
+$query15 = "SELECT substring(route_id, 1, 3) as prefix FROM anal_done GROUP BY prefix;";
+if ($result15 = mysqli_query($link, $query15)) {
+	while($row15 = mysqli_fetch_row($result15)) {
+		$prefix = $row15[0];
+
+		$list_arr[] = $prefix;
+	}
+}
+
+$list = implode(',', $list_arr);
 
 $query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE SUBSTRING(route_id, 1, 3) IN ($list) AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query ($link, $query6)) {
@@ -26,7 +36,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 		$halt = 0;
 		$label = "";
 
-		$query11 = "SELECT DISTINCT dir, verze, datumod, datumdo, vyluka FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC;";
+		$query11 = "SELECT DISTINCT dir, verze, datumod, datumdo, vyluka FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC, datumdo;";
 		if ($result11 = mysqli_query ($link, $query11)) {
 			while ($row11 = mysqli_fetch_row ($result11)) {
 				$dir = $row11[0];
@@ -76,7 +86,7 @@ if ($result6 = mysqli_query ($link, $query6)) {
 		$halt = 0;
 		$label = "";
 
-		$query11 = "SELECT DISTINCT dir, verze, datumod, datumdo, vyluka FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC;";
+		$query11 = "SELECT DISTINCT dir, verze, datumod, datumdo, vyluka FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC, datumdo;";
 		if ($result11 = mysqli_query ($link, $query11)) {
 			while ($row11 = mysqli_fetch_row ($result11)) {
 				$dir = $row11[0];

@@ -2,13 +2,11 @@
 include 'header.php';
 
 $dnes = date("Y-m-d", time());
-$dnessrt = date("Ymd", time());
 $tyden = date("Y-m-d", strtotime("+ 1 week"));
 
 $query11 = "DELETE FROM jizdy WHERE datum < '$dnes';";
 $prikaz11 = mysqli_query($link, $query11);
 
-$prepare31 = mysqli_query($link, "DROP TABLE tyden;");
 $prepare32 = mysqli_query($link, "CREATE TABLE tyden AS (SELECT * FROM jizdy WHERE datum<'$tyden');");
 
 $query40 = "SELECT id FROM tyden LEFT OUTER JOIN (SELECT MAX(id) as RowId, spoj, datum FROM tyden GROUP BY spoj, datum) as KeepRows ON tyden.id = KeepRows.RowId WHERE KeepRows.RowId IS NULL;";
@@ -28,54 +26,9 @@ if ($result22 = mysqli_query($link, $query22)) {
 	while ($row22 = mysqli_fetch_row($result22)) {
 		$trip_id = $row22[0];
 
-		$query = "SELECT matice,trip_id FROM trip WHERE trip_id = '$trip_id';";
-		if ($result = mysqli_query ($link, $query)) {
-			while ($row = mysqli_fetch_row ($result)) {
-				$matice = $row[0];
-				$trip_id = $row[1];
 
-				$matice_start = mktime (0,0,0,12,3,2017);
-				$matice_end = mktime (0,0,0,1,12,2019);
-
-				$dnes_den = date ("j", time ());
-				$dnes_mesic = date ("n", time ());
-				$dnes_rok = date ("Y", time ());
-
-				$calendar_start = mktime (0,0,0,$dnes_mesic,$dnes_den,$dnes_rok);
-
-				$sek = $calendar_start - $matice_start;
-				$min = floor ($sek / 60);
-				$sek = $sek % 60;
-				$hod = floor ($min / 60);
-				$min = $min % 60;
-				$dni = floor ($hod / 24);
-				$hod = $hod % 24;
-
-				$sek2 = $matice_end - $matice_start;
-				$min2 = floor ($sek2 / 60);
-				$sek2 = $sek2 % 60;
-				$hod2 = floor ($min2 / 60);
-				$min2 = $min2 % 60;
-				$dni2 = floor ($hod2 / 24);
-				$hod2 = $hod2 % 24;
-
-				$zbyva = $dni2 - $dni;
-				$aktual = substr ($matice,$dni + 1,$zbyva);
-
-				$soucet = 0;
-				$rozklad = str_split ($aktual);
-				foreach ($rozklad as $den) {
-					$soucet = $soucet + $den;
-				}
-
-				if ($soucet == 0) {
-					echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a> = $soucet<br/>";
-
-					$prikaz = mysqli_query ($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
-//					$prikaz = mysqli_query ($link, "UPDATE trip SET active=0 WHERE trip_id = '$trip_id';");
-				}
-			}
-		}
+		echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a> = $soucet<br/>";
+		$prikaz = mysqli_query ($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
 	}
 }
 
@@ -98,6 +51,21 @@ $prikaz67 = mysqli_query($link, $query67);
 
 $query160 = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
 $prikaz160 = mysqli_query($link, $query160);
+
+$query68 = "SELECT du_id, stop1, stop2 FROM du WHERE final = 1;";
+if ($result68 = mysqli_query($link, $query68)) {
+	while ($row68 = mysqli_fetch_row($result68)) {
+		$du_id = $row68[0];
+		$stop1 = $row68[1];
+		$stop2 = $row68[2];
+
+		$query75 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$stop1|$stop2|%';";
+		$hits = mysqli_num_rows(mysqli_query($link, $query75));
+		if ($hits == 0) {
+			$purge_du = mysqli_query($link, "DELETE FROM du WHERE du_id = $du_id;");
+		}
+	}
+}
 
 echo "== Konec ==";
 include 'footer.php';

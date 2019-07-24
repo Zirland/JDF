@@ -69,8 +69,6 @@ $svatek = array (
 "26122022"
 );
 
-//$cististop = mysqli_query ($link, "TRUNCATE TABLE pomstop;");
-
 $version = fopen ("$dir/VerzeJDF.txt.txt", 'r');
 if ($version) {
 	while (($buffer0 = fgets ($version, 4096)) !== false) {
@@ -155,7 +153,7 @@ if ($linky) {
 
 		$route_id = $route_no.$linkano;
 
-		$query134 = "SELECT route_color FROM barvy WHERE route_id = '$route_id';";
+		$query134 = "SELECT route_color FROM barvy WHERE route_id = '$label$route_id';";
 		if ($result134 = mysqli_query ($link, $query134)) {
 			$row134 = mysqli_fetch_row ($result134);
 			$radku134 = mysqli_num_rows ($result134);
@@ -590,6 +588,8 @@ if ($zastavky) {
 		$lastPK = explode (';', $zastav[11]);
 		$zastPK = "-".$zastav[6]."-".$zastav[7]."-".$zastav[8]."-".$zastav[9]."-".$zastav[10]."-".$lastPK[0]."-";
 
+		$query591 = "DELETE FROM pomstop WHERE pom_cislo = '$route_id$zastav_no';";
+		$prikaz591 = mysqli_query ($link, $query591);
 		$query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$route_id$zastav_no', '$zast_name', '$zastPK');";
 		$prikaz236 = mysqli_query ($link, $query236);
 	}
