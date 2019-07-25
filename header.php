@@ -12,11 +12,11 @@
 <body>
 
 <?php
-$link = mysqli_connect ('localhost', 'gtfs', 'gtfs', 'JDF');
+$link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
 if (!$link) {
-	echo "Error: Unable to connect to MySQL.".PHP_EOL;
-	echo "Debugging errno: ".mysqli_connect_errno ().PHP_EOL;
-	exit;
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    exit;
 }
 
 $token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
@@ -24,8 +24,8 @@ $token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
 $filtr = $_POST['filtr'];
 
 if ($filtr != '') {
-	$query27 = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
-	$prikaz27 = mysqli_query($link, $query27);
+    $query27  = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
+    $prikaz27 = mysqli_query($link, $query27);
 }
 ?>
 
@@ -56,26 +56,25 @@ TRASY<br/>
 <?php
 $query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
 if ($result63 = mysqli_query($link, $query63)) {
-	while ($row63 = mysqli_fetch_row($result63)) {
-		$value = $row63[0];
-	}
+    while ($row63 = mysqli_fetch_row($result63)) {
+        $value = $row63[0];
+    }
 }
-
 
 echo "<form method=\"post\" action=\"\" name=\"filtr\">";
 echo "<select name=\"filtr\">";
 
 $query74 = "SELECT obec FROM stop GROUP BY obec ORDER BY obec;";
 if ($result74 = mysqli_query($link, $query74)) {
-	while ($row74 = mysqli_fetch_row($result74)) {
-		$obec = $row74[0];
+    while ($row74 = mysqli_fetch_row($result74)) {
+        $obec = $row74[0];
 
-		echo "<option value=\"$obec\"";
-		if ($obec == $value) {
-			echo " SELECTED";
-		}
-		echo ">$obec</option>";
-	}
+        echo "<option value=\"$obec\"";
+        if ($obec == $value) {
+            echo " SELECTED";
+        }
+        echo ">$obec</option>";
+    }
 }
 
 echo "<input type=\"submit\"></form>";
