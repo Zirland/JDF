@@ -195,13 +195,13 @@ if ($result262 = mysqli_query($link, $query262)) {
         $query193 = "SELECT monday,tuesday,wednesday,thursday,friday,saturday,sunday FROM calendar WHERE service_id = '$cal_no';";
         if ($result193 = mysqli_query($link, $query193)) {
             while ($row193 = mysqli_fetch_row($result193)) {
-                $monday     = $row193[0];
-                $tuesday    = $row193[1];
-                $wednesday  = $row193[2];
-                $thursday   = $row193[3];
-                $friday     = $row193[4];
-                $saturday   = $row193[5];
-                $sunday     = $row193[6];
+                $monday    = $row193[0];
+                $tuesday   = $row193[1];
+                $wednesday = $row193[2];
+                $thursday  = $row193[3];
+                $friday    = $row193[4];
+                $saturday  = $row193[5];
+                $sunday    = $row193[6];
 
                 $current = "$kalendar,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$sunday,$calendar_start_format,$calendar_stop_format\n";
             }
@@ -211,22 +211,22 @@ if ($result262 = mysqli_query($link, $query262)) {
         file_put_contents($file, $current, FILE_APPEND);
 
         for ($l = 1; $l < count($cal_pole); $l++) {
-			$vyjimka = explode("(", $cal_pole[l]);
-			$day_id = $vyjimka[0];
-			$vyjimka_id = str_replace(")", "", $vyjimka[1]);
+            $vyjimka    = explode("(", $cal_pole[$l]);
+            $day_id     = $vyjimka[0];
+            $vyjimka_id = str_replace(")", "", $vyjimka[1]);
             if ($day_id < $dnes_poradi) {
-                $zacatek = date("Y-m-d", strtotime("first day of next year"));
+                $zacatek = date("Y-m-d", mktime(0, 0, 0, 1, 1, $dnesrok + 1));
             } else {
-                $zacatek = date("Y-m-d", strtotime("first day of this year"));
+                $zacatek = date("Y-m-d", mktime(0, 0, 0, 1, 1, $dnesrok));
             }
 
             $zaznam_posun = $zacatek . " + " . $day_id . " days";
-			$zaznam       = date("Ymd", strtotime($zaznam_posun));
-			
-			$current = "$kalendar,$zaznam,$vyjimka_id\n";
+            $zaznam       = date("Ymd", strtotime($zaznam_posun));
 
-			$file = 'calendar_dates.txt';
-			file_put_contents($file, $current, FILE_APPEND);	
+            $current = "$kalendar,$zaznam,$vyjimka_id\n";
+
+            $file = 'calendar_dates.txt';
+            file_put_contents($file, $current, FILE_APPEND);
         }
     }
 }
