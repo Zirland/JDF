@@ -45,5 +45,6 @@ $stop_trunc       = mysqli_query($link, "TRUNCATE TABLE stop_use;");
 $shapecheck_trunc = mysqli_query($link, "TRUNCATE TABLE shapecheck;");
 $parent_trunc     = mysqli_query($link, "TRUNCATE TABLE parent_use;");
 $export_trunc     = mysqli_query($link, "TRUNCATE TABLE exportlist;");
+$cal_trunc        = mysqli_query($link, "TRUNCATE TABLE cal_use;");
 
 mysqli_close($link);
