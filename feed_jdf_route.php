@@ -104,7 +104,6 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
 
         $adjust = substr($weekmatrix, -$vtydnu + 1) . substr($weekmatrix, 0, -$vtydnu + 1);
         $dec    = bindec($adjust) + 1;
-        echo "$adjust - $dec<br/>";
 
         $service_id = $dec;
 
@@ -112,7 +111,6 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
             $posun  = "+ " . $den . " days";
             $zaznam = date("Ymd", strtotime($posun));
             $day_id = date("z", strtotime($zaznam));
-            echo "(1) $zaznam - $day_id </br>";
             $service_id .= "_" . $day_id . "(1)";
         }
 
@@ -120,7 +118,6 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
             $posun  = "+ " . $den . " days";
             $zaznam = date("Ymd", strtotime($posun));
             $day_id = date("z", strtotime($zaznam));
-            echo "(2) $zaznam - $day_id </br>";
             $service_id .= "_" . $day_id . "(2)";
         }
 
