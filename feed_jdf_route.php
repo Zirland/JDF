@@ -18,7 +18,7 @@ if (!$link) {
 $dnes  = date("Y-m-d", time());
 $konec = date("Y-m-d", strtotime("+ 42 days"));
 
-$akt_trip = "SELECT route_id, trip_id, trip_headsign, direction_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active='1') AND (trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec') OR matice != '');";
+$akt_trip = "SELECT route_id, trip_id, trip_headsign, direction_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active='1') AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec');";
 
 $current = "";
 
@@ -147,7 +147,7 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
     mysqli_free_result($result85);
 }
 
-$tripstops = "SELECT DISTINCT * FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active = '1') AND (trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec') OR matice != ''));";
+$tripstops = "SELECT DISTINCT * FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active = '1') AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec'));";
 
 $current = "";
 

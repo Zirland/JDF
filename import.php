@@ -390,7 +390,7 @@ switch ($action) {
 					}
 				}
 
-				$query368 = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '0','0', '0');";
+				$query368 = "INSERT INTO trip (route_id, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active) VALUES ('$label$route_id', '$trip_id', '', '$smer', '0','0', '0');";
 				if (!mysqli_query($link, $query368)) {
 					echo ("Error description: " . mysqli_error($link)) . "<br/>";
 				}

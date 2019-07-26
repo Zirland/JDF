@@ -554,7 +554,7 @@ if ($spoje) {
 			}
 		}
 
-		$query64  = "INSERT INTO trip (route_id, matice, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active, spoj) VALUES ('$label$route_id', '', '$trip_id', '', '$smer', '$wheelchair','$bike', '0', '$tripspoj');";
+		$query64  = "INSERT INTO trip (route_id, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active, spoj) VALUES ('$label$route_id', '$trip_id', '', '$smer', '$wheelchair','$bike', '0', '$tripspoj');";
 		$prikaz64 = mysqli_query($link, $query64);
 	}
 	fclose($spoje);

@@ -19,7 +19,6 @@ if ($result11 = mysqli_query($link, $query11)) {
 
         $i        = 0;
         $prevstop = "";
-        $komplet  = 1;
 
         $output = explode('|', $tvartrasy);
 
@@ -45,7 +44,7 @@ if ($result11 = mysqli_query($link, $query11)) {
             }
             $prevstop = $prujstop;
         }
-        $query217   = "UPDATE shapetvary SET complete = '$komplet' WHERE shape_id = '$shape_id';";
+        $query217   = "UPDATE shapetvary SET complete = 1 WHERE shape_id = '$shape_id';";
         $command217 = mysqli_query($link, $query217);
     }
     mysqli_free_result($result11);

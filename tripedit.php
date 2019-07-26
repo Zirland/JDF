@@ -103,15 +103,14 @@ switch ($action) {
 }
 
 $hlavicka      = mysqli_fetch_row(mysqli_query($link, "SELECT * FROM trip WHERE (trip_id='$trip');"));
-$trip_id       = $hlavicka[2];
 $linka         = $hlavicka[0];
-$matice        = $hlavicka[1];
-$trip_headsign = $hlavicka[3];
-$smer          = $hlavicka[5];
-$blok          = $hlavicka[6];
-$shape         = $hlavicka[7];
-$invalida      = $hlavicka[8];
-$cyklo         = $hlavicka[9];
+$trip_id       = $hlavicka[1];
+$trip_headsign = $hlavicka[2];
+$smer          = $hlavicka[4];
+$blok          = $hlavicka[5];
+$shape         = $hlavicka[6];
+$invalida      = $hlavicka[7];
+$cyklo         = $hlavicka[8];
 
 echo "<table><tr><td>";
 echo "<table>";
