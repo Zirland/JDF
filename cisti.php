@@ -51,6 +51,7 @@ $query160  = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM tri
 $prikaz160 = mysqli_query($link, $query160);
 
 $query68 = "SELECT du_id, stop1, stop2 FROM du WHERE final = 1;";
+$query68 = "";
 if ($result68 = mysqli_query($link, $query68)) {
     while ($row68 = mysqli_fetch_row($result68)) {
         $du_id = $row68[0];
