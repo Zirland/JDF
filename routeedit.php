@@ -285,12 +285,12 @@ echo "<table>";
 echo "<tr><th>Linky odchozí</th><th>Linky příchozí</th></tr>";
 echo "<tr><td>";
 
-$query80 = "SELECT * FROM trip WHERE ((route_id = '$route_id') AND (direction_id='0')) ORDER BY trip_id;";
+$query80 = "SELECT trip_id, trip_headsign, active FROM trip WHERE ((route_id = '$route_id') AND (direction_id='0')) ORDER BY trip_id;";
 if ($result80 = mysqli_query($link, $query80)) {
     while ($row80 = mysqli_fetch_row($result80)) {
-        $trip_id       = $row80[2];
-        $trip_headsign = $row80[3];
-        $trip_aktif    = $row80[10];
+        $trip_id       = $row80[0];
+        $trip_headsign = $row80[1];
+        $trip_aktif    = $row80[2];
 
         if ($trip_aktif == '1') {
             echo "<span style=\"background-color:green;\">";
@@ -304,12 +304,12 @@ if ($result80 = mysqli_query($link, $query80)) {
 }
 echo "</td><td>";
 
-$query96 = "SELECT * FROM trip WHERE ((route_id = '$route_id') AND (direction_id = '1')) ORDER BY trip_id;";
+$query96 = "SELECT trip_id, trip_headsign, active FROM trip WHERE ((route_id = '$route_id') AND (direction_id = '1')) ORDER BY trip_id;";
 if ($result96 = mysqli_query($link, $query96)) {
     while ($row96 = mysqli_fetch_row($result96)) {
-        $trip_id       = $row96[2];
-        $trip_headsign = $row96[3];
-        $trip_aktif    = $row96[10];
+        $trip_id       = $row96[0];
+        $trip_headsign = $row96[1];
+        $trip_aktif    = $row96[2];
 
         if ($trip_aktif == '1') {
             echo "<span style=\"background-color:green;\">";
