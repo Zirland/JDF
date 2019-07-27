@@ -249,7 +249,7 @@ if ($result63 = mysqli_query($link, $query63)) {
     while ($row63 = mysqli_fetch_row($result63)) {
         $stop_id    = $row63[0];
         $stop_name  = $row63[1];
-        $stop_vazba = $row63[4];
+        $stop_vazba = $row63[2];
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
