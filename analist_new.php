@@ -18,14 +18,14 @@ if ($result6 = mysqli_query($link, $query6)) {
         $halt  = 0;
         $label = "";
 
-        $query11 = "SELECT * FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC;";
+        $query11 = "SELECT dir, verze, datumod, datumdo, vyluka FROM analyza WHERE route_id = '$route_id' ORDER BY datumod DESC;";
         if ($result11 = mysqli_query($link, $query11)) {
             while ($row11 = mysqli_fetch_row($result11)) {
                 $dir     = $row11[0];
                 $verze   = $row11[1];
-                $datumod = $row11[5];
-                $datumdo = $row11[6];
-                $vyluka  = $row11[8];
+                $datumod = $row11[2];
+                $datumdo = $row11[3];
+                $vyluka  = $row11[4];
 
                 $od_den   = substr($datumod, -2);
                 $od_mesic = substr($datumod, 5, 2);

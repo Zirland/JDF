@@ -48,10 +48,10 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
         $konecrok   = substr($konec, 0, 4);
         $konectime  = mktime(0, 0, 0, $konecmesic, $konecden, $konecrok);
 
-        $query64 = "SELECT * FROM jizdy WHERE trip_id = '$trip_id' AND (datum>='$dnes' AND datum<'$konec');";
+        $query64 = "SELECT datum FROM jizdy WHERE trip_id = '$trip_id' AND (datum>='$dnes' AND datum<'$konec');";
         if ($result64 = mysqli_query($link, $query64)) {
             while ($row64 = mysqli_fetch_row($result64)) {
-                $datum = $row64[3];
+                $datum = $row64[0];
 
                 $datumden   = substr($datum, 8, 2);
                 $datummesic = substr($datum, 5, 2);

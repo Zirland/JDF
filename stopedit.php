@@ -111,12 +111,12 @@ if ($result29 = mysqli_query($link, $query29)) {
 
         echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
         echo "<tr><td><select name=\"kodobec\">";
-        $query53 = "SELECT * FROM obce ORDER BY nazev_obce;";
+        $query53 = "SELECT lau1, lau2, nazev_obce FROM obce ORDER BY nazev_obce;";
         if ($result53 = mysqli_query($link, $query53)) {
             while ($row53 = mysqli_fetch_row($result53)) {
-                $kodokres  = $row53[1];
-                $kodobce   = $row53[2];
-                $nazevobce = $row53[3];
+                $kodokres  = $row53[0];
+                $kodobce   = $row53[1];
+                $nazevobce = $row53[2];
 
                 echo "<option value=\"$kodobce\"";
                 if ($kodobce == $kod_obec) {

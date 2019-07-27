@@ -33,13 +33,13 @@ switch ($action) {
 }
 
 $i       = 1;
-$query36 = "SELECT * FROM man_ck ORDER BY negative";
+$query36 = "SELECT negative, typ, kodod, koddo FROM man_ck ORDER BY negative";
 if ($result36 = mysqli_query($link, $query36)) {
     while ($row36 = mysqli_fetch_row($result36)) {
-        $negative = $row36[1];
-        $typ      = $row36[2];
-        $kodod    = $row36[3];
-        $koddo    = $row36[4];
+        $negative = $row36[0];
+        $typ      = $row36[1];
+        $kodod    = $row36[2];
+        $koddo    = $row36[3];
 
         echo "$negative ($i)\t$typ\t$kodod\t$koddo<br />";
         $i = $i + 1;
@@ -48,11 +48,11 @@ if ($result36 = mysqli_query($link, $query36)) {
 
 echo "<hr>";
 
-$query51 = "SELECT * FROM manspoje WHERE route_id = '$route_id' ORDER BY spoj";
+$query51 = "SELECT spoj, kod FROM manspoje WHERE route_id = '$route_id' ORDER BY spoj";
 if ($result51 = mysqli_query($link, $query51)) {
     while ($row51 = mysqli_fetch_row($result51)) {
-        $spoj     = $row51[1];
-        $negative = $row51[2];
+        $spoj     = $row51[0];
+        $negative = $row51[1];
 
         echo "$route_id\t$spoj\t$negative<br />";
     }
@@ -67,7 +67,7 @@ echo "<input type=\"hidden\" name=\"action\" value=\"newcode\">";
 echo "ZNAČKA: <input type=\"text\" name=\"negative\" value=\"\">";
 echo "TYP: <select name=\"typkodu\">";
 
-$query70 = "SELECT * FROM ck_enum ORDER BY kod";
+$query70 = "SELECT kod, popis FROM ck_enum ORDER BY kod";
 if ($result70 = mysqli_query($link, $query70)) {
     while ($row70 = mysqli_fetch_row($result70)) {
         $kod   = $row70[0];

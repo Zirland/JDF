@@ -45,7 +45,7 @@ if ($result6 = mysqli_query($link, $query6)) {
                 $datumdo = $row11[3];
                 $vyluka  = $row11[4];
 
-                $query31  = mysqli_query($link, "SELECT * FROM anal_done WHERE route_id = '$route_id' AND datumod = '$datumod';");
+                $query31  = mysqli_query($link, "SELECT id FROM anal_done WHERE route_id = '$route_id' AND datumod = '$datumod';");
                 $platnost = mysqli_num_rows($query31);
 
                 $od_den   = substr($datumod, -2);
@@ -95,7 +95,7 @@ if ($result6 = mysqli_query($link, $query6)) {
                 $datumdo = $row11[3];
                 $vyluka  = $row11[4];
 
-                $query31  = mysqli_query($link, "SELECT * FROM anal_done WHERE route_id = '$route_id' AND datumod = '$datumod';");
+                $query31  = mysqli_query($link, "SELECT id FROM anal_done WHERE route_id = '$route_id' AND datumod = '$datumod';");
                 $platnost = mysqli_num_rows($query31);
 
                 $od_den   = substr($datumod, -2);

@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 
-$query4 = "SELECT * FROM du WHERE (final = 0);";
+$query4 = "SELECT du_id, stop1, stop2 FROM du WHERE (final = 0);";
 if ($result4 = mysqli_query($link, $query4)) {
     while ($row4 = mysqli_fetch_row($result4)) {
         $du_id = $row4[0];

@@ -54,7 +54,7 @@ echo "<form method=\"post\" action=\"import.php\" name=\"linka\">";
 echo "<input type=\"hidden\" name=\"action\" value=\"import\">";
 echo "Import linky <select name=\"routes\">";
 
-$query67 = "SELECT * FROM mroutes ORDER BY route_id";
+$query67 = "SELECT route_id, route_long_name FROM mroutes ORDER BY route_id";
 if ($result67 = mysqli_query($link, $query67)) {
 	while ($row67 = mysqli_fetch_row($result67)) {
 		$route_id        = $row67[0];
@@ -77,14 +77,14 @@ switch ($action) {
 		$route_short_name = $route_no;
 		$linkano          = 1;
 
-		$query91 = "SELECT * FROM mroutes WHERE route_id = '$route_no';";
+		$query91 = "SELECT route_long_name, agency_id, route_type, platnost_od, platnost_do FROM mroutes WHERE route_id = '$route_no';";
 		if ($result91 = mysqli_query($link, $query91)) {
 			while ($row91 = mysqli_fetch_row($result91)) {
-				$route_long_name = $row91[1];
-				$agency_id       = $row91[2];
-				$route_type      = $row91[3];
-				$platnost_od     = $row91[4];
-				$platnost_do     = $row91[5];
+				$route_long_name = $row91[0];
+				$agency_id       = $row91[1];
+				$route_type      = $row91[2];
+				$platnost_od     = $row91[3];
+				$platnost_do     = $row91[4];
 			}
 		}
 
@@ -111,7 +111,7 @@ switch ($action) {
 			echo ("Error description: " . mysqli_error($link)) . "<br/>";
 		}
 
-		$query117 = "SELECT * FROM mtrips WHERE route_id = '$route_no';";
+		$query117 = "SELECT trip_no, trip_var, depart, matrix FROM mtrips WHERE route_id = '$route_no';";
 		if ($result117 = mysqli_query($link, $query117)) {
 			while ($row117 = mysqli_fetch_row($result117)) {
 				$trip_no    = $row117[1];
@@ -257,13 +257,13 @@ switch ($action) {
 					}
 				}
 
-				$query242 = "SELECT * FROM man_ck WHERE route_id = '$route_no' AND negative IN (SELECT kod FROM manspoje WHERE route_id = '$route_no' AND spoj = '$trip_no');";
+				$query242 = "SELECT negative, typ, kodod, koddo FROM man_ck WHERE route_id = '$route_no' AND negative IN (SELECT kod FROM manspoje WHERE route_id = '$route_no' AND spoj = '$trip_no');";
 				if ($result242 = mysqli_query($link, $query242)) {
 					while ($row242 = mysqli_fetch_row($result242)) {
-						$negative = $row242[1];
-						$typkodu  = $row242[2];
-						$datumod  = $row242[3];
-						$datumdo  = $row242[4];
+						$negative = $row242[0];
+						$typkodu  = $row242[1];
+						$datumod  = $row242[2];
+						$datumdo  = $row242[3];
 						if ($datumdo == "") {
 							$datumdo = $datumod;
 						}
@@ -397,13 +397,13 @@ switch ($action) {
 
 				$dep_hour = substr($depart, 0, 2);
 				$dep_min  = substr($depart, 2, 2);
-				$query374 = "SELECT * FROM mvarianty WHERE route_id = '$route_no' AND varianta = '$trip_var';";
+				$query374 = "SELECT stop_id, stop_seq, odstup, rezim FROM mvarianty WHERE route_id = '$route_no' AND varianta = '$trip_var';";
 				if ($result374 = mysqli_query($link, $query374)) {
 					while ($row374 = mysqli_fetch_row($result374)) {
-						$stop_id  = $row374[3];
-						$stop_seq = $row374[4];
-						$odstup   = $row374[5];
-						$rezim    = $row374[6];
+						$stop_id  = $row374[0];
+						$stop_seq = $row374[1];
+						$odstup   = $row374[2];
+						$rezim    = $row374[3];
 
 						$dep_min = $dep_min + $odstup;
 						if ($dep_min > 59) {

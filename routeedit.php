@@ -107,16 +107,16 @@ echo "<table><tr><td>";
 echo "<table>";
 echo "<tr>";
 
-$query50 = "SELECT * FROM route WHERE (route_id='$route');";
+$query50 = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, active FROM route WHERE (route_id='$route');";
 if ($result50 = mysqli_query($link, $query50)) {
     while ($row50 = mysqli_fetch_row($result50)) {
         $route_id         = $row50[0];
         $agency_id        = $row50[1];
         $route_short_name = $row50[2];
         $route_long_name  = $row50[3];
-        $route_type       = $row50[5];
-        $route_color      = $row50[7];
-        $route_active     = $row50[9];
+        $route_type       = $row50[4];
+        $route_color      = $row50[5];
+        $route_active     = $row50[6];
     }
 }
 
@@ -210,12 +210,12 @@ echo "<table>";
 echo "<tr><td>";
 echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
 
-$query63 = "SELECT * FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '0') ORDER BY stop_poradi;";
+$query63 = "SELECT stop_id, stop_name, stop_vazba FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '0') ORDER BY stop_poradi;";
 if ($result63 = mysqli_query($link, $query63)) {
     while ($row63 = mysqli_fetch_row($result63)) {
         $stop_id    = $row63[0];
         $stop_name  = $row63[1];
-        $stop_vazba = $row63[4];
+        $stop_vazba = $row63[2];
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
@@ -244,7 +244,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 echo "</table></td><td>";
 
 echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
-$query63 = "SELECT * FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '1') ORDER BY stop_poradi DESC;";
+$query63 = "SELECT stop_id, stop_name, stop_vazba FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '1') ORDER BY stop_poradi DESC;";
 if ($result63 = mysqli_query($link, $query63)) {
     while ($row63 = mysqli_fetch_row($result63)) {
         $stop_id    = $row63[0];
