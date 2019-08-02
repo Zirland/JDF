@@ -114,10 +114,10 @@ switch ($action) {
 		$query117 = "SELECT trip_no, trip_var, depart, matrix FROM mtrips WHERE route_id = '$route_no';";
 		if ($result117 = mysqli_query($link, $query117)) {
 			while ($row117 = mysqli_fetch_row($result117)) {
-				$trip_no    = $row117[1];
-				$trip_var   = $row117[2];
-				$depart     = $row117[3];
-				$weekmatrix = $row117[4];
+				$trip_no    = $row117[0];
+				$trip_var   = $row117[1];
+				$depart     = $row117[2];
+				$weekmatrix = $row117[3];
 
 				$tripspoj = $route_id . $trip_no;
 
@@ -165,11 +165,9 @@ switch ($action) {
 				$maticestart = date_create('1 week ago');
 				$start       = date_format($maticestart, "N");
 				$shift       = -1 * $start;
-
 				for ($i = 0; $i < 420; $i++) {
 					$matrix .= "0";
 				}
-
 				if (substr($weekmatrix, 0, 1) == 1) {
 					// pondělí
 					$dy = 1;

@@ -10,46 +10,55 @@ $file    = 'linemap.csv';
 $current = "route_short_name,trip_id,lat,lon,seq\n";
 file_put_contents($file, $current);
 
-$akt_route = "SELECT route_id,route_short_name FROM route WHERE active='1';";
-if ($result69 = mysqli_query($link, $akt_route)) {
-    while ($row69 = mysqli_fetch_row($result69)) {
-        $route_id         = $row69[0];
-        $route_short_name = $row69[1];
+$query13 = "SELECT shape_id FROM shape ORDER BY shape_id;";
+if ($result13 = mysqli_query($link, $query13)) {
+    while ($row13 = mysqli_fetch_row($result13)) {
+        $shape_id = $row13[0];
 
-        $akt_trip = "SELECT route_id,trip_id,shape_id FROM trip WHERE ((route_id = '$route_id') AND (active='1'));";
-        if ($result85 = mysqli_query($link, $akt_trip)) {
-            while ($row85 = mysqli_fetch_row($result85)) {
-                $route_id  = $row85[0];
-                $trip_id   = $row85[1];
-                $tvartrasy = $row85[2];
+        $query19 = "SELECT DISTINCT route_short_name FROM trip LEFT JOIN route ON route.route_id = trip.route_id WHERE trip_id IN (SELECT trip_id FROM shapecheck WHERE shape_id = '$shape_id');";
+        echo "$query19<br/>";
+        if ($result19 = mysqli_query($link, $query19)) {
+            while ($row19 = mysqli_fetch_row($result19)) {
+                $route_id = $row19[0];
 
-                $i        = 0;
-                $prevstop = "";
+                $query25 = "SELECT tvartrasy FROM shapetvary WHERE shape_id = '$shape_id';";
+                echo "$query25<br/>";
+                if ($result25 = mysqli_query($link, $query25)) {
+                    while ($row25 = mysqli_fetch_row($result25)) {
+                        $tvartrasy = $row25[0];
 
-                $output = explode('|', $tvartrasy);
+                        $i        = 0;
+                        $prevstop = "";
 
-                foreach ($output as $prujstop) {
-                    $query107  = "SELECT path FROM du WHERE (stop1 = '$prevstop') AND (stop2 = '$prujstop');";
-                    $result235 = mysqli_query($link, $query107);
+                        $output = explode('|', $tvartrasy);
 
-                    $pom235 = mysqli_fetch_row($result235);
-                    $linie  = $pom235[0];
+                        foreach ($output as $prujstop) {
+                            $query107  = "SELECT path FROM du WHERE (stop1 = '$prevstop') AND (stop2 = '$prujstop');";
+                            $result235 = mysqli_query($link, $query107);
 
-                    $body = explode(';', $linie);
+                            $pom235 = mysqli_fetch_row($result235);
+                            $linie  = $pom235[0];
 
-                    foreach ($body as $point) {
-                        $sourad = explode(',', $point);
-                        $lon    = $sourad[0];
-                        $lat    = $sourad[1];
+                            $body = explode(';', $linie);
 
-                        $i       = $i + 1;
-                        $current = "$route_short_name, $trip_id, $lat, $lon, $i\n";
-                        file_put_contents($file, $current, FILE_APPEND);
+                            foreach ($body as $point) {
+                                $sourad = explode(',', $point);
+                                $lon    = $sourad[0];
+                                $lat    = $sourad[1];
+
+                                $i       = $i + 1;
+                                $current = "$route_short_name, $trip_id, $lat, $lon, $i\n";
+                                file_put_contents($file, $current, FILE_APPEND);
+                            }
+                            $prevstop = $prujstop;
+                        }
+
                     }
-                    $prevstop = $prujstop;
                 }
+
             }
         }
+
     }
 }
 
