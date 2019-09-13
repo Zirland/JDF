@@ -656,8 +656,8 @@ if ($zaslinky) {
 		$query464 = "SELECT stop_id, stop_vazba FROM linevazba WHERE stop_id = '$label$stop_id+';";
 		if ($result464 = mysqli_query($link, $query464)) {
 			while ($row464 = mysqli_fetch_row($result464)) {
-				$stopid    = $row464[1];
-				$stopvazba = $row464[2];
+				$stopid    = $row464[0];
+				$stopvazba = $row464[1];
 
 				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
 				$migrate  = mysqli_query($link, $querymig);
@@ -667,8 +667,8 @@ if ($zaslinky) {
 		$query474 = "SELECT stop_id, stop_vazba FROM linevazba WHERE stop_id = '$label$stop_id-';";
 		if ($result474 = mysqli_query($link, $query474)) {
 			while ($row474 = mysqli_fetch_row($result474)) {
-				$stopid    = $row474[1];
-				$stopvazba = $row474[2];
+				$stopid    = $row474[0];
+				$stopvazba = $row474[1];
 
 				$querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
 				$migrate  = mysqli_query($link, $querymig);
