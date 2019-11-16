@@ -7,7 +7,7 @@ if (!$link) {
 }
 
 $file    = 'linemap.csv';
-$current = "route_short_name,shape_id,lon,lat,seq\n";
+$current = "id,lon,lat,seq\n";
 file_put_contents($file, $current);
 
 $query13 = "SELECT DISTINCT shape_id FROM shape WHERE shape_id IN (SELECT shape_id FROM shapecheck) ORDER BY shape_id;";
@@ -46,7 +46,7 @@ if ($result13 = mysqli_query($link, $query13)) {
 
                                 if ($lon != "" && $lat != "") {
                                     $i       = $i + 1;
-                                    $current = "$route_short_name, $shape_id, $lon, $lat, $i\n";
+                                    $current = "$route_short_name"."_$shape_id, $lon, $lat, $i\n";
                                     file_put_contents($file, $current, FILE_APPEND);
                                 }
                             }

@@ -2,7 +2,7 @@
 include 'header.php';
 
 $query68 = "SELECT du_id, stop1, stop2 FROM du;";
-$query68 = "";
+//$query68 = "";
 if ($result68 = mysqli_query($link, $query68)) {
     while ($row68 = mysqli_fetch_row($result68)) {
         $du_id = $row68[0];
