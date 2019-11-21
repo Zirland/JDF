@@ -15,8 +15,7 @@ rm JDF.zip
 
 curl http://localhost/JDF/dbprepare.php
 
-FILES=data/*.zip
-for i in $FILES
+for i in {1..15000}
 do
 	mkdir $i
 	chmod 777 $i
@@ -33,8 +32,7 @@ wget ftp://ftp.cisjr.cz/draha/mestske/JDF.zip
 unzip JDF.zip
 rm JDF.zip
 
-FILES=data/*.zip
-for i in $FILES
+for i in {1..1500}
 do
 	mkdir D$i
 	chmod 777 D$i

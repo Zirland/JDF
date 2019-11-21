@@ -45,7 +45,7 @@ if ($result6 = mysqli_query($link, $query6)) {
                     $label = "";
                 }
                 if ($halt == 0) {
-                    echo "$dir ($verze) $datumod > $datumdo $label $vyluka > <a href=\"genroute.php?file=$dir&linkaod=$datumod&linkado=$datumdo\" target=\"_blank\">Generovat</a><br />";
+                    echo "$dir ($verze) $datumod > $datumdo $label $vyluka > <a href=\"genroute.php?file=$dir&linkaod=$datumod&linkado=$datumdo\" target=\"_blank\">Generovat</a> > <a href=\"duplicate.php?file=$dir\" target=\"_blank\">Duplikovat</a><br />";
                 }
                 if ($platnost > 0) {
                     echo "</span>";

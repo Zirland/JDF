@@ -122,7 +122,7 @@ switch ($action) {
             while ($row146 = mysqli_fetch_row($result146)) {
                 $trip_id = $row146[0];
 
-                echo "$trip_id > ";
+                echo "<a href=\"tripedit.php?id=$trip_id\" target=\"_blank\">$trip_id</a> > ";
             }
             echo "<summary>$count</summary></details>";
         }

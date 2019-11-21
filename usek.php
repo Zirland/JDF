@@ -51,22 +51,24 @@ switch ($action) {
 			$to     = $row102[2];
 		}
 
-		$query2 = "SELECT stop_name, pomcode FROM stop WHERE stop_id = '$from';";
+		$query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$from';";
 		if ($result2 = mysqli_query($link, $query2)) {
 			while ($row2 = mysqli_fetch_row($result2)) {
 				$nazevv = $row2[0];
 				$codev  = $row2[1];
-				echo "From: $nazevv $codev | ";
+				$stopcodev = $row2[2];
+				echo "From: $nazevv $codev $stopcodev | ";
 			}
 			mysqli_free_result($result2);
 		}
 
-		$query2 = "SELECT stop_name, pomcode FROM stop WHERE stop_id = '$to';";
+		$query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$to';";
 		if ($result2 = mysqli_query($link, $query2)) {
 			while ($row2 = mysqli_fetch_row($result2)) {
 				$nazevv = $row2[0];
 				$codev  = $row2[1];
-				echo "To: $nazevv $codev<br/>";
+				$stopcodev = $row2[2];
+				echo "To: $nazevv $codev $stopcodev<br/>";
 			}
 			mysqli_free_result($result2);
 		}
