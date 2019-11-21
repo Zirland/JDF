@@ -24,11 +24,11 @@ if ($action == "duplicate") {
         $dir = "data/" . $dir;
     }
 
-    $svatek[] = "";
-    $query27 = "SELECT datum FROM svatky ORDER BY datum;";
+    unset($svatek);
+    $query27 = "SELECT datum FROM svatky ORDER BY id;";
     if ($result27 = mysqli_query($link, $query27)) {
         while ($row27 = mysqli_fetch_row($result27)) {
-            $svatek[] = $row[0];
+            $svatek[] = $row27[0];
         }
     }
 
