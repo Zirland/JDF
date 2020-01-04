@@ -5,7 +5,6 @@ echo "<table>";
 echo "<tr>";
 echo "<th>Přepravce</th>
 <th>Linka</th>
-<th>MHD</th>
 <th>Trasa</th>
 <th>Typ</th>
 <th></th>";
@@ -40,7 +39,7 @@ if ($result = mysqli_query($link, $query)) {
 
         $query73 = "SELECT kod_linky from exter WHERE linka = '$route_id';";
         $mhd     = mysqli_fetch_row(mysqli_query($link, $query73));
-        echo "<td>$mhd[0]</td>";
+//        echo "<td>$mhd[0]</td>";
 
         echo "<td";
         if ($route_active == "1") {

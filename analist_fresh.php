@@ -4,7 +4,7 @@ include 'header.php';
 $cisti4 = mysqli_query($link, "DELETE FROM analyza WHERE datumdo < current_date ();");
 $cisti5 = mysqli_query($link, "DELETE FROM anal_done WHERE datumdo < current_date ();");
 
-$cisti7 = mysqli_query($link, "DELETE FROM analyza WHERE CAST(route_id AS unsigned) < 100000;");
+//$cisti7 = mysqli_query($link, "DELETE FROM analyza WHERE CAST(route_id AS unsigned) < 100000;");
 $cisti8 = mysqli_query($link, "DELETE FROM analyza WHERE route_id IN (SELECT route_id FROM ignorace);");
 
 $dnes_den   = date("j", time());

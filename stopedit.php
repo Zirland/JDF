@@ -125,11 +125,97 @@ if ($result29 = mysqli_query($link, $query29)) {
                 echo ">$nazevobce $kodokres</option>";
             }
         }
-        echo "</select><input type=\"hidden\" name=\"oldobec\" value=\"$kod_obec\">$stop_obec</td><td><input name=\"castobce\" value=\"$stop_cast\" type=\"text\"></td><td><input name=\"misto\" value=\"$stop_misto\" type=\"text\"></td><td>$stop_name<input name=\"pomcode\" value=\"$stop_pomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"$stop_stopcode\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\" value=\"$stop_lat\"></td><td><input name=\"stoplon\" type=\"text\" value=\"$stop_lon\"></td></tr>";
+        echo "</select><input type=\"hidden\" name=\"oldobec\" value=\"$kod_obec\">$stop_obec</td><td><input name=\"castobce\" value=\"$stop_cast\" type=\"text\"></td><td><input name=\"misto\" value=\"$stop_misto\" type=\"text\"></td><td>$stop_name<input name=\"pomcode\" value=\"$stop_pomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"$stop_stopcode\" type=\"text\"></td><td><input name=\"stoplat\" type=\"text\" id=\"stoplat\" value=\"$stop_lat\"></td><td><input name=\"stoplon\" id=\"stoplon\" type=\"text\" value=\"$stop_lon\"></td></tr>";
 
         echo "<tr><td colspan=\"7\"><input type=\"submit\" value=\"Insert\"></td></tr>";
         echo "</table>";
     }
 }
+?>
 
+<div id="mapa" style="width:1200px; height:800px;"></div>
+
+<script type="text/javascript">
+	function SelectElement(id, valueToSelect)
+	{
+		var element = document.getElementById(id);
+		element.value = valueToSelect;
+	}
+
+	function start(e) {
+		var node = e.target.getContainer();
+		node[SMap.LAYER_MARKER].style.cursor = "pointer";
+	}
+
+	function stop(e) {
+		var node = e.target.getContainer();
+		node[SMap.LAYER_MARKER].style.cursor = "";
+		var coords = e.target.getCoords();
+		var souradnice = coords.toString().split(",");
+		var souradnice_x = souradnice[0].replace(/\(/g,"");
+		var souradnice_y = souradnice[1].replace(/\)/g,"");
+
+		document.getElementById("stoplat").value = souradnice_y;
+		document.getElementById("stoplon").value = souradnice_x;
+
+		var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
+		mapa.setCenter(pozice);
+	}
+
+<?php
+if (isset($stop_lon) && isset($stop_lat)) {
+    echo "var stred = SMap.Coords.fromWGS84($stop_lon, $stop_lat);\n";
+} else {
+    echo "var stred = SMap.Coords.fromWGS84(14.41, 50.08);\n";
+}
+?>
+	var mapa = new SMap(document.querySelector("#mapa"), stred, 18);
+
+	mapa.addDefaultLayer(SMap.DEF_OPHOTO);
+	mapa.addDefaultLayer(SMap.DEF_BASE).enable();
+
+	var layerSwitch = new SMap.Control.Layer({
+		width: 65,
+		items: 2,
+		page: 2
+	});
+	layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+	layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+	mapa.addControl(layerSwitch, {left:"8px", top:"9px"});
+
+	mapa.addControl(new SMap.Control.Sync());
+	var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
+	mapa.addControl(mouse);
+
+	var layer = new SMap.Layer.Marker();
+	mapa.addLayer(layer);
+	layer.enable();
+
+	var options = {
+		title: ""
+	};
+	var marker = new SMap.Marker(stred, "myMarker", options);
+	marker.decorate(SMap.Marker.Feature.Draggable);
+	layer.addMarker(marker);
+
+	var layer2 = new SMap.Layer.Marker(undefined, {
+		poiTooltip: true
+	});
+	mapa.addLayer(layer2).enable();
+
+	var dataProvider = mapa.createDefaultDataProvider();
+	dataProvider.setOwner(mapa);
+	dataProvider.addLayer(layer2);
+	dataProvider.setMapSet(SMap.MAPSET_BASE);
+	dataProvider.enable();
+
+	var signals = mapa.getSignals();
+	signals.addListener(window, "marker-drag-stop", stop);
+	signals.addListener(window, "marker-drag-start", start);
+
+
+</script>
+
+<?php
 include 'footer.php';
+?>

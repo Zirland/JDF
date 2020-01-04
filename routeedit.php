@@ -208,7 +208,7 @@ echo "<form method=\"post\" action=\"routeedit.php\" name=\"zastavky\"><input na
 $z = 0;
 echo "<table>";
 echo "<tr><td>";
-echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
+echo "<table><tr><th>Zastávka</th></tr>";
 
 $query63 = "SELECT stop_id, stop_name, stop_vazba FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '0') ORDER BY stop_poradi;";
 if ($result63 = mysqli_query($link, $query63)) {
@@ -219,7 +219,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
-        echo "$stop_name</td><td>";
+        echo "$stop_name<br/>";
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
         echo "<option value=\"\">---</option>";
         $query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
@@ -243,7 +243,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 }
 echo "</table></td><td>";
 
-echo "<table><tr><th>Zastávka</th><th>Vazba</th></tr>";
+echo "<table><tr><th>Zastávka</th></tr>";
 $query63 = "SELECT stop_id, stop_name, stop_vazba FROM linestopsDB WHERE (stop_linka = '$route_id') AND (stop_smer = '1') ORDER BY stop_poradi DESC;";
 if ($result63 = mysqli_query($link, $query63)) {
     while ($row63 = mysqli_fetch_row($result63)) {
@@ -253,7 +253,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
-        echo "$stop_name</td><td>";
+        echo "$stop_name<br/>";
 
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
         echo "<option value=\"\">---</option>";
@@ -384,7 +384,7 @@ echo "</td></tr></table>";
 	var markers = [];
 
 <?php
-$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop WHERE obec = '$value' ORDER BY stop_id;";
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop ORDER BY stop_id;";
 if ($result30 = mysqli_query($link, $query30)) {
     while ($row30 = mysqli_fetch_row($result30)) {
         $stop_id   = $row30[0];

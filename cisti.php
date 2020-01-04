@@ -7,6 +7,9 @@ $tyden = date("Y-m-d", strtotime("+ 1 week"));
 $query11  = "DELETE FROM jizdy WHERE datum < '$dnes';";
 $prikaz11 = mysqli_query($link, $query11);
 
+$query11  = "DELETE FROM log WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
+$prikaz11 = mysqli_query($link, $query11);
+
 $prepare32 = mysqli_query($link, "CREATE TABLE tyden AS (SELECT * FROM jizdy WHERE datum<'$tyden');");
 
 $query40 = "SELECT id FROM tyden LEFT OUTER JOIN (SELECT MAX(id) as RowId, spoj, datum FROM tyden GROUP BY spoj, datum) as KeepRows ON tyden.id = KeepRows.RowId WHERE KeepRows.RowId IS NULL;";

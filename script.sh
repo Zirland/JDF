@@ -2,6 +2,8 @@
 
 cd /home/zirland/git/JDF
 
+./praha.sh
+
 rm -rf data
 
 mkdir data
@@ -15,7 +17,9 @@ rm JDF.zip
 
 curl http://localhost/JDF/dbprepare.php
 
-for i in {1..15000}
+count1=$(ls -1 *.zip | wc -l)
+
+for i in $(seq 1 $count1)
 do
 	mkdir $i
 	chmod 777 $i
@@ -32,7 +36,8 @@ wget ftp://ftp.cisjr.cz/draha/mestske/JDF.zip
 unzip JDF.zip
 rm JDF.zip
 
-for i in {1..1500}
+count2=$(ls -1 *.zip | wc -l)
+for i in $(seq 1 $count2)
 do
 	mkdir D$i
 	chmod 777 D$i

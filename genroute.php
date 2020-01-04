@@ -163,7 +163,7 @@ if ($spoje) {
         $dnes_datum  = mktime(0, 0, 0, $dnes_mesic, $dnes_den, $dnes_rok);
         $dnes_format = date("Y-m-d", $dnes_datum);
 
-        $query180  = "INSERT INTO log(trip_id, datum) VALUES ('$trip_id','$dnes_format');";
+        $query180  = "INSERT INTO log(trip_id, datum) VALUES ('$tripspoj','$dnes_format');";
         $prikaz167 = mysqli_query($link, $query180);
         $logid     = mysqli_insert_id($link);
 
@@ -204,11 +204,15 @@ if ($spoje) {
             $matrix .= "0";
         }
 
-        if (substr($PK, 0, 3) == '---') {
-            $PK = '-1-2-8-';
-        }
-        if (substr($PK, 0, 5) == '-14--') {
-            $PK = '-1-2-8-14-';
+        if (substr($PK, 0, 3) != '-1-' &&
+         substr($PK, 0, 3) != '-2-' &&
+         substr($PK, 0, 3) != '-3-' &&
+         substr($PK, 0, 3) != '-4-' &&
+         substr($PK, 0, 3) != '-5-' &&
+         substr($PK, 0, 3) != '-6-' &&
+         substr($PK, 0, 3) != '-7-' &&
+         substr($PK, 0, 3) != '-8-') {
+            $PK = '-1-2-8' . $PK;
         }
 
         if (strpos($PK, '-1-') !== false) {

@@ -91,7 +91,11 @@ if ($result53 = mysqli_query($link, $query53)) {
         $kodobce   = $row53[1];
         $nazevobce = $row53[2];
 
-        echo "<option value=\"$kodobce\">$nazevobce $kodokres</option>";
+        echo "<option value=\"$kodobce\"";
+        if ($kodobec == $kodobce) {
+            echo " SELECTED";
+        }
+        echo ">$nazevobce $kodokres</option>";
     }
 }
 echo "</select>$getobec</td><td><input name=\"castobce\" value=\"$getcastobce\" type=\"text\"></td><td><input name=\"misto\" value=\"$getmisto\" type=\"text\"></td><td><input name=\"pomcode\" value=\"$getpomcode\" type=\"text\"></td><td><input name=\"stopcode\" value=\"\" type=\"text\"></td><td><input name=\"stoplat\" id=\"stoplat\" value=\"$getlat\" type=\"text\"></td><td><input name=\"stoplon\" id=\"stoplon\" value=\"$getlon\" type=\"text\"></td></tr>";
