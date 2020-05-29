@@ -6,14 +6,15 @@ $dnes_mesic = date("n", time());
 $dnes_rok   = date("Y", time());
 $today      = mktime(0, 0, 0, $dnes_mesic, $dnes_den, $dnes_rok);
 
-$query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
+$query6 = "SELECT DISTINCT route_id, route_name, route_type, dopravce FROM analyza WHERE route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query($link, $query6)) {
     while ($row6 = mysqli_fetch_row($result6)) {
         $route_id   = $row6[0];
         $route_name = $row6[1];
         $route_type = $row6[2];
+        $dopravce   = $row6[3];
 
-        echo "<a href=\"ignorovat.php?route=$route_id\" target=\"_blank\">Ignorovat</a> - $route_id - $route_name ($route_type)<br />";
+        echo "<a href=\"ignorovat.php?route=$route_id\" target=\"_blank\">Ignorovat</a> - $route_id - $route_name ($route_type) $dopravce<br />";
 
         $halt  = 0;
         $label = "";

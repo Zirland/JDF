@@ -384,7 +384,7 @@ echo "</td></tr></table>";
 	var markers = [];
 
 <?php
-$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop ORDER BY stop_id;";
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop WHERE obec = '$value' ORDER BY stop_id;";
 if ($result30 = mysqli_query($link, $query30)) {
     while ($row30 = mysqli_fetch_row($result30)) {
         $stop_id   = $row30[0];
