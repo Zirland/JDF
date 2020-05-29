@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx creator="mapy.cz" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+    <wpt lat="50.2159993351" lon="12.1946592629">
+        <ele>679.0</ele>
+        <name>Aš,, ZDM L</name>
+    </wpt>
+    <wpt lat="50.2159195393" lon="12.1946458519">
+        <ele>679.0</ele>
+        <name>Aš,, ZDM R</name>
+    </wpt>
+    <wpt lat="50.2163681388" lon="12.1877284348">
+        <ele>668.429270835</ele>
+        <name>Aš,, prádelna Okružní N</name>
+    </wpt>
+    <wpt lat="50.2163312584" lon="12.1876600385">
+        <ele>669.0</ele>
+        <name>Aš,, prádelna Okružní D</name>
+    </wpt>
+    <wpt lat="50.2192736417" lon="12.1828642488">
+        <ele>667.0</ele>
+        <name>Aš,, žel. st. město R</name>
+    </wpt>
+    <wpt lat="50.2195197344" lon="12.182341218">
+        <ele>668.0</ele>
+        <name>Aš,, žel. st. město L</name>
+    </wpt>
+    <wpt lat="50.2213020623" lon="12.1796375513">
+        <ele>677.0</ele>
+        <name>Aš,, ZŠ Okružní N</name>
+    </wpt>
+    <wpt lat="50.2212041616" lon="12.1795678139">
+        <ele>677.0</ele>
+        <name>Aš,, ZŠ Okružní D</name>
+    </wpt>
+    <wpt lat="50.224372521" lon="12.1781328321">
+        <ele>672.253879087</ele>
+        <name>Aš,, Kvapilova potraviny D</name>
+    </wpt>
+    <wpt lat="50.2243054658" lon="12.1782307327">
+        <ele>672.0</ele>
+        <name>Aš,, Kvapilova potraviny N</name>
+    </wpt>
+    <wpt lat="50.2282804996" lon="12.1788758039">
+        <ele>656.0</ele>
+        <name>Aš,, Krajka L</name>
+    </wpt>
+    <wpt lat="50.2281846106" lon="12.1790809929">
+        <ele>656.0</ele>
+        <name>Aš,, Krajka R</name>
+    </wpt>
+    <wpt lat="50.2280531824" lon="12.1839492023">
+        <ele>640.506341651</ele>
+        <name>Aš,, Studentstká D</name>
+    </wpt>
+    <wpt lat="50.2281443775" lon="12.1840015054">
+        <ele>639.924106475</ele>
+        <name>Aš,, Studentská N</name>
+    </wpt>
+</gpx>

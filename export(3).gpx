@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx creator="mapy.cz" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+    <wpt lat="49.7451046854" lon="18.6214064062">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (1) -</name>
+    </wpt>
+    <wpt lat="49.7452287376" lon="18.621493578">
+        <ele>272.920656798</ele>
+        <name>Český Těšín,, aut. st. (2) -</name>
+    </wpt>
+    <wpt lat="49.7453541309" lon="18.6215901375">
+        <ele>272.0</ele>
+        <name>Český Těšín,, aut. st. (3) -</name>
+    </wpt>
+    <wpt lat="49.7452045977" lon="18.6217872798">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (4) -</name>
+    </wpt>
+    <wpt lat="49.7450637817" lon="18.6216907203">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (5) -</name>
+    </wpt>
+    <wpt lat="49.7448974848" lon="18.6216183007">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (6) -</name>
+    </wpt>
+    <wpt lat="49.7450175136" lon="18.6209021509">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (7) -</name>
+    </wpt>
+    <wpt lat="49.7452166677" lon="18.6211784184">
+        <ele>272.131638584</ele>
+        <name>Český Těšín,, aut. st. (8) -</name>
+    </wpt>
+    <wpt lat="49.7453655303" lon="18.6213862896">
+        <ele>272.0</ele>
+        <name>Český Těšín,, aut. st. (9) -</name>
+    </wpt>
+    <wpt lat="49.7450014204" lon="18.6220434308">
+        <ele>273.0</ele>
+        <name>Český Těšín,, aut. st. (10) -</name>
+    </wpt>
+    <wpt lat="49.7438775748" lon="18.6232021451">
+        <ele>273.0</ele>
+        <name>Český Těšín,, žel. st. D</name>
+    </wpt>
+    <wpt lat="49.7437702864" lon="18.6233469844">
+        <ele>273.0</ele>
+        <name>Český Těšín,, žel. st. N</name>
+    </wpt>
+    <wpt lat="49.7458644211" lon="18.6268606782">
+        <ele>271.0</ele>
+        <name>Český Těšín,, Radnice -</name>
+    </wpt>
+    <wpt lat="49.7473081201" lon="18.6237734556">
+        <ele>271.0</ele>
+        <name>Český Těšín,, Muzeum -</name>
+    </wpt>
+    <wpt lat="49.7491621971" lon="18.6182172596">
+        <ele>268.0</ele>
+        <name>Český Těšín,, Hrabinská Delong L</name>
+    </wpt>
+    <wpt lat="49.7491461039" lon="18.6180925369">
+        <ele>268.0</ele>
+        <name>Český Těšín,, Hrabinská Delong R</name>
+    </wpt>
+    <wpt lat="49.7489161044" lon="18.6129145324">
+        <ele>282.0</ele>
+        <name>Český Těšín,, Hrabinská R</name>
+    </wpt>
+    <wpt lat="49.7489114106" lon="18.6127696931">
+        <ele>282.0</ele>
+        <name>Český Těšín,, Hrabinská L</name>
+    </wpt>
+</gpx>

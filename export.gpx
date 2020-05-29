@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx creator="mapy.cz" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+    <wpt lat="50.2295532078" lon="12.1857449412">
+        <ele>615.0</ele>
+        <name>Aš,, garáže N</name>
+    </wpt>
+    <wpt lat="50.2296859771" lon="12.1856363118">
+        <ele>615.725524936</ele>
+        <name>Aš,, garáže D</name>
+    </wpt>
+    <wpt lat="50.2248720825" lon="12.1864436567">
+        <ele>625.0</ele>
+        <name>Aš,, sídliště N</name>
+    </wpt>
+    <wpt lat="50.2247218788" lon="12.1862652898">
+        <ele>626.0</ele>
+        <name>Aš,, sídliště D</name>
+    </wpt>
+    <wpt lat="50.2209902555" lon="12.1891526878">
+        <ele>637.0</ele>
+        <name>Aš,, kino D</name>
+    </wpt>
+    <wpt lat="50.2210546285" lon="12.189296186">
+        <ele>637.0</ele>
+        <name>Aš,, kino N</name>
+    </wpt>
+    <wpt lat="50.2184086293" lon="12.194146961">
+        <ele>666.007087611</ele>
+        <name>Aš,, Střelnice N</name>
+    </wpt>
+    <wpt lat="50.2184320986" lon="12.1938680112">
+        <ele>665.070496628</ele>
+        <name>Aš,, Střelnice D</name>
+    </wpt>
+    <wpt lat="50.2191334963" lon="12.1949328482">
+        <ele>661.874934666</ele>
+        <name>Aš,, Tosta ředitelství R</name>
+    </wpt>
+    <wpt lat="50.2191764116" lon="12.1948161721">
+        <ele>661.059562067</ele>
+        <name>Aš,, Tosta ředitelství L</name>
+    </wpt>
+    <wpt lat="50.220688507" lon="12.1979905665">
+        <ele>664.0</ele>
+        <name>Aš,, Janáčkova křiž. N</name>
+    </wpt>
+    <wpt lat="50.2205725014" lon="12.1979235113">
+        <ele>663.008835007</ele>
+        <name>Aš,, Janáčkova křiž. D</name>
+    </wpt>
+    <wpt lat="50.222954303" lon="12.1981327236">
+        <ele>677.3838949</ele>
+        <name>Aš,, Nemocniční sídl. R</name>
+    </wpt>
+    <wpt lat="50.2229999006" lon="12.1979235113">
+        <ele>677.0</ele>
+        <name>Aš,, Nemocniční sídl. L</name>
+    </wpt>
+    <wpt lat="50.2238608897" lon="12.2025825083">
+        <ele>695.0</ele>
+        <name>Aš,, nem. R</name>
+    </wpt>
+    <wpt lat="50.2239192277" lon="12.202539593">
+        <ele>695.389788167</ele>
+        <name>Aš,, nem. L</name>
+    </wpt>
+    <wpt lat="50.2255319059" lon="12.2074721754">
+        <ele>701.449910067</ele>
+        <name>Aš,, hřbitov točna -</name>
+    </wpt>
+    <wpt lat="50.2151551098" lon="12.195661068">
+        <ele>682.869550539</ele>
+        <name>Aš,, Lidový dům D</name>
+    </wpt>
+    <wpt lat="50.2153535932" lon="12.1957080066">
+        <ele>683.392069287</ele>
+        <name>Aš,, Lidový dům N</name>
+    </wpt>
+    <wpt lat="50.2135551721" lon="12.1976271272">
+        <ele>670.0</ele>
+        <name>Aš,, Palackého R</name>
+    </wpt>
+    <wpt lat="50.2135612071" lon="12.1974621713">
+        <ele>670.0</ele>
+        <name>Aš,, Palackého L</name>
+    </wpt>
+    <wpt lat="50.2113383263" lon="12.2027152777">
+        <ele>649.0</ele>
+        <name>Aš,, Chebská N</name>
+    </wpt>
+    <wpt lat="50.2111693472" lon="12.2027260065">
+        <ele>648.0</ele>
+        <name>Aš,, Chebská D</name>
+    </wpt>
+    <wpt lat="50.2123300731" lon="12.2101248801">
+        <ele>652.972373546</ele>
+        <name>Aš, Mokřiny, rozc. R</name>
+    </wpt>
+    <wpt lat="50.2123468369" lon="12.2100202739">
+        <ele>653.0</ele>
+        <name>Aš, Mokřiny, rozc. L</name>
+    </wpt>
+    <wpt lat="50.2127377689" lon="12.2103354335">
+        <ele>655.0</ele>
+        <name>Aš, Mokřiny, rozc. N</name>
+    </wpt>
+    <wpt lat="50.2071990073" lon="12.2151070833">
+        <ele>656.481194713</ele>
+        <name>Aš, Mokřiny, škola D</name>
+    </wpt>
+    <wpt lat="50.206855014" lon="12.2155724466">
+        <ele>658.464356298</ele>
+        <name>Aš, Mokřiny, škola N</name>
+    </wpt>
+    <wpt lat="50.2046207339" lon="12.2081306577">
+        <ele>635.0</ele>
+        <name>Aš, Mokřiny, D</name>
+    </wpt>
+    <wpt lat="50.2047950774" lon="12.2081507742">
+        <ele>635.972020279</ele>
+        <name>Aš, Mokřiny, N</name>
+    </wpt>
+    <wpt lat="50.2092462033" lon="12.199408114">
+        <ele>639.127089787</ele>
+        <name>Aš,, žel. st -</name>
+    </wpt>
+    <wpt lat="50.2090450376" lon="12.1992404759">
+        <ele>638.0</ele>
+        <name>Aš,, žel. st. V</name>
+    </wpt>
+</gpx>
