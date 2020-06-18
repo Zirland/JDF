@@ -2,7 +2,7 @@
 $time_start = microtime(true);
 
 $file    = 'agency.txt';
-$current = "agency_id,agency_name,agency_url,agency_timezone,agency_phone\n";
+$current = "agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone\n";
 file_put_contents($file, $current);
 
 $file    = 'routes.txt';
@@ -14,7 +14,7 @@ $current = "route_id,service_id,trip_id,trip_headsign,direction_id,shape_id,whee
 file_put_contents($file, $current);
 
 $file    = 'stop_times.txt';
-$current = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,pickup_type,drop_off_type\n";
+$current = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type\n";
 file_put_contents($file, $current);
 
 $file    = 'calendar.txt';
@@ -26,7 +26,7 @@ $current = "service_id,date,exception_type\n";
 file_put_contents($file, $current);
 
 $file    = 'stops.txt';
-$current = "stop_id,stop_code,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding\n";
+$current = "stop_id,platform_code,stop_name,stop_lat,stop_lon,zone_id,location_type,parent_station,wheelchair_boarding\n";
 file_put_contents($file, $current);
 
 $file    = 'shapes.txt';

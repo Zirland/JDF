@@ -58,7 +58,7 @@ $time_start = $now;
 
 $current = "";
 
-$query46 = "SELECT agency_id,agency_name,agency_url,agency_timezone,agency_phone FROM agency WHERE agency_id IN (SELECT DISTINCT agency_id FROM ag_use);";
+$query46 = "SELECT agency_id,agency_name,agency_url,agency_timezone,agency_phone,agency_lang FROM agency WHERE agency_id IN (SELECT DISTINCT agency_id FROM ag_use);";
 
 if ($result46 = mysqli_query($link, $query46)) {
     while ($row46 = mysqli_fetch_row($result46)) {
@@ -67,9 +67,14 @@ if ($result46 = mysqli_query($link, $query46)) {
         $agency_url      = $row46[2];
         $agency_timezone = $row46[3];
         $agency_phone    = $row46[4];
+        $agency_lang     = $row46[5];
         $agencynums      = mysqli_num_rows($result46);
 
-        $current .= "$agency_id,\"$agency_name\",$agency_url,$agency_timezone,\"$agency_phone\"\n";
+        if ($agency_lang == '') {
+             $agency_lang = 'cs';
+        }
+
+        $current .= "$agency_id,\"$agency_name\",$agency_url,$agency_timezone,$agency_lang,\"$agency_phone\"\n";
     }
     mysqli_free_result($result46);
 }
@@ -86,7 +91,7 @@ $time_start = $now;
 $current = "";
 
 $file     = 'stops.txt';
-$query233 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code FROM stop WHERE (stop_id IN (SELECT stop_id FROM stop_use));";
+$query233 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM stop WHERE (stop_id IN (SELECT stop_id FROM stop_use));";
 if ($result233 = mysqli_query($link, $query233)) {
     while ($row233 = mysqli_fetch_row($result233)) {
         $stop_id             = $row233[0];
@@ -97,9 +102,10 @@ if ($result233 = mysqli_query($link, $query233)) {
         $parent_station      = $row233[5];
         $wheelchair_boarding = $row233[6];
         $stop_code           = $row233[7];
+        $zone_id             = $row233[8];
         $stopnums            = mysqli_num_rows($result233);
 
-        $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,$location_type,$parent_station,$wheelchair_boarding\n";
+        $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,\"$zone_id\",$location_type,$parent_station,$wheelchair_boarding\n";
         file_put_contents($file, $current, FILE_APPEND);
 
         if ($parent_station != '') {
@@ -115,7 +121,7 @@ echo $now - $time_start;
 echo "<br>\n";
 $time_start = $now;
 
-$query313 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code FROM stop WHERE (stop_id IN (SELECT stop_id FROM parent_use));";
+$query313 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM stop WHERE (stop_id IN (SELECT stop_id FROM parent_use));";
 if ($result313 = mysqli_query($link, $query313)) {
     while ($row313 = mysqli_fetch_row($result313)) {
         $stop_id             = $row313[0];
@@ -126,9 +132,10 @@ if ($result313 = mysqli_query($link, $query313)) {
         $parent_station      = $row313[5];
         $wheelchair_boarding = $row313[6];
         $stop_code           = $row313[7];
+        $zone_id             = $row313[8];
         $stopnums            = $stopnums + mysqli_num_rows($result313);
 
-        $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,$location_type,$parent_station,$wheelchair_boarding\n";
+        $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,\"$zone_id\",$location_type,$parent_station,$wheelchair_boarding\n";
         file_put_contents($file, $current, FILE_APPEND);
     }
     mysqli_free_result($result313);
@@ -166,7 +173,7 @@ $time_start = $now;
 $current = "";
 
 $dnes  = date("Y-m-d", time());
-$konec = date("Y-m-d", strtotime("+ 42 days"));
+$konec = date("Y-m-d", strtotime("+ 63 days"));
 
 $dnesden   = substr($dnes, 8, 2);
 $dnesmesic = substr($dnes, 5, 2);

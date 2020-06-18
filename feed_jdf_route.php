@@ -16,9 +16,9 @@ if (!$link) {
 }
 
 $dnes  = date("Y-m-d", time());
-$konec = date("Y-m-d", strtotime("+ 42 days"));
+$konec = date("Y-m-d", strtotime("+ 63 days"));
 
-$akt_trip = "SELECT route_id, trip_id, trip_headsign, direction_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active='1') AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec');";
+$akt_trip = "SELECT route_id, trip_id, trip_headsign, direction_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip WHERE active='1' AND route_id IN (SELECT route_id FROM route WHERE agency_id = '25332473' AND active='1' AND SUBSTRING(route_id,1,3) IN (416,516,557)) AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec');";
 
 $current = "";
 
@@ -34,7 +34,7 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
 
         $matice = "";
 
-        for ($i = 0; $i < 42; $i++) {
+        for ($i = 0; $i < 64; $i++) {
             $matice[$i] = 0;
         }
 
@@ -48,7 +48,7 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
         $konecrok   = substr($konec, 0, 4);
         $konectime  = mktime(0, 0, 0, $konecmesic, $konecden, $konecrok);
 
-        $query64 = "SELECT datum FROM jizdy WHERE trip_id = '$trip_id' AND (datum>='$dnes' AND datum<'$konec');";
+        $query64 = "SELECT datum FROM jizdy WHERE trip_id = '$trip_id' AND (datum>='$dnes' AND datum<='$konec');";
         if ($result64 = mysqli_query($link, $query64)) {
             while ($row64 = mysqli_fetch_row($result64)) {
                 $datum = $row64[0];
@@ -147,9 +147,10 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
     mysqli_free_result($result85);
 }
 
-$tripstops = "SELECT DISTINCT * FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE active='1' AND trip_id LIKE '$oblast%' AND route_id IN (SELECT route_id FROM route WHERE active = '1') AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec'));";
+$tripstops = "SELECT DISTINCT * FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE active='1' AND route_id IN (SELECT route_id FROM route WHERE agency_id = '25332473' AND active = '1' AND SUBSTRING(route_id,1,3) IN (416,516,557)) AND trip_id IN (SELECT trip_id FROM jizdy WHERE datum>='$dnes' AND datum<'$konec'));";
 
 $current = "";
+$i = 0;
 
 if ($result166 = mysqli_query($link, $tripstops)) {
     while ($row166 = mysqli_fetch_row($result166)) {
@@ -158,10 +159,11 @@ if ($result166 = mysqli_query($link, $tripstops)) {
         $departure_time = $row166[2];
         $stop_id        = $row166[3];
         $stop_sequence  = $row166[4];
+        $stop_headsign  = $row166[5];
         $pickup_type    = $row166[6];
         $drop_off_type  = $row166[7];
 
-        $current .= "$trip_id,$arrival_time,$departure_time,$stop_id,$stop_sequence,$pickup_type,$drop_off_type\n";
+        $current .= "$trip_id,$arrival_time,$departure_time,$stop_id,$stop_sequence,\"$stop_headsign\",$pickup_type,$drop_off_type\n";
 
         $mark_stop = mysqli_query($link, "INSERT INTO stop_use (trip_id, stop_id) VALUES ('$trip_id', '$stop_id');");
     }
@@ -169,7 +171,5 @@ if ($result166 = mysqli_query($link, $tripstops)) {
     file_put_contents($file, $current, FILE_APPEND);
     mysqli_free_result($result166);
 }
-
-echo "Oblast: $oblast\n";
 
 mysqli_close($link);
