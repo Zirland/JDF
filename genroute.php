@@ -205,13 +205,13 @@ if ($spoje) {
         }
 
         if (substr($PK, 0, 3) != '-1-' &&
-         substr($PK, 0, 3) != '-2-' &&
-         substr($PK, 0, 3) != '-3-' &&
-         substr($PK, 0, 3) != '-4-' &&
-         substr($PK, 0, 3) != '-5-' &&
-         substr($PK, 0, 3) != '-6-' &&
-         substr($PK, 0, 3) != '-7-' &&
-         substr($PK, 0, 3) != '-8-') {
+            substr($PK, 0, 3) != '-2-' &&
+            substr($PK, 0, 3) != '-3-' &&
+            substr($PK, 0, 3) != '-4-' &&
+            substr($PK, 0, 3) != '-5-' &&
+            substr($PK, 0, 3) != '-6-' &&
+            substr($PK, 0, 3) != '-7-' &&
+            substr($PK, 0, 3) != '-8-') {
             $PK = '-1-2-8' . $PK;
         }
 
@@ -609,7 +609,16 @@ if ($zaslinky) {
         $najdipom   = mysqli_fetch_row(mysqli_query($link, $hledejpom));
         $stop_name  = $najdipom[0];
         $zastPK     = $najdipom[1];
-        $stopPK     = $zastPK . $zastavlin[11] . "-" . $zastavlin[13] . "-" . $zastavlin[15] . "-";
+
+        if ($verze == '1.8' || $verze == '1.9') {
+            $nove_PK = $zastavlin[9] . "-" . $zastavlin[11] . "-" . $zastavlin[13] . "-";
+        }
+
+        if ($verze == '1.10' || $verze == '1.11') {
+            $nove_PK = $zastavlin[11] . "-" . $zastavlin[13] . "-" . $zastavlin[15] . "-";
+        }
+
+        $stopPK     = $zastPK . $nove_PK;
 
         $query467  = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
         $prikaz467 = mysqli_query($link, $query467);

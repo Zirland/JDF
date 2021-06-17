@@ -48,7 +48,7 @@ if ($dopravci) {
         }
 
 //        $cistiag  = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
-        echo "$cistiag<br/>";
+        $query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
         $query21  = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
         echo "$query21<br/>";
 //        $prikaz21 = mysqli_query($link, $query21);
@@ -202,7 +202,7 @@ if ($spoje) {
         }
 
         $matrix = "";
-        
+
         $maticestart = date_create('1 week ago');
         $start       = date_format($maticestart, "N");
         $shift       = -1 * $start;
@@ -625,7 +625,16 @@ if ($zaslinky) {
         $najdipom   = mysqli_fetch_row(mysqli_query($link, $hledejpom));
         $stop_name  = $najdipom[0];
         $zastPK     = $najdipom[1];
-        $stopPK     = $zastPK . $zastavlin[11] . "-" . $zastavlin[13] . "-" . $zastavlin[15] . "-";
+
+        if ($verze == '1.8' || $verze == '1.9') {
+            $nove_PK = $zastavlin[9] . "-" . $zastavlin[11] . "-" . $zastavlin[13] . "-";
+        }
+
+        if ($verze == '1.10' || $verze == '1.11') {
+            $nove_PK = $zastavlin[11] . "-" . $zastavlin[13] . "-" . $zastavlin[15] . "-";
+        }
+
+        $stopPK     = $zastPK . $nove_PK;
 
         $query467  = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
         echo "$query467<br/>";
