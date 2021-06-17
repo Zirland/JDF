@@ -14,7 +14,7 @@ function linky($stop_id)
     if ($result13 = mysqli_query($link, $query13)) {
         while ($row13 = mysqli_fetch_row($result13)) {
             $stop_name = $row13[0];
-            $pomcode = $row13[1];
+            $pomcode   = $row13[1];
             $stop_code = $row13[2];
 
             $nazev = $stop_name;
@@ -26,13 +26,13 @@ function linky($stop_id)
             }
         }
     }
-    
+
     echo "$nazev<br/>";
     $query65 = "SELECT DISTINCT route.route_short_name, trip.trip_headsign FROM trip LEFT JOIN route ON route.route_id = trip.route_id WHERE trip_id IN (SELECT DISTINCT trip_id FROM stoptime WHERE stop_id = '$stop_id') ORDER BY CAST(route_short_name AS unsigned);";
     if ($result65 = mysqli_query($link, $query65)) {
         while ($row65 = mysqli_fetch_row($result65)) {
             $route_name = $row65[0];
-            $headsign = $row65[1];
+            $headsign   = $row65[1];
 
             echo "$route_name, $headsign<br/>";
         }
@@ -79,7 +79,7 @@ switch ($action) {
         foreach ($stopArr as $stop_id) {
             linky($stop_id);
         }
-    break;
+        break;
 }
 
 include 'footer.php';
