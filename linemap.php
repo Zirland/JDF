@@ -46,7 +46,7 @@ if ($result13 = mysqli_query($link, $query13)) {
 
                                 if ($lon != "" && $lat != "") {
                                     $i       = $i + 1;
-                                    $current = "$route_short_name"."_$shape_id, $lon, $lat, $i\n";
+                                    $current = "$route_short_name" . "_$shape_id, $lon, $lat, $i\n";
                                     file_put_contents($file, $current, FILE_APPEND);
                                 }
                             }
@@ -54,7 +54,7 @@ if ($result13 = mysqli_query($link, $query13)) {
                         }
                     }
                 }
-           }
+            }
         }
     }
 }

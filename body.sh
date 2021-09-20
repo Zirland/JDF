@@ -2,7 +2,7 @@
 
 cd /home/zirland/git/JDF
 
-git pull
+#git pull
 
 for i in *.gpx
 do

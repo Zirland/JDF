@@ -29,7 +29,7 @@ if ($result22 = mysqli_query($link, $query22)) {
     while ($row22 = mysqli_fetch_row($result22)) {
         $trip_id = $row22[0];
 
-        echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a> = $soucet<br/>";
+        echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a><br/>";
         $prikaz = mysqli_query($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
     }
 }
