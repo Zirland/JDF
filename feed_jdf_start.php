@@ -1,5 +1,5 @@
 <?php
-$link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
+$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
     echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
@@ -8,7 +8,7 @@ if (!$link) {
 
 $current = "";
 
-$akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM route WHERE agency_id = '25332473' AND active='1' AND SUBSTRING(route_id,1,3) IN (416,516,557);";
+$akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM route WHERE (agency_id = '25332473' AND active='1' AND SUBSTRING(route_id,1,3) IN (416));";
 if ($result69 = mysqli_query($link, $akt_route)) {
     while ($row69 = mysqli_fetch_row($result69)) {
         $route_id         = $row69[0];
@@ -18,7 +18,6 @@ if ($result69 = mysqli_query($link, $akt_route)) {
         $route_type       = $row69[4];
         $route_color      = $row69[5];
         $route_text_color = $row69[6];
-        $routenums        = mysqli_num_rows($result69);
 
         if ($route_color == "ffffff") {
             $route_color      = "";

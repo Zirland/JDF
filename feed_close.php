@@ -1,5 +1,6 @@
 <?php
-$link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
+ini_set('memory_limit', '-1');
+$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
     echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
@@ -44,7 +45,7 @@ if ($result11 = mysqli_query($link, $query11)) {
             }
             $prevstop = $prujstop;
         }
-        $query217   = "UPDATE shapetvary SET complete = 1 WHERE shape_id = '$shape_id';";
+        $query217   = "UPDATE shapetvary SET complete = '1' WHERE shape_id = '$shape_id';";
         $command217 = mysqli_query($link, $query217);
     }
     mysqli_free_result($result11);
@@ -59,7 +60,6 @@ $time_start = $now;
 $current = "";
 
 $query46 = "SELECT agency_id,agency_name,agency_url,agency_timezone,agency_phone,agency_lang FROM agency WHERE agency_id IN (SELECT DISTINCT agency_id FROM ag_use);";
-
 if ($result46 = mysqli_query($link, $query46)) {
     while ($row46 = mysqli_fetch_row($result46)) {
         $agency_id       = $row46[0];
@@ -68,10 +68,12 @@ if ($result46 = mysqli_query($link, $query46)) {
         $agency_timezone = $row46[3];
         $agency_phone    = $row46[4];
         $agency_lang     = $row46[5];
-        $agencynums      = mysqli_num_rows($result46);
 
+        if ($agency_id == "25332473") {
+            $agency_phone = "+420353613613";
+        }
         if ($agency_lang == '') {
-             $agency_lang = 'cs';
+            $agency_lang = 'cs';
         }
 
         $current .= "$agency_id,\"$agency_name\",$agency_url,$agency_timezone,$agency_lang,\"$agency_phone\"\n";
@@ -103,7 +105,6 @@ if ($result233 = mysqli_query($link, $query233)) {
         $wheelchair_boarding = $row233[6];
         $stop_code           = $row233[7];
         $zone_id             = $row233[8];
-        $stopnums            = mysqli_num_rows($result233);
 
         $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,\"$zone_id\",$location_type,$parent_station,$wheelchair_boarding\n";
         file_put_contents($file, $current, FILE_APPEND);
@@ -133,7 +134,6 @@ if ($result313 = mysqli_query($link, $query313)) {
         $wheelchair_boarding = $row313[6];
         $stop_code           = $row313[7];
         $zone_id             = $row313[8];
-        $stopnums            = $stopnums + mysqli_num_rows($result313);
 
         $current = "$stop_id,$stop_code,\"$stop_name\",$stop_lat,$stop_lon,\"$zone_id\",$location_type,$parent_station,$wheelchair_boarding\n";
         file_put_contents($file, $current, FILE_APPEND);
@@ -216,8 +216,18 @@ if ($result262 = mysqli_query($link, $query262)) {
         $file = 'calendar.txt';
         file_put_contents($file, $current, FILE_APPEND);
 
-        for ($l = 1; $l < count($cal_pole); $l++) {
-            $vyjimka    = explode("(", $cal_pole[$l]);
+        $except  = $cal_pole[1];
+        $query58 = "SELECT vyjimky FROM calendar_except WHERE id = '$except';";
+        if ($result58 = mysqli_query($link, $query58)) {
+            while ($row58 = mysqli_fetch_row($result58)) {
+                $exc_seznam = $row58[0];
+            }
+        }
+
+        $rozpad = explode("_", $exc_seznam);
+
+        for ($l = 1; $l < count($rozpad); $l++) {
+            $vyjimka    = explode("(", $rozpad[$l]);
             $day_id     = $vyjimka[0];
             $vyjimka_id = str_replace(")", "", $vyjimka[1]);
             if ($day_id < $dnes_poradi) {

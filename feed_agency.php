@@ -33,7 +33,7 @@ $file    = 'shapes.txt';
 $current = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence\n";
 file_put_contents($file, $current);
 
-$link = mysqli_connect('localhost', 'gtfs', 'gtfs', 'JDF');
+$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
     echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
@@ -41,10 +41,11 @@ if (!$link) {
 }
 
 $agency_trunc     = mysqli_query($link, "TRUNCATE TABLE ag_use;");
+$calendar_trunc   = mysqli_query($link, "TRUNCATE TABLE cal_use;");
+$except_trunc     = mysqli_query($link, "TRUNCATE TABLE calendar_except;");
 $stop_trunc       = mysqli_query($link, "TRUNCATE TABLE stop_use;");
 $shapecheck_trunc = mysqli_query($link, "TRUNCATE TABLE shapecheck;");
 $parent_trunc     = mysqli_query($link, "TRUNCATE TABLE parent_use;");
 $export_trunc     = mysqli_query($link, "TRUNCATE TABLE exportlist;");
-$cal_trunc        = mysqli_query($link, "TRUNCATE TABLE cal_use;");
 
 mysqli_close($link);
