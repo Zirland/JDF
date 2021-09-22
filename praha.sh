@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/zirland/git/JDF
+cd /Applications/MAMP/htdocs/JDF/
 
 rm -rf praha
 

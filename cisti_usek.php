@@ -1,40 +1,7 @@
 <?php
 include 'header.php';
 
-$query68 = "SELECT du_id, stop1, stop2 FROM du;";
-$query68 = "";
-if ($result68 = mysqli_query($link, $query68)) {
-    while ($row68 = mysqli_fetch_row($result68)) {
-        $du_id = $row68[0];
-        $stop1 = $row68[1];
-        $stop2 = $row68[2];
-
-        $query75 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$stop1|$stop2|%';";
-        $hits    = mysqli_num_rows(mysqli_query($link, $query75));
-        if ($hits == 0) {
-            $query93 = "SELECT stop_name FROM stop WHERE (stop_id = '$stop1');";
-            if ($result93 = mysqli_query($link, $query93)) {
-                while ($row93 = mysqli_fetch_row($result93)) {
-                    $name1 = $row93[0];
-                }
-            }
-
-            $query102 = "SELECT stop_name FROM stop WHERE (stop_id = '$stop2');";
-            if ($result102 = mysqli_query($link, $query102)) {
-                while ($row102 = mysqli_fetch_row($result102)) {
-                    $name2 = $row102[0];
-                }
-            }
-
-            echo "$du_id | $name1 | $name2<br/>";
-
-            $purge_du = mysqli_query($link, "DELETE FROM du WHERE du_id = $du_id;");
-        }
-    }
-}
-
 $query86 = "SELECT du_id, stop1, stop2 FROM du WHERE (final = 0);";
-//$query86 = "";
 if ($result86 = mysqli_query($link, $query86)) {
     while ($row86 = mysqli_fetch_row($result86)) {
         $du_id = $row86[0];
@@ -67,7 +34,6 @@ if ($result86 = mysqli_query($link, $query86)) {
 }
 
 $query86 = "SELECT du_id, stop1, stop2 FROM du WHERE (final = 2);";
-//$query86 = "";
 if ($result86 = mysqli_query($link, $query86)) {
     while ($row86 = mysqli_fetch_row($result86)) {
         $du_id = $row86[0];
@@ -99,5 +65,34 @@ if ($result86 = mysqli_query($link, $query86)) {
     }
 }
 
+echo "== Mazání == <br/>";
+$query68 = "SELECT du_id, stop1, stop2 FROM du;";
+if ($result68 = mysqli_query($link, $query68)) {
+    while ($row68 = mysqli_fetch_row($result68)) {
+        $du_id = $row68[0];
+        $stop1 = $row68[1];
+        $stop2 = $row68[2];
+
+        $query75 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$stop1|$stop2|%';";
+        $hits    = mysqli_num_rows(mysqli_query($link, $query75));
+        if ($hits == 0) {
+            $query93 = "SELECT stop_name FROM stop WHERE (stop_id = '$stop1');";
+            if ($result93 = mysqli_query($link, $query93)) {
+                while ($row93 = mysqli_fetch_row($result93)) {
+                    $name1 = $row93[0];
+                }
+            }
+
+            $query102 = "SELECT stop_name FROM stop WHERE (stop_id = '$stop2');";
+            if ($result102 = mysqli_query($link, $query102)) {
+                while ($row102 = mysqli_fetch_row($result102)) {
+                    $name2 = $row102[0];
+                }
+            }
+
+            echo "<a href=\"usek.php?usek_id=$du_id\" target=\"blank\">$du_id</a> | $name1 | $name2<br/>";
+        }
+    }
+}
 echo "== Konec ==";
 include 'footer.php';

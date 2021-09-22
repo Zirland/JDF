@@ -25,7 +25,7 @@
 
 	$token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
 
-	$filtr = $_POST['filtr'];
+	$filtr = @$_POST['filtr'];
 
 	if ($filtr != '') {
 		$query27  = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";

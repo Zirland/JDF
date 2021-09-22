@@ -40,7 +40,11 @@ if ($result = mysqli_query($link, $query)) {
 
         $query73 = "SELECT kod_linky from exter WHERE linka = '$route_id';";
         $mhd     = mysqli_fetch_row(mysqli_query($link, $query73));
-        echo "<td>$mhd[0]</td>";
+        echo "<td>";
+        if ($mhd) {
+            echo $mhd[0];
+        }
+        echo "</td>";
 
         echo "<td";
         if ($route_active == "1") {
