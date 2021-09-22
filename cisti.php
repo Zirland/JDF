@@ -53,5 +53,8 @@ $prikaz67 = mysqli_query($link, $query67);
 $query160  = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
 $prikaz160 = mysqli_query($link, $query160);
 
+$query56  = "DELETE FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM stoptime);";
+$prikaz56 = mysqli_query($link, $query56);
+
 echo "== Konec ==";
 include 'footer.php';

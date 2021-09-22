@@ -211,7 +211,7 @@ if ($spoje) {
             $matrix .= "0";
         }
 
-        echo "214: $matrix<br/>214: $PK<br/>";
+//        echo "214: $matrix<br/>214: $PK<br/>";
         if (substr($PK, 0, 3) != '-1-' &&
             substr($PK, 0, 3) != '-2-' &&
             substr($PK, 0, 3) != '-3-' &&
@@ -222,7 +222,7 @@ if ($spoje) {
             substr($PK, 0, 3) != '-8-') {
             $PK = '-1-2-8' . $PK;
         }
-        echo "218: $matrix<br/>218: $PK<br/>";
+//        echo "218: $matrix<br/>218: $PK<br/>";
         if (strpos($PK, '-1-') !== false) {
             // pracdny
             $dy = 1;
@@ -693,7 +693,8 @@ if ($zasspoje) {
         $spoj      = $zastspoj[1];
         $trip_find = $linka . $spoj;
         $trip_id   = "";
-        $query601  = "SELECT trip_id FROM trip WHERE spoj = '$trip_find';";
+        $query601  = "SELECT trip_id FROM trip WHERE (route_id LIKE 'F$linka' AND spoj = '$trip_find');";
+        echo "$query601<br/>";
         if ($result601 = mysqli_query($link, $query601)) {
             while ($row601 = mysqli_fetch_row($result601)) {
                 $trip_id = $row601[0];

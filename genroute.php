@@ -673,7 +673,7 @@ if ($zasspoje) {
         $spoj      = $zastspoj[1];
         $trip_find = $linka . $spoj;
         $trip_id   = "";
-        $query601  = "SELECT trip_id FROM trip WHERE spoj = '$trip_find';";
+        $query601  = "SELECT trip_id FROM trip WHERE (route_id LIKE 'F$linka' AND spoj = '$trip_find');";
         if ($result601 = mysqli_query($link, $query601)) {
             while ($row601 = mysqli_fetch_row($result601)) {
                 $trip_id = $row601[0];

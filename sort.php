@@ -7,12 +7,7 @@ if (!$link) {
 }
 
 $source = $_GET['file'];
-
-if ($source > 99999) {
-    $dir = "$source";
-} else {
-    $dir = "data/" . $source;
-}
+$dir = "data/" . $source;
 
 $version = fopen("$dir/VerzeJDF.txt.txt", 'r');
 if ($version) {
