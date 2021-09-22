@@ -52,9 +52,6 @@ switch ($action) {
 
 				$query72  = "UPDATE triptimesDB SET stop_vazba = '$stop2_id' WHERE ((trip_id = '$trip') AND (zastav_id = '$zastav_id'));";
 				$prikaz72 = mysqli_query($link, $query72);
-
-				$query75  = "INSERT INTO tripvazba (zastav_id, trip_id, stop_vazba) VALUES ('$zastav_id','$trip','$stop2_id');";
-				$prikaz75 = mysqli_query($link, $query75);
 			}
 
 			switch ($delete) {

@@ -4,7 +4,6 @@ include 'header.php';
 $cisti4 = mysqli_query($link, "DELETE FROM analyza WHERE datumdo < current_date ();");
 $cisti5 = mysqli_query($link, "DELETE FROM anal_done WHERE datumdo < current_date ();");
 
-//$cisti7 = mysqli_query($link, "DELETE FROM analyza WHERE CAST(route_id AS unsigned) < 100000;");
 $cisti8 = mysqli_query($link, "DELETE FROM analyza WHERE route_id IN (SELECT route_id FROM ignorace);");
 
 $dnes_den   = date("j", time());
@@ -23,6 +22,7 @@ if ($result15 = mysqli_query($link, $query15)) {
 }
 
 $list = implode(',', $list_arr);
+$list = substr($list,1);
 
 $query6 = "SELECT DISTINCT route_id, route_name, route_type FROM analyza WHERE SUBSTRING(route_id, 1, 3) IN ($list) AND route_id NOT IN (SELECT DISTINCT route_id FROM anal_done) ORDER BY route_id;";
 if ($result6 = mysqli_query($link, $query6)) {

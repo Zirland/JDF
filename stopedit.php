@@ -43,9 +43,6 @@ switch ($action) {
 
             $query30  = "UPDATE linevazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';";
             $update30 = mysqli_query($link, $query30);
-
-            $query31  = "UPDATE tripvazba SET stop_vazba = '$newstopid' WHERE stop_vazba = '$stop_id';";
-            $update31 = mysqli_query($link, $query31);
         } else {
             $newstopid = $stop_id;
         }

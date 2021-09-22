@@ -15,9 +15,7 @@ $linkaod = $_GET['linkaod'];
 $linkado = $_GET['linkado'];
 $current = "";
 
-if ($dir < 100000) {
-    $dir = "data/" . $dir;
-}
+$dir = "data/" . $dir;
 
 unset($svatek);
 $query27 = "SELECT datum FROM svatky ORDER BY id;";
@@ -49,9 +47,8 @@ if ($dopravci) {
 
 //        $cistiag  = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
         $query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
-        $query21 = "INSERT INTO agency (agency_id, agency_name, agency_url, agency_timezone) VALUES ('$dopr_id', '$dopr_name', 'http://$dopr_url', 'Europe/Prague');";
-        echo "$query21<br/>";
-//        $prikaz21 = mysqli_query($link, $query21);
+//        echo "$query21<br/>";
+        //        $prikaz21 = mysqli_query($link, $query21);
     }
     fclose($dopravci);
 }
@@ -124,22 +121,22 @@ if ($linky) {
             $route_color = "017DC2";
         }
         $queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
-        echo "$queryro<br/>";
-//        $cistiro = mysqli_query($link, $queryro);
+//        echo "$queryro<br/>";
+        //        $cistiro = mysqli_query($link, $queryro);
 
         $querytr = "DELETE FROM trip WHERE route_id = '$label$route_id';";
-        echo "$querytr<br/>";
-//        $cistitr = mysqli_query($link, $querytr);
+//        echo "$querytr<br/>";
+        //        $cistitr = mysqli_query($link, $querytr);
 
         $query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
-        echo "$query46<br/>";
-//        $prikaz46 = mysqli_query($link, $query46);
+//        echo "$query46<br/>";
+        //        $prikaz46 = mysqli_query($link, $query46);
     }
     fclose($linky);
 }
 
 $query_jizdy = "DELETE FROM jizdy WHERE spoj LIKE '$route_id%' AND (datum BETWEEN '$linkaod' AND '$linkado');";
-echo "$query_jizdy<br/>";
+//echo "$query_jizdy<br/>";
 //$cisti_jizdy = mysqli_query($link, $query_jizdy);
 
 $spoje = fopen("$dir/Spoje.txt.txt", 'r');
@@ -170,8 +167,8 @@ if ($spoje) {
         $dnes_format = date("Y-m-d", $dnes_datum);
 
         $query180 = "INSERT INTO log(trip_id, datum) VALUES ('$tripspoj','$dnes_format');";
-        echo "$query180<br/>";
-//        $prikaz167 = mysqli_query($link, $query180);
+//        echo "$query180<br/>";
+        //        $prikaz167 = mysqli_query($link, $query180);
         $logid = mysqli_insert_id($link);
 
         $vznik = $logid;
@@ -211,7 +208,6 @@ if ($spoje) {
             $matrix .= "0";
         }
 
-//        echo "214: $matrix<br/>214: $PK<br/>";
         if (substr($PK, 0, 3) != '-1-' &&
             substr($PK, 0, 3) != '-2-' &&
             substr($PK, 0, 3) != '-3-' &&
@@ -222,7 +218,7 @@ if ($spoje) {
             substr($PK, 0, 3) != '-8-') {
             $PK = '-1-2-8' . $PK;
         }
-//        echo "218: $matrix<br/>218: $PK<br/>";
+
         if (strpos($PK, '-1-') !== false) {
             // pracdny
             $dy = 1;
@@ -522,14 +518,14 @@ if ($spoje) {
 
             if ($mixmatrix[$h] == "1") {
                 $query188 = "INSERT INTO jizdy (spoj, trip_id, datum) VALUES ('$tripspoj','$trip_id','$totodatum');";
-                echo "$query188<br/>";
-//                $prikaz188 = mysqli_query($link, $query188);
+//                echo "$query188<br/>";
+                //                $prikaz188 = mysqli_query($link, $query188);
             }
         }
 
         $query64 = "INSERT INTO trip (route_id, trip_id, trip_headsign, direction_id, wheelchair_accessible, bikes_allowed, active, spoj) VALUES ('$label$route_id', '$trip_id', '', '$smer', '$wheelchair','$bike', '0', '$tripspoj');";
-        echo "$query64<br/>";
-//        $prikaz64 = mysqli_query($link, $query64);
+//        echo "$query64<br/>";
+        //        $prikaz64 = mysqli_query($link, $query64);
     }
     fclose($spoje);
 }
@@ -559,12 +555,12 @@ if ($verze == '1.10' || $verze == '1.11') {
             $prefer     = $linext[4];
 
             $queryex = "DELETE FROM exter WHERE linka = '$linka';";
-            echo "$queryex<br/>";
-//            $cistiex = mysqli_query($link, $queryex);
+//            echo "$queryex<br/>";
+            //            $cistiex = mysqli_query($link, $queryex);
 
             $query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
-            echo "$query1213<br/>";
-//            $prikaz1213 = mysqli_query($link, $query1213);
+//            echo "$query1213<br/>";
+            //            $prikaz1213 = mysqli_query($link, $query1213);
         }
         fclose($extlinka);
     }
@@ -587,21 +583,21 @@ if ($zastavky) {
         $zastPK = "-" . $zastav[6] . "-" . $zastav[7] . "-" . $zastav[8] . "-" . $zastav[9] . "-" . $zastav[10] . "-" . $lastPK[0] . "-";
 
         $query591 = "DELETE FROM pomstop WHERE pom_cislo = '$route_id$zastav_no';";
-        echo "$query591<br/>";
-//        $prikaz591 = mysqli_query($link, $query591);
+//        echo "$query591<br/>";
+        //        $prikaz591 = mysqli_query($link, $query591);
         $query236 = "INSERT INTO pomstop (pom_cislo, stop_name, stop_PK) VALUES ('$route_id$zastav_no', '$zast_name', '$zastPK');";
-        echo "$query236<br/>";
-//        $prikaz236 = mysqli_query($link, $query236);
+//        echo "$query236<br/>";
+        //        $prikaz236 = mysqli_query($link, $query236);
     }
     fclose($zastavky);
 }
 
 $querystopDB = "DELETE FROM linestopsDB WHERE stop_linka LIKE '$label$route_id';";
-echo "$querystopDB<br/>";
+//echo "$querystopDB<br/>";
 //$cististopDB = mysqli_query($link, $querystopDB);
 
 $querytripDB = "DELETE FROM triptimesDB WHERE trip_id LIKE '$route_id%';";
-echo "$querytripDB<br/>";
+//echo "$querytripDB<br/>";
 //$cistitripDB = mysqli_query($link, $querytripDB);
 
 $zaslinky = fopen("$dir/Zaslinky.txt.txt", 'r');
@@ -637,12 +633,12 @@ if ($zaslinky) {
         $stopPK = $zastPK . $nove_PK;
 
         $query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
-        echo "$query467<br/>";
-//        $prikaz467 = mysqli_query($link, $query467);
+//        echo "$query467<br/>";
+        //        $prikaz467 = mysqli_query($link, $query467);
 
         $query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
-        echo "$query469<br/>";
-//        $prikaz469 = mysqli_query($link, $query469);
+//        echo "$query469<br/>";
+        //        $prikaz469 = mysqli_query($link, $query469);
 
         $query464 = "SELECT stop_id, stop_vazba FROM linevazba WHERE stop_id = '$label$stop_id+';";
         if ($result464 = mysqli_query($link, $query464)) {
@@ -651,8 +647,8 @@ if ($zaslinky) {
                 $stopvazba = $row464[1];
 
                 $querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
-                echo "$querymig<br/>";
-//                $migrate  = mysqli_query($link, $querymig);
+//                echo "$querymig<br/>";
+                //                $migrate  = mysqli_query($link, $querymig);
             }
         }
 
@@ -663,8 +659,8 @@ if ($zaslinky) {
                 $stopvazba = $row474[1];
 
                 $querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
-                echo "$querymig<br/>";
-//                $migrate  = mysqli_query($link, $querymig);
+//                echo "$querymig<br/>";
+                //                $migrate  = mysqli_query($link, $querymig);
             }
         }
     }
@@ -694,7 +690,7 @@ if ($zasspoje) {
         $trip_find = $linka . $spoj;
         $trip_id   = "";
         $query601  = "SELECT trip_id FROM trip WHERE (route_id LIKE 'F$linka' AND spoj = '$trip_find');";
-        echo "$query601<br/>";
+//        echo "$query601<br/>";
         if ($result601 = mysqli_query($link, $query601)) {
             while ($row601 = mysqli_fetch_row($result601)) {
                 $trip_id = $row601[0];
@@ -740,14 +736,15 @@ if ($zasspoje) {
 
         if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|' && $trip_id != "") {
             $query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
-            echo "$query537<br/>";
+//            echo "$query537<br/>";
 //            $prikaz537 = mysqli_query($link, $query537);
         }
     }
     fclose($zasspoje);
 }
 
-$query542 = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka','$linkaod', '$linkado');";
+$linka_short = substr($linka, 0, 6);
+$query542    = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka_short','$linkaod', '$linkado');";
 echo "$query542<br/>";
 //$zapis542 = mysqli_query($link, $query542);
 

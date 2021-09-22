@@ -62,13 +62,6 @@ if ($result16) {
         $departure = substr($odjezd, 0, 2) . ":" . substr($odjezd, -2) . ":00";
 
         $stop_id    = $pomoc29[1];
-        $query76    = "SELECT stop_vazba FROM tripvazba WHERE (zastav_id = '$zastav_id' AND trip_id='$trip_id');";
-        echo "$query76<br/>";
-        $prikaz76   = mysqli_fetch_row(mysqli_query($link, $query76));
-        $stop_vazba = $prikaz76[0];
-        if ($stop_vazba != '') {
-            $stop_id = $stop_vazba;
-        }
 
         if ($stop_id != '') {
             $query487 = "INSERT INTO stoptime (trip_id, arrival_time, departure_time, stop_id, stop_sequence, pickup_type, drop_off_type, shape_dist_traveled, zastav_id) VALUES ('$trip_id', '$arrival', '$departure', '$stop_id', '$s', '$pickup', '$dropoff', '$km', '$zastav_id');";
@@ -131,11 +124,6 @@ if ($result66) {
         $departure = substr($odjezd, 0, 2) . ":" . substr($odjezd, -2) . ":00";
 
         $stop_id    = $pomoc29[1];
-        $prikaz76   = mysqli_fetch_row(mysqli_query($link, "SELECT stop_vazba FROM tripvazba WHERE (zastav_id = '$zastav_id' AND trip_id='$trip_id');"));
-        $stop_vazba = $prikaz76[0];
-        if ($stop_vazba != '') {
-            $stop_id = $stop_vazba;
-        }
 
         if ($stop_id != '') {
             $query115 = "INSERT INTO stoptime (trip_id, arrival_time, departure_time, stop_id, stop_sequence, pickup_type, drop_off_type, shape_dist_traveled, zastav_id) VALUES ('$trip_id', '$arrival', '$departure', '$stop_id', '$s', '$pickup', '$dropoff', '$km', '$zastav_id');";

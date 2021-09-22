@@ -15,9 +15,7 @@ $linkaod = $_GET['linkaod'];
 $linkado = $_GET['linkado'];
 $current = "";
 
-if ($dir < 100000) {
-    $dir = "data/" . $dir;
-}
+$dir = "data/" . $dir;
 
 unset($svatek);
 $query27 = "SELECT datum FROM svatky ORDER BY id;";
@@ -618,7 +616,7 @@ if ($zaslinky) {
             $nove_PK = $zastavlin[11] . "-" . $zastavlin[13] . "-" . $zastavlin[15] . "-";
         }
 
-        $stopPK     = $zastPK . $nove_PK;
+        $stopPK = $zastPK . $nove_PK;
 
         $query467  = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
         $prikaz467 = mysqli_query($link, $query467);
@@ -725,7 +723,8 @@ if ($zasspoje) {
     fclose($zasspoje);
 }
 
-$query542 = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka','$linkaod', '$linkado');";
+$linka_short = substr($linka, 0, 6);
+$query542    = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka_short','$linkaod', '$linkado');";
 $zapis542 = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);

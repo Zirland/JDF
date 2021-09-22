@@ -11,8 +11,8 @@ function getContrastYIQ($hexcolor)
 }
 
 $route  = "XYZ";
-$route  = $_GET['id'];
-$action = $_POST['action'];
+$route  = @$_GET['id'];
+$action = @$_POST['action'];
 
 switch ($action) {
     case "oprav":
@@ -85,10 +85,10 @@ switch ($action) {
         $pocet = $_POST['pocet'];
 
         for ($y = 0; $y < $pocet; $y++) {
-            $$ind          = $y;
-            $stpidindex    = "stop_id" . ${$ind};
+            $ind          = $y;
+            $stpidindex    = "stop_id" . $ind;
             $stop_id       = $_POST[$stpidindex];
-            $stpvazbaindex = "stop_vazba" . ${$ind};
+            $stpvazbaindex = "stop_vazba" . $ind;
             $stop2_id      = $_POST[$stpvazbaindex];
 
             $query30  = "UPDATE linestopsDB SET stop_vazba='$stop2_id' WHERE (stop_id ='$stop_id');";
@@ -277,7 +277,7 @@ if ($result63 = mysqli_query($link, $query63)) {
     }
 }
 
-echo "</table><input type=\"hidden\" name=\"pocet\" value=\"$z-1\"><input type=\"submit\"></form>";
+echo "</table><input type=\"hidden\" name=\"pocet\" value=\"$z\"><input type=\"submit\"></form>";
 echo "</td><td><div id=\"mapa\" style=\"width:1280px; height:960px;\"></div><br/><div id=\"text\"></div>";
 echo "</td></tr></table>";
 
