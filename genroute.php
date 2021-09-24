@@ -1,4 +1,6 @@
 <?php
+ini_set('memory_limit', '-1');
+set_time_limit(0);
 date_default_timezone_set('Europe/Prague');
 
 $link = mysqli_connect('localhost', 'root', 'root', 'JDF');
@@ -523,16 +525,6 @@ if ($spoje) {
 }
 
 if ($verze == '1.10' || $verze == '1.11') {
-    $oznacnik = fopen("$dir/Oznacniky.txt.txt", 'r');
-    if ($oznacnik) {
-        fclose($oznacnik);
-    }
-
-    $spojskup = fopen("$dir/SpojSkup.txt.txt", 'r');
-    if ($spojskup) {
-        fclose($spojskup);
-    }
-
     $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
     if ($extlinka) {
         while (($buffer9 = fgets($extlinka, 4096)) !== false) {

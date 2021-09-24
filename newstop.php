@@ -10,6 +10,7 @@ $getcastobce = @$_GET['getcastobce'];
 $getmisto    = @$_GET['getmisto'];
 $getpomcode  = @$_GET['getpomcode'];
 $getid       = @$_GET['getid'];
+$kodobec     = "";
 
 switch ($action) {
     case 'nova':

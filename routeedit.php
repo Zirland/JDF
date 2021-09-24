@@ -36,6 +36,8 @@ switch ($action) {
 
         $oldtrip = 0;
         $oldstop = 0;
+        $oldlon = 0;
+        $oldlat = 0;
 
         switch ($routetype) {
             case '3':
