@@ -29,6 +29,7 @@
 
 	if ($filtr != '') {
 		$query27  = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
+		echo "$query27<br/>";
 		$prikaz27 = mysqli_query($link, $query27);
 	}
 	?>

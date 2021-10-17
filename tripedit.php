@@ -13,8 +13,7 @@ switch ($action) {
         $invalida = @$_POST['invalida'];
         $cyklo    = @$_POST['cyklo'];
 
-        $ready0 = "UPDATE trip SET route_id='$linka', direction_id='$smer', block_id='$blok', wheelchair_accessible='$invalida', bikes_allowed='$cyklo' WHERE (trip_id = '$trip');";
-
+        $ready0   = "UPDATE trip SET route_id='$linka', direction_id='$smer', block_id='$blok', wheelchair_accessible='$invalida', bikes_allowed='$cyklo' WHERE (trip_id = '$trip');";
         $aktualz0 = mysqli_query($link, $ready0);
         break;
 

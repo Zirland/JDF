@@ -24,7 +24,10 @@ switch ($action) {
         $pozadi     = $_POST['route_pozadi'];
         $pozadi     = substr($pozadi, 1);
         $foreground = getContrastYIQ($pozadi);
-        $aktif      = $_POST['aktif'];
+        $aktif      = @$_POST['aktif'];
+        if (!$aktif) {
+            $aktif = 0;
+        }
 
         $ready0   = "UPDATE route SET agency_id='$dopravce', route_short_name='$shortname', route_long_name='$longname', route_type='$routetype', route_color='$pozadi', route_text_color='$foreground', active='$aktif' WHERE (route_id = '$route');";
         $aktualz0 = mysqli_query($link, $ready0);
@@ -36,8 +39,8 @@ switch ($action) {
 
         $oldtrip = 0;
         $oldstop = 0;
-        $oldlon = 0;
-        $oldlat = 0;
+        $oldlon  = 0;
+        $oldlat  = 0;
 
         switch ($routetype) {
             case '3':
@@ -87,7 +90,7 @@ switch ($action) {
         $pocet = $_POST['pocet'];
 
         for ($y = 0; $y < $pocet; $y++) {
-            $ind          = $y;
+            $ind           = $y;
             $stpidindex    = "stop_id" . $ind;
             $stop_id       = $_POST[$stpidindex];
             $stpvazbaindex = "stop_vazba" . $ind;
@@ -386,13 +389,20 @@ echo "</td></tr></table>";
 	var markers = [];
 
 <?php
-$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat FROM stop WHERE obec = '$value' ORDER BY stop_id;";
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM stop WHERE obec = '$value' ORDER BY stop_id;";
 if ($result30 = mysqli_query($link, $query30)) {
     while ($row30 = mysqli_fetch_row($result30)) {
         $stop_id   = $row30[0];
         $stop_name = $row30[1];
         $longitude = $row30[2];
         $latitude  = $row30[3];
+        $pomcode   = $row30[4];
+        $stop_code = $row30[5];
+
+        if ($stop_code) {
+            $stop_name .= " ($stop_code)";
+        }
+        $stop_name .= " $pomcode";
 
         echo "addMarker('$stop_name', '$stop_id', $longitude, $latitude);\n";
     }
