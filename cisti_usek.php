@@ -90,9 +90,23 @@ if ($result68 = mysqli_query($link, $query68)) {
                 }
             }
 
-            echo "<a href=\"usek.php?usek_id=$du_id\" target=\"blank\">$du_id</a> | $name1 | $name2<br/>";
+            echo "<a href=\"usek.php?du_id=$du_id\" target=\"blank\">$du_id</a> | $name1 | $name2<br/>";
         }
     }
 }
+$query68 = "SELECT du_id, stop1, stop2 FROM du WHERE final = 1;";
+if ($result68 = mysqli_query($link, $query68)) {
+    while ($row68 = mysqli_fetch_row($result68)) {
+        $du_id = $row68[0];
+        $stop1 = $row68[1];
+        $stop2 = $row68[2];
+
+        $query75 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$stop1|$stop2|%';";
+        $hits    = mysqli_num_rows(mysqli_query($link, $query75));
+        if ($hits == 0) {
+        }
+    }
+}
+
 echo "== Konec ==";
 include 'footer.php';

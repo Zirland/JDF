@@ -11,7 +11,7 @@ $query10  = "DELETE FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHE
 $prikaz10 = mysqli_query($link, $query10);
 
 $prevtrip = 0;
-$query16  = "SELECT triptimesDB.zastav_id, triptimesDB.trip_id, triptimesDB.trip_pk, triptimesDB.prijezd, triptimesDB.odjezd, triptimesDB.km, linestopsDB.stop_poradi FROM triptimesDB LEFT JOIN linestopsDB ON triptimesDB.zastav_id=linestopsDB.stop_id WHERE trip_id LIKE '$clnroute%' AND linestopsDB.stop_smer = '0' GROUP BY triptimesDB.trip_id,triptimesDB.zastav_id,triptimesDB.prijezd,triptimesDB.odjezd ORDER BY triptimesDB.trip_id,linestopsDB.stop_poradi,triptimesDB.prijezd,triptimesDB.odjezd;";
+$query16  = "SELECT triptimesDB.zastav_id, triptimesDB.trip_id, triptimesDB.trip_pk, triptimesDB.prijezd, triptimesDB.odjezd, triptimesDB.km, linestopsDB.stop_poradi FROM triptimesDB LEFT JOIN linestopsDB ON triptimesDB.zastav_id=linestopsDB.stop_id WHERE trip_id LIKE '$clnroute%' AND linestopsDB.stop_smer = '0' GROUP BY triptimesDB.trip_id,triptimesDB.zastav_id,triptimesDB.trip_pk,triptimesDB.km,triptimesDB.prijezd,triptimesDB.odjezd ORDER BY triptimesDB.trip_id,linestopsDB.stop_poradi,triptimesDB.prijezd,triptimesDB.odjezd;";
 echo "$query16<br/>";
 $result16 = mysqli_query($link, $query16);
 if ($result16) {
@@ -74,7 +74,7 @@ if ($result16) {
 }
 
 $prevtrip = 0;
-$query66  = "SELECT triptimesDB.zastav_id, triptimesDB.trip_id, triptimesDB.trip_pk, triptimesDB.prijezd, triptimesDB.odjezd, triptimesDB.km, linestopsDB.stop_poradi FROM triptimesDB LEFT JOIN linestopsDB ON triptimesDB.zastav_id=linestopsDB.stop_id WHERE trip_id LIKE '$clnroute%' AND linestopsDB.stop_smer = '1' GROUP BY triptimesDB.trip_id,triptimesDB.zastav_id,triptimesDB.prijezd,triptimesDB.odjezd ORDER BY triptimesDB.trip_id,linestopsDB.stop_poradi DESC,triptimesDB.prijezd,triptimesDB.odjezd;";
+$query66  = "SELECT triptimesDB.zastav_id, triptimesDB.trip_id, triptimesDB.trip_pk, triptimesDB.prijezd, triptimesDB.odjezd, triptimesDB.km, linestopsDB.stop_poradi FROM triptimesDB LEFT JOIN linestopsDB ON triptimesDB.zastav_id=linestopsDB.stop_id WHERE trip_id LIKE '$clnroute%' AND linestopsDB.stop_smer = '1' GROUP BY triptimesDB.trip_id,triptimesDB.zastav_id,triptimesDB.trip_pk,triptimesDB.km,triptimesDB.prijezd,triptimesDB.odjezd ORDER BY triptimesDB.trip_id,linestopsDB.stop_poradi DESC,triptimesDB.prijezd,triptimesDB.odjezd;";
 echo "$query66<br/>";
 $result66 = mysqli_query($link, $query66);
 if ($result66) {

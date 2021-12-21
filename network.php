@@ -1,4 +1,7 @@
 <?php
+ini_set('memory_limit', '-1');
+set_time_limit(0);
+
 $link = mysqli_connect('localhost', 'root', 'root', 'JDF');
 if (!$link) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;

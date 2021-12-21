@@ -531,16 +531,6 @@ if ($spoje) {
 }
 
 if ($verze == '1.10' || $verze == '1.11') {
-    $oznacnik = fopen("$dir/Oznacniky.txt.txt", 'r');
-    if ($oznacnik) {
-        fclose($oznacnik);
-    }
-
-    $spojskup = fopen("$dir/SpojSkup.txt.txt", 'r');
-    if ($spojskup) {
-        fclose($spojskup);
-    }
-
     $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
     if ($extlinka) {
         while (($buffer9 = fgets($extlinka, 4096)) !== false) {
@@ -593,11 +583,11 @@ if ($zastavky) {
 }
 
 $querystopDB = "DELETE FROM linestopsDB WHERE stop_linka LIKE '$label$route_id';";
-//echo "$querystopDB<br/>";
+echo "$querystopDB<br/>";
 //$cististopDB = mysqli_query($link, $querystopDB);
 
 $querytripDB = "DELETE FROM triptimesDB WHERE trip_id LIKE '$route_id%';";
-//echo "$querytripDB<br/>";
+echo "$querytripDB<br/>";
 //$cistitripDB = mysqli_query($link, $querytripDB);
 
 $zaslinky = fopen("$dir/Zaslinky.txt.txt", 'r');
@@ -633,11 +623,11 @@ if ($zaslinky) {
         $stopPK = $zastPK . $nove_PK;
 
         $query467 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id+', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '0', '');";
-//        echo "$query467<br/>";
+        echo "$query467<br/>";
         //        $prikaz467 = mysqli_query($link, $query467);
 
         $query469 = "INSERT INTO linestopsDB (stop_id, stop_name, stop_pk, stop_linka, stop_poradi, stop_smer, stop_vazba) VALUES ('$label$stop_id-', '$stop_name', '$stopPK', '$label$linka_id', '$zastporadi', '1', '');";
-//        echo "$query469<br/>";
+        echo "$query469<br/>";
         //        $prikaz469 = mysqli_query($link, $query469);
 
         $query464 = "SELECT stop_id, stop_vazba FROM linevazba WHERE stop_id = '$label$stop_id+';";
@@ -647,7 +637,7 @@ if ($zaslinky) {
                 $stopvazba = $row464[1];
 
                 $querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
-//                echo "$querymig<br/>";
+                echo "$querymig<br/>";
                 //                $migrate  = mysqli_query($link, $querymig);
             }
         }
@@ -659,7 +649,7 @@ if ($zaslinky) {
                 $stopvazba = $row474[1];
 
                 $querymig = "UPDATE linestopsDB SET stop_vazba = '$stopvazba' WHERE stop_id LIKE '$stopid';";
-//                echo "$querymig<br/>";
+                echo "$querymig<br/>";
                 //                $migrate  = mysqli_query($link, $querymig);
             }
         }
@@ -736,7 +726,7 @@ if ($zasspoje) {
 
         if ($prijezd != '<' && $prijezd != '|' && $odjezd != '<' && $odjezd != '|' && $trip_id != "") {
             $query537 = "INSERT INTO triptimesDB (zastav_id,trip_id,trip_pk,prijezd,odjezd,km) VALUES ('$label$zastav_id','$trip_id', '$tripstopPK', '$prijezd', '$odjezd', '$km');";
-//            echo "$query537<br/>";
+            echo "$query537<br/>";
 //            $prikaz537 = mysqli_query($link, $query537);
         }
     }
