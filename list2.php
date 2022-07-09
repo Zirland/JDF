@@ -68,14 +68,14 @@ if ($result = mysqli_query($link, $query)) {
             case 4:
                 echo "<td>přívoz</td>";
                 break;
-            case 5:
-                echo "<td>trolejbus</td>";
-                break;
             case 6:
                 echo "<td>kabinová lanovka</td>";
                 break;
             case 7:
                 echo "<td>kolejová lanovka</td>";
+                break;
+            case 11:
+                echo "<td>trolejbus</td>";
                 break;
             default:
                 echo "<td></td>";

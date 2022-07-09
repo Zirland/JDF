@@ -111,7 +111,7 @@ switch ($action) {
         $query96 = "SELECT du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
         $pom96   = mysqli_fetch_row(mysqli_query($link, $query96));
         $du_id   = $pom96[0];
-        echo "$du_id<br/>";
+        echo "$du_id | <a href=\"usek.php?du_id=$du_id\" target=\"blank\">Editace úseku</a><br/>";
 
         $prujezdy = $fromlon . "," . $fromlat . "|" . $tolon . "," . $tolat;
 

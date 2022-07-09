@@ -168,11 +168,6 @@ if ($route_type == "4") {
     echo " SELECTED";
 }
 echo ">přívoz</option>";
-echo "<option value=\"5\"";
-if ($route_type == "5") {
-    echo " SELECTED";
-}
-echo ">trolejbus</option>";
 echo "<option value=\"6\"";
 if ($route_type == "6") {
     echo " SELECTED";
@@ -183,6 +178,11 @@ if ($route_type == "7") {
     echo " SELECTED";
 }
 echo ">kolejová lanovka</option>";
+echo "<option value=\"11\"";
+if ($route_type == "11") {
+    echo " SELECTED";
+}
+echo ">trolejbus</option>";
 echo "</select>";
 
 echo "</td><td style=\"background-color : #$route_color;\">Linka: <input type=\"text\" name=\"shortname\" value=\"$route_short_name\"><br />";

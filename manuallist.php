@@ -101,11 +101,6 @@ switch ($action) {
             echo " SELECTED";
         }
         echo ">přívoz</option>";
-        echo "<option value=\"5\"";
-        if ($route_type == "5") {
-            echo " SELECTED";
-        }
-        echo ">trolejbus</option>";
         echo "<option value=\"6\"";
         if ($route_type == "6") {
             echo " SELECTED";
@@ -116,6 +111,11 @@ switch ($action) {
             echo " SELECTED";
         }
         echo ">kolejová lanovka</option>";
+        echo "<option value=\"11\"";
+        if ($route_type == "11") {
+            echo " SELECTED";
+        }
+        echo ">trolejbus</option>";
         echo "</select>";
 
         echo "</td><td>Linka: <input type=\"text\" name=\"longname\" value=\"$route_long_name\" size=\"60\"></td>";
@@ -243,7 +243,7 @@ switch ($action) {
                             $radek .= $texty[$index] . " ";
                         }
                         if ($typ == $prev_typ) {
-                                $radek .= ", ";
+                            $radek .= ", ";
                         }
                         if ($kodod != $koddo) {
                             $radek .= "od ";

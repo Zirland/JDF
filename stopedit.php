@@ -166,10 +166,10 @@ if (isset($stop_lon) && isset($stop_lat)) {
     echo "var stred = SMap.Coords.fromWGS84(14.41, 50.08);\n";
 }
 ?>
-	var mapa = new SMap(document.querySelector("#mapa"), stred, 18);
+	var mapa = new SMap(document.querySelector("#mapa"), stred, 20);
 
-	mapa.addDefaultLayer(SMap.DEF_OPHOTO);
-	mapa.addDefaultLayer(SMap.DEF_BASE).enable();
+	mapa.addDefaultLayer(SMap.DEF_OPHOTO).enable();
+	mapa.addDefaultLayer(SMap.DEF_BASE);
 
 	var layerSwitch = new SMap.Control.Layer({
 		width: 65,

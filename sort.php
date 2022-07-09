@@ -61,7 +61,7 @@ if ($linky) {
                     $route_type = "4";
                     break;
                 case "T":
-                    $route_type = "5";
+                    $route_type = "11";
                     break;
             }
         }

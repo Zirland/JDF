@@ -16,23 +16,23 @@
 <body>
 
 	<?php
-	$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
-	if (!$link) {
-		echo "Error: Unable to connect to MySQL." . PHP_EOL;
-		echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-		exit;
-	}
+$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+if (!$link) {
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    exit;
+}
 
-	$token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
+$token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
 
-	$filtr = @$_POST['filtr'];
+$filtr = @$_POST['filtr'];
 
-	if ($filtr != '') {
-		$query27  = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
-		echo "$query27<br/>";
-		$prikaz27 = mysqli_query($link, $query27);
-	}
-	?>
+if ($filtr != '') {
+    $query27 = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
+    echo "$query27<br/>";
+    $prikaz27 = mysqli_query($link, $query27);
+}
+?>
 
 	<table style="width:100%; height:100%;">
 		<tr>
@@ -48,6 +48,7 @@
 				<a href="cisti.php">Čisti</a><br />
 				STOPS<br />
 				<a href="newstop.php">Newstop</a><br />
+				<a href="station.php">Station</a><br />
 				LINKY<br />
 				<a href="analist_fresh.php">Analýza fresh</a><br />
 				<a href="analist_regen.php">Analýza regen</a><br />
@@ -61,30 +62,30 @@
 				<hr />
 
 				<?php
-				$query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
-				if ($result63 = mysqli_query($link, $query63)) {
-					while ($row63 = mysqli_fetch_row($result63)) {
-						$value = $row63[0];
-					}
-				}
+$query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
+if ($result63 = mysqli_query($link, $query63)) {
+    while ($row63 = mysqli_fetch_row($result63)) {
+        $value = $row63[0];
+    }
+}
 
-				echo "<form method=\"post\" action=\"\" name=\"filtr\">";
-				echo "<select name=\"filtr\">";
+echo "<form method=\"post\" action=\"\" name=\"filtr\">";
+echo "<select name=\"filtr\">";
 
-				$query74 = "SELECT obec FROM stop GROUP BY obec ORDER BY obec;";
-				if ($result74 = mysqli_query($link, $query74)) {
-					while ($row74 = mysqli_fetch_row($result74)) {
-						$obec = $row74[0];
+$query74 = "SELECT obec FROM stop GROUP BY obec ORDER BY obec;";
+if ($result74 = mysqli_query($link, $query74)) {
+    while ($row74 = mysqli_fetch_row($result74)) {
+        $obec = $row74[0];
 
-						echo "<option value=\"$obec\"";
-						if ($obec == $value) {
-							echo " SELECTED";
-						}
-						echo ">$obec</option>";
-					}
-				}
+        echo "<option value=\"$obec\"";
+        if ($obec == $value) {
+            echo " SELECTED";
+        }
+        echo ">$obec</option>";
+    }
+}
 
-				echo "<input type=\"submit\"></form>";
-				?>
+echo "<input type=\"submit\"></form>";
+?>
 			</td>
 			<td>
