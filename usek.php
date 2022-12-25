@@ -5,94 +5,235 @@ $action  = $_POST['action'];
 $delete  = $_POST['delete'];
 $usek_id = $_GET['du_id'];
 if (!$usek_id) {
-	$usek_id = $_POST['id_usek'];
+    $usek_id = $_POST['id_usek'];
 };
-$path = $_POST['path'];
 
-echo "<form method=\"post\" action=\"usek.php\" name=\"odkud\"><input name=\"action\" value=\"search\" type=\"hidden\">";
+$path = $_POST['path'];
+$from = @$_POST['from'];
+$to   = @$_POST['to'];
+
+$koleje  = [];
+$query15 = "SELECT DISTINCT stoptime.stop_id from stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id IN (SELECT route_id FROM `route` WHERE route_type = 0));";
+if ($result15 = mysqli_query($link, $query15)) {
+    while ($row15 = mysqli_fetch_row($result15)) {
+        $koleje[] = $row15[0];
+    }
+}
+
+echo "<form method=\"post\" action=\"usek.php\" name=\"usek\"><input name=\"action\" value=\"usek\" type=\"hidden\">";
 echo "<input type=\"text\" name=\"id_usek\" value=\"$usek_id\"><input type=\"checkbox\" name=\"delete\" value=\"1\"><input type=\"submit\"></form>";
 
+echo "<form method=\"post\" action=\"usek.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
+echo "Odkud: <select name=\"from\">";
+$query0 = "SELECT stop_id, stop_name, pomcode, stop_code FROM `stop` WHERE stop_id IN (SELECT stop1 FROM du WHERE final = 1) ORDER BY stop_name;";
+if ($result0 = mysqli_query($link, $query0)) {
+    while ($row0 = mysqli_fetch_row($result0)) {
+        $kodf   = $row0[0];
+        $nazevf = $row0[1];
+        $codef  = $row0[2];
+        $platf = $row0[3];
+        echo "<option value=\"$kodf\"";
+        if ($kodf == $from) {
+            echo " SELECTED";
+        }
+        echo ">$nazevf $platf $codef $kodf";
+        if (in_array($kodf, $koleje)) {
+            echo " ##";
+        }
+
+        echo "</option>";
+    }
+    mysqli_free_result($result0);
+} else {
+    echo "Error description: " . mysqli_error($link);
+}
+
+echo "</select>";
+echo "<input type=\"submit\"></form>";
+
 switch ($action) {
-	case "uloz":
-		$body = explode("),(", $path);
-		$pass = "";
-		foreach ($body as $point) {
-			$upr_point  = str_replace(")", "", $point);
-			$upr_point2 = str_replace("(", "", $upr_point);
+    case "uloz":
+        $body = explode("),(", $path);
+        $pass = "";
+        foreach ($body as $point) {
+            $upr_point  = str_replace(")", "", $point);
+            $upr_point2 = str_replace("(", "", $upr_point);
 
-			if ($upr_point2 != "") {
-				$pass .= $upr_point2 . ";";
-			}
-		}
+            if ($upr_point2 != "") {
+                $pass .= $upr_point2 . ";";
+            }
+        }
 
-		$pass    = substr($pass, 0, -1);
-		$query51 = "UPDATE du SET path = '$pass' WHERE du_id = '$usek_id';";
-		$zapis51 = mysqli_query($link, $query51);
+        $pass    = substr($pass, 0, -1);
+        $query51 = "UPDATE du SET `path` = '$pass' WHERE du_id = '$usek_id';";
+        $zapis51 = mysqli_query($link, $query51);
 
-		$query31 = "SELECT stop1, stop2 FROM du WHERE du_id = '$usek_id';";
-		if ($result31 = mysqli_query($link, $query31)) {
-			while ($row31 = mysqli_fetch_row($result31)) {
-				$from = $row31[0];
-				$to   = $row31[1];
-			}
-		}
+        $query31 = "SELECT stop1, stop2 FROM du WHERE du_id = '$usek_id';";
+        if ($result31 = mysqli_query($link, $query31)) {
+            while ($row31 = mysqli_fetch_row($result31)) {
+                $from = $row31[0];
+                $to   = $row31[1];
+            }
+        }
 
-		$query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartrasy LIKE '%$from|$to|%';";
-		$zapis54 = mysqli_query($link, $query54);
-		$action  = "search";
+        $query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartrasy LIKE '%$from|$to|%';";
+        $zapis54 = mysqli_query($link, $query54);
+        $action  = "usek";
 
-	case "search":
-		$query102 = "SELECT path, stop1, stop2 FROM du WHERE du_id = '$usek_id';";
-		echo $query102;
-		if ($result102 = mysqli_query($link, $query102)) {
-			$row102 = mysqli_fetch_row($result102);
-			$path   = $row102[0];
-			$from   = $row102[1];
-			$to     = $row102[2];
-		}
+    case "usek":
+        $query102 = "SELECT `path`, stop1, stop2 FROM du WHERE du_id = '$usek_id';";
+        echo $query102;
+        if ($result102 = mysqli_query($link, $query102)) {
+            $row102 = mysqli_fetch_row($result102);
+            $path   = $row102[0];
+            $from   = $row102[1];
+            $to     = $row102[2];
+        }
 
-		$query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$from';";
-		if ($result2 = mysqli_query($link, $query2)) {
-			while ($row2 = mysqli_fetch_row($result2)) {
-				$nazevv = $row2[0];
-				$codev  = $row2[1];
-				$stopcodev = $row2[2];
-				echo "From: $nazevv $codev $stopcodev | ";
-			}
-			mysqli_free_result($result2);
-		}
+        $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$from';";
+        if ($result2 = mysqli_query($link, $query2)) {
+            while ($row2 = mysqli_fetch_row($result2)) {
+                $nazevv    = $row2[0];
+                $codev     = $row2[1];
+                $stopcodev = $row2[2];
+                echo "From: $nazevv $codev $stopcodev | ";
+            }
+            mysqli_free_result($result2);
+        }
 
-		$query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$to';";
-		if ($result2 = mysqli_query($link, $query2)) {
-			while ($row2 = mysqli_fetch_row($result2)) {
-				$nazevv = $row2[0];
-				$codev  = $row2[1];
-				$stopcodev = $row2[2];
-				echo "To: $nazevv $codev $stopcodev<br/>";
-			}
-			mysqli_free_result($result2);
-		}
+        $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$to';";
+        if ($result2 = mysqli_query($link, $query2)) {
+            while ($row2 = mysqli_fetch_row($result2)) {
+                $nazevv    = $row2[0];
+                $codev     = $row2[1];
+                $stopcodev = $row2[2];
+                echo "To: $nazevv $codev $stopcodev<br/>";
+            }
+            mysqli_free_result($result2);
+        }
 
-		$query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
-		if ($result146 = mysqli_query($link, $query146)) {
-			$count = mysqli_num_rows($result146);
-			while ($row146 = mysqli_fetch_row($result146)) {
-				$trip_id = $row146[0];
+        $query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
+        if ($result146 = mysqli_query($link, $query146)) {
+            $count = mysqli_num_rows($result146);
+            while ($row146 = mysqli_fetch_row($result146)) {
+                $trip_id = $row146[0];
 
-				echo "$trip_id > ";
-			}
-			echo "$count<br/>";
-		}
+                echo "$trip_id > ";
+            }
+            echo "$count<br/>";
+        }
 
-		if ($delete == "1") {
-			$smazat = mysqli_query($link, "DELETE FROM du WHERE du_id = '$usek_id';");
-			echo "<br/>Smazáno";
-		}
+        if ($delete == "1") {
+            $smazat = mysqli_query($link, "DELETE FROM du WHERE du_id = '$usek_id';");
+            echo "<br/>Smazáno";
+        }
 
-		echo "<div id=\"text\"></div>";
-		echo "<form method=\"post\" action=\"usek.php\" name=\"trasa\"><input name=\"action\" value=\"uloz\" type=\"hidden\">";
-		echo "<input type=\"hidden\" name=\"id_usek\" value=\"$usek_id\"><input type=\"hidden\" name=\"path\" id=\"path\" value=\"\"><input type=\"submit\"></form>";
-		break;
+        echo "<div id=\"text\"></div>";
+        echo "<form method=\"post\" action=\"usek.php\" name=\"trasa\"><input name=\"action\" value=\"uloz\" type=\"hidden\">";
+        echo "<input type=\"hidden\" name=\"id_usek\" value=\"$usek_id\"><input type=\"hidden\" name=\"path\" id=\"path\" value=\"\"><input type=\"submit\"></form>";
+        break;
+
+    case "odkud":
+        echo "<form method=\"post\" action=\"usek.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+        echo "Kam: <select name=\"to\">";
+        $query1 = "SELECT stop_id, stop_name, pomcode, stop_code FROM `stop` WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 1) ORDER BY stop_name;";
+        echo $query1;
+        if ($result1 = mysqli_query($link, $query1)) {
+            while ($row1 = mysqli_fetch_row($result1)) {
+                $kodt   = $row1[0];
+                $nazevt = $row1[1];
+                $codet  = $row1[2];
+                $platt = $row1[3];
+                echo "<option value=\"$kodt\"";
+                if ($kodt == $to) {
+                    echo " SELECTED";
+                }
+                echo ">$nazevt $platt $codet $kodt";
+                if (in_array($kodt, $koleje)) {
+                    echo " ##";
+                }
+                echo "</option>";
+            }
+            mysqli_free_result($result1);
+        } else {
+            echo "Error description: " . mysqli_error($link);
+        }
+
+        echo "</select>";
+        echo "<input type=\"submit\"></form>";
+        break;
+
+    case "kam":
+        echo "<form method=\"post\" action=\"usek.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+        echo "Kam: <select name=\"to\">";
+        $query1 = "SELECT stop_id, stop_name, pomcode, stop_code FROM `stop` WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = 1) ORDER BY stop_name;";
+        echo $query1;
+        if ($result1 = mysqli_query($link, $query1)) {
+            while ($row1 = mysqli_fetch_row($result1)) {
+                $kodt   = $row1[0];
+                $nazevt = $row1[1];
+                $codet  = $row1[2];
+                $platt = $row1[3];
+                echo "<option value=\"$kodt\"";
+                if ($kodt == $to) {
+                    echo " SELECTED";
+                }
+                echo ">$nazevt $platt $codet $kodt";
+                if (in_array($kodt, $koleje)) {
+                    echo " ##";
+                }
+                echo "</option>";
+            }
+            mysqli_free_result($result1);
+        } else {
+            echo "Error description: " . mysqli_error($link);
+        }
+
+        echo "</select>";
+        echo "<input type=\"submit\"></form>";
+
+        $query102 = "SELECT `path`, du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
+        echo $query102;
+        if ($result102 = mysqli_query($link, $query102)) {
+            $row102 = mysqli_fetch_row($result102);
+            $path   = $row102[0];
+            $du_id  = $row102[1];
+        }
+
+        echo "<br/>ID = $du_id | ";
+        $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$from';";
+        if ($result2 = mysqli_query($link, $query2)) {
+            while ($row2 = mysqli_fetch_row($result2)) {
+                $nazevv    = $row2[0];
+                $codev     = $row2[1];
+                $stopcodev = $row2[2];
+                echo "From: $nazevv $codev $stopcodev | ";
+            }
+            mysqli_free_result($result2);
+        }
+
+        $query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$to';";
+        if ($result2 = mysqli_query($link, $query2)) {
+            while ($row2 = mysqli_fetch_row($result2)) {
+                $nazevv    = $row2[0];
+                $codev     = $row2[1];
+                $stopcodev = $row2[2];
+                echo "To: $nazevv $codev $stopcodev<br/>";
+            }
+            mysqli_free_result($result2);
+        }
+
+        $query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
+        if ($result146 = mysqli_query($link, $query146)) {
+            $count = mysqli_num_rows($result146);
+            while ($row146 = mysqli_fetch_row($result146)) {
+                $trip_id = $row146[0];
+
+                echo "$trip_id > ";
+            }
+            echo "$count<br/>";
+        }
+        break;
 }
 ?>
 
@@ -183,9 +324,19 @@ switch ($action) {
 	}
 
 	var m = new SMap(JAK.gel("m"));
+    m.addDefaultLayer(SMap.DEF_OPHOTO);
 	m.addDefaultLayer(SMap.DEF_BASE).enable();
 
-	m.addControl(new SMap.Control.Sync());
+	var layerSwitch = new SMap.Control.Layer({
+		width: 65,
+		items: 2,
+		page: 2
+	});
+	layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+	layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+	m.addControl(layerSwitch, {left:"8px", top:"9px"});
+
+    m.addControl(new SMap.Control.Sync());
 	var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
 	m.addControl(mouse);
 
@@ -195,11 +346,11 @@ switch ($action) {
 	var markers = [];
 
 	<?php
-	$body = explode(";", $path);
-	for ($i = 0; $i < count($body); $i++) {
-		echo "addMarker($i, $i, $body[$i]);";
-	}
-	?>
+$body = explode(";", $path);
+for ($i = 0; $i < count($body); $i++) {
+    echo "addMarker($i, $i, $body[$i]);";
+}
+?>
 
 	var cz = m.computeCenterZoom(markers);
 	m.setCenterZoom(cz[0], cz[1]);

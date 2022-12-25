@@ -1,8 +1,9 @@
 <?php
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
 
@@ -85,5 +86,9 @@ $datumod  = substr($platnostod, -4) . "-" . substr($platnostod, 2, 2) . "-" . su
 $datumdo  = substr($platnostdo, -4) . "-" . substr($platnostdo, 2, 2) . "-" . substr($platnostdo, 0, 2);
 $query68  = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, datumod, datumdo, dopravce, vyluka) VALUES ('$source', '$verze', '$route_short_name', '$route_long_name', '$route_type', '$datumod', '$datumdo', '$dopravce', '$vyluka');";
 $prikaz68 = mysqli_query($link, $query68);
+
+$file = 'sort.log';
+$logline = $query68 . "\n";
+file_put_contents($file, $logline, FILE_APPEND);
 
 mysqli_close($link);

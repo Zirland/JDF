@@ -11,9 +11,9 @@ $cheb = @$_GET["cheb"];
 $current = "";
 
 if ($cheb == 1) {
-    $akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM route WHERE (agency_id = '25332473' AND active='1' AND SUBSTRING(route_id,1,3) IN (416));";
+    $akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM `route` WHERE (agency_id = '25332473' AND active='1' AND SUBSTRING(route_id,1,3) IN (416));";
 } else {
-    $akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM route WHERE active='1';";
+    $akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM `route` WHERE active='1';";
 }
 if ($result69 = mysqli_query($link, $akt_route)) {
     while ($row69 = mysqli_fetch_row($result69)) {

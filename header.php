@@ -16,14 +16,13 @@
 <body>
 
 	<?php
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
-
-$token = "5b3ce3597851110001cf624862e9c595e8b34a50b05222a654306f62";
 
 $filtr = @$_POST['filtr'];
 
@@ -48,17 +47,20 @@ if ($filtr != '') {
 				<a href="cisti.php">Čisti</a><br />
 				STOPS<br />
 				<a href="newstop.php">Newstop</a><br />
-				<a href="station.php">Station</a><br />
+				<a href="station_kontrola.php">Station</a><br />
 				LINKY<br />
 				<a href="analist_fresh.php">Analýza fresh</a><br />
 				<a href="analist_regen.php">Analýza regen</a><br />
 				<a href="analist_new.php">Analýza new</a><br />
-				<a href="_step1.php">Manuální linka</a><br />
-				<a href="import.php">Import linky</a><br />
 				TRASY<br />
-				<a href="trasa.php">Trasy</a><br />
 				<a href="misstrasa.php">Chybějící trasy</a><br />
+				<a href="misstrasa2.php">Chybějící koleje</a><br />
 				<a href="usek.php">Detail úseku</a><br />
+				<a href="cisti_usek.php">Čisti úseky</a><br />
+				<a href="network.php">Network analýza</a><br />
+				EXPORT<br />
+				<a href="test.php">Test export</a><br />
+				<a href="output/report.html" target="_blank">Výsledek kontroly</a><br />
 				<hr />
 
 				<?php

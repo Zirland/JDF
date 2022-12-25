@@ -2,12 +2,7 @@
 ini_set('memory_limit', '-1');
 set_time_limit(0);
 
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
-if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    exit;
-}
+include 'header.php';
 
 $oldtrip = 0;
 $oldstop = 0;
@@ -79,4 +74,5 @@ $query79 = "DELETE FROM du WHERE (stop1 = '0') OR (stop1 = stop2);";
 echo "$query79<br/>";
 $prikaz79 = mysqli_query($link, $query79);
 
-mysqli_close($link);
+include 'footer.php';
+?>

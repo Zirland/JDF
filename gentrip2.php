@@ -198,7 +198,7 @@ if ($result55 = mysqli_query($link, $query55)) {
             }
         }
 
-        $query546 = "SELECT stop_name FROM stop WHERE stop_id IN (SELECT stop_id FROM stoptime WHERE trip_id = '$trip_id' AND stop_sequence = (SELECT MAX(stop_sequence) FROM stoptime WHERE trip_id='$trip_id'));";
+        $query546 = "SELECT stop_id FROM stoptime WHERE trip_id = '$trip_id' AND stop_sequence = (SELECT MAX(stop_sequence) FROM stoptime WHERE trip_id='$trip_id');";
         $row546   = mysqli_fetch_row(mysqli_query($link, $query546));
         $headsign = $row546[0];
         $query549 = "UPDATE trip SET trip_headsign='$headsign' WHERE trip_id='$trip_id';";
@@ -217,16 +217,15 @@ if ($result55 = mysqli_query($link, $query55)) {
         echo "$query1163<br/>";
 //        $prikaz1163 = mysqli_query($link, $query1163);
 
-        $query221 = "SELECT stoptime.stop_id, stoptime.stop_sequence, stop.stop_name FROM stoptime LEFT JOIN stop ON stoptime.stop_id = stop.stop_id WHERE trip_id = '$trip_id' ORDER BY stop_sequence;";
+        $query221 = "SELECT stop_id, stop_sequence FROM stoptime WHERE trip_id = '$trip_id' ORDER BY stop_sequence;";
         if ($result221 = mysqli_query($link, $query221)) {
             while ($row221 = mysqli_fetch_row($result221)) {
                 $stop_id       = $row221[0];
                 $stop_sequence = $row221[1];
-                $stop_name     = $row221[2];
 
                 $previous = $stop_sequence - 1;
 
-                $query228 = "UPDATE stoptime SET stop_headsign = '$stop_name' WHERE trip_id = '$trip_id' AND stop_sequence = '$previous';";
+                $query228 = "UPDATE stoptime SET stop_headsign = '$stop_id' WHERE trip_id = '$trip_id' AND stop_sequence = '$previous';";
                 echo "$query228<br/>";
 //                $prikaz228 = mysqli_query($link, $query228);
             }

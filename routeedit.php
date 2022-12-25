@@ -18,8 +18,8 @@ switch ($action) {
     case "oprav":
         $route      = $_POST['route_id'];
         $dopravce   = $_POST['dopravce'];
-        $shortname  = $_POST['shortname'];
-        $longname   = $_POST['longname'];
+        $shortname  = trim($_POST['shortname']);
+        $longname   = trim($_POST['longname']);
         $routetype  = $_POST['routetype'];
         $pozadi     = $_POST['route_pozadi'];
         $pozadi     = substr($pozadi, 1);
@@ -44,7 +44,7 @@ switch ($action) {
 
         switch ($routetype) {
             case '3':
-            case '5':
+            case '11':
                 $activity = 0;
                 break;
 
@@ -53,30 +53,42 @@ switch ($action) {
                 break;
         }
 
-        $query12 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
-        if ($result12 = mysqli_query($link, $query12)) {
-            while ($row12 = mysqli_fetch_row($result12)) {
-                $stop_id = $row12[0];
-                $trip_id = $row12[1];
+        $query56 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
+        if ($result56 = mysqli_query($link, $query56)) {
+            while ($row56 = mysqli_fetch_row($result56)) {
+                $stop_id  = $row56[0];
+                $trip_id  = $row56[1];
 
-                $query19 = "SELECT final FROM du WHERE stop1 = '$oldstop' AND stop2 = '$stop_id';";
-                if ($result19 = mysqli_query($link, $query19)) {
-                    $hit = mysqli_num_rows($result19);
+                $query62 = "SELECT final FROM du WHERE stop1 = '$oldstop' AND stop2 = '$stop_id';";
+                if ($result62 = mysqli_query($link, $query62)) {
+                    $hit = mysqli_num_rows($result62);
+                    while ($row62 = mysqli_fetch_row($result62)) {
+                        $du_id = $row62[0];
+                    }
                 }
 
                 if ($hit == 0) {
-                    $coord    = mysqli_fetch_row(mysqli_query($link, "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$stop_id';"));
-                    $stop_lat = $coord[0];
-                    $stop_lon = $coord[1];
+                    $query71  = "SELECT stop_lat, stop_lon FROM `stop` WHERE stop_id = '$stop_id';";
+                    $result71 = mysqli_query($link, $query71);
+                    while ($row71 = mysqli_fetch_row($result71)) {
+                        $stop_lat = $row71[0];
+                        $stop_lon = $row71[1];
+                    }
 
                     $prujezdy = $oldlon . "," . $oldlat . ";" . $stop_lon . "," . $stop_lat;
-
                     if ($trip_id == $oldtrip) {
-                        $insert_query = "INSERT INTO du (stop1, stop2, via, path, final) VALUES ('$oldstop', '$stop_id', '', '$prujezdy', '$activity');";
+                        $insert_query = "INSERT INTO du (stop1, stop2, path, final) VALUES ('$oldstop', '$stop_id', '$prujezdy', '$activity');";
                         echo "$insert_query<br/>";
                         $insert_action = mysqli_query($link, $insert_query);
+                        $du_id         = mysqli_insert_id($link);
                     }
                 }
+
+                if ($du_id != '' && $oldstop != $stop_id) {
+                    $query100  = "INSERT INTO du_use (du_id, trip_id) VALUES ('$du_id', '$trip_id');";
+                    $prikaz100 = mysqli_query($link, $query100);
+                }
+
                 $oldtrip = $trip_id;
                 $oldstop = $stop_id;
                 $oldlat  = $stop_lat;
@@ -227,7 +239,7 @@ if ($result63 = mysqli_query($link, $query63)) {
         echo "$stop_name<br/>";
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
         echo "<option value=\"\">---</option>";
-        $query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
+        $query82 = "SELECT stop_id, sortname, pomcode FROM `stop` WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
         if ($result82 = mysqli_query($link, $query82)) {
             while ($row82 = mysqli_fetch_row($result82)) {
                 $stopid   = $row82[0];
@@ -262,7 +274,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
         echo "<option value=\"\">---</option>";
-        $query82 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
+        $query82 = "SELECT stop_id, sortname, pomcode FROM `stop` WHERE active=1 AND obec LIKE '%' ORDER BY sortname;";
         if ($result82 = mysqli_query($link, $query82)) {
             while ($row82 = mysqli_fetch_row($result82)) {
                 $stopid   = $row82[0];
@@ -290,15 +302,20 @@ echo "<table>";
 echo "<tr><th>Linky odchozí</th><th>Linky příchozí</th></tr>";
 echo "<tr><td>";
 
-$query80 = "SELECT trip_id, trip_headsign, active FROM trip WHERE ((route_id = '$route_id') AND (direction_id='0')) ORDER BY trip_id;";
+$query80 = "SELECT trip.trip_id, `stop`.stop_name, trip.active, `stop`.stop_code FROM trip LEFT JOIN `stop` ON `stop`.stop_id = trip.trip_headsign WHERE ((route_id = '$route_id') AND (direction_id='0')) ORDER BY trip_id;";
 if ($result80 = mysqli_query($link, $query80)) {
     while ($row80 = mysqli_fetch_row($result80)) {
         $trip_id       = $row80[0];
         $trip_headsign = $row80[1];
         $trip_aktif    = $row80[2];
+        $head_code     = $row80[3];
 
         if ($trip_aktif == '1') {
             echo "<span style=\"background-color:green;\">";
+        }
+
+        if ($head_code != "") {
+            $trip_headsign .= " ($head_code)";
         }
 
         echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
@@ -309,15 +326,20 @@ if ($result80 = mysqli_query($link, $query80)) {
 }
 echo "</td><td>";
 
-$query96 = "SELECT trip_id, trip_headsign, active FROM trip WHERE ((route_id = '$route_id') AND (direction_id = '1')) ORDER BY trip_id;";
+$query96 = "SELECT trip.trip_id, `stop`.stop_name, trip.active, `stop`.stop_code FROM trip LEFT JOIN `stop` ON `stop`.stop_id = trip.trip_headsign WHERE ((route_id = '$route_id') AND (direction_id = '1')) ORDER BY trip_id;";
 if ($result96 = mysqli_query($link, $query96)) {
     while ($row96 = mysqli_fetch_row($result96)) {
         $trip_id       = $row96[0];
         $trip_headsign = $row96[1];
         $trip_aktif    = $row96[2];
+        $head_code     = $row96[3];
 
         if ($trip_aktif == '1') {
             echo "<span style=\"background-color:green;\">";
+        }
+
+        if ($head_code != "") {
+            $trip_headsign .= " ($head_code)";
         }
 
         echo "$trip_id - $trip_headsign - <a href=\"tripedit.php?id=$trip_id\">Upravit</a><br />";
@@ -389,7 +411,7 @@ echo "</td></tr></table>";
 	var markers = [];
 
 <?php
-$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM stop WHERE obec = '$value' ORDER BY stop_id;";
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM `stop` WHERE obec = '$value' ORDER BY stop_id;";
 if ($result30 = mysqli_query($link, $query30)) {
     while ($row30 = mysqli_fetch_row($result30)) {
         $stop_id   = $row30[0];

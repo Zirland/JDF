@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /Applications/MAMP/htdocs/JDF/
+cd /var/www/JDF/
 
 ./praha.sh
 

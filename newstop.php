@@ -70,7 +70,7 @@ switch ($action) {
         $query14  = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
         $prikaz14 = mysqli_query($link, $query14);
 
-        $deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stopid|%'));";
+        $deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stopid|%');";
         $prikaz19   = mysqli_query($link, $deaktivace);
 
         $delimport = "DELETE FROM importstop WHERE id='$impid';";

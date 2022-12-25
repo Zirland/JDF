@@ -14,7 +14,7 @@ if ($result6 = mysqli_query($link, $query6)) {
         $route_type = $row6[2];
         $dopravce   = $row6[3];
 
-        echo "<a href=\"ignorovat.php?route=$route_id\" target=\"_blank\">Ignorovat</a> - $route_id - $route_name ($route_type) $dopravce<br />";
+        echo "$route_id - $route_name ($route_type) $dopravce<br />";
 
         $halt  = 0;
         $label = "";

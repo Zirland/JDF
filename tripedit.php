@@ -47,9 +47,6 @@ switch ($action) {
             if ($reroute == 1) {
                 $query54  = "UPDATE stoptime SET stop_id = '$stop2_id' WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
                 $prikaz54 = mysqli_query($link, $query54);
-
-                $query72  = "UPDATE triptimesDB SET stop_vazba = '$stop2_id' WHERE ((trip_id = '$trip') AND (zastav_id = '$zastav_id'));";
-                $prikaz72 = mysqli_query($link, $query72);
             }
 
             switch ($delete) {
@@ -78,11 +75,6 @@ switch ($action) {
             $finstopid = $finstopparent;
         }
 
-        $query180  = "SELECT stop_name FROM stop WHERE stop_id='$finstopid';";
-        $result180 = mysqli_query($link, $query180);
-        $pomhead   = mysqli_fetch_row($result180);
-        $headsign  = $pomhead[0];
-
         $query72 = "SELECT stop_id FROM stoptime WHERE trip_id='$trip' ORDER BY stop_sequence;";
         if ($result72 = mysqli_query($link, $query72)) {
             $shape = "";
@@ -92,12 +84,12 @@ switch ($action) {
             }
         }
 
-        $query67  = "UPDATE trip SET trip_headsign = '$headsign', shape_id = '$shape' WHERE trip_id='$trip';";
+        $query67  = "UPDATE trip SET trip_headsign = '$finstopid', shape_id = '$shape' WHERE trip_id='$trip';";
         $prikaz67 = mysqli_query($link, $query67);
         break;
 }
 
-$hlavicka      = mysqli_fetch_row(mysqli_query($link, "SELECT route_id, trip_id, trip_headsign, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip WHERE (trip_id='$trip');"));
+$hlavicka      = mysqli_fetch_row(mysqli_query($link, "SELECT route_id, trip_id, stop_name, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip LEFT JOIN stop ON stop_id = trip_headsign WHERE (trip_id='$trip');"));
 $linka         = $hlavicka[0];
 $trip_id       = $hlavicka[1];
 $trip_headsign = $hlavicka[2];
@@ -249,7 +241,7 @@ echo "</table>";
 echo "</td></tr></table>";
 
 echo "JÍZDY<br/>";
-unset($datumy);
+$datumy=[];
 $query419 = "SELECT datum FROM jizdy WHERE trip_id = '$trip_id';";
 if ($result419 = mysqli_query($link, $query419)) {
     while ($row419 = mysqli_fetch_row($result419)) {

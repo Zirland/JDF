@@ -28,11 +28,11 @@ function linky($stop_id)
     }
 
     echo "$nazev<br/>";
-    $query65 = "SELECT DISTINCT route.route_short_name, trip.trip_headsign FROM trip LEFT JOIN route ON route.route_id = trip.route_id WHERE trip_id IN (SELECT DISTINCT trip_id FROM stoptime WHERE stop_id = '$stop_id') ORDER BY CAST(route_short_name AS unsigned);";
+    $query65 = "SELECT DISTINCT route.route_short_name, trip.trip_headsign, stop.stop_name FROM trip LEFT JOIN route ON route.route_id = trip.route_id LEFT join stop ON stop.stop_id = trip.trip_headsign WHERE trip_id IN (SELECT DISTINCT trip_id FROM stoptime WHERE stop_id = '$stop_id') ORDER BY CAST(route_short_name AS UNSIGNED), route_short_name;";
     if ($result65 = mysqli_query($link, $query65)) {
         while ($row65 = mysqli_fetch_row($result65)) {
             $route_name = $row65[0];
-            $headsign   = $row65[1];
+            $headsign   = $row65[2];
 
             echo "$route_name, $headsign<br/>";
         }
@@ -41,20 +41,20 @@ function linky($stop_id)
 }
 
 $action = @$_POST['action'];
-$filtr  = @$_POST['filtr'];
+$filtr2  = @$_POST['filtr2'];
 
 echo "<form method=\"post\" action=\"station_kontrola.php\" name=\"filtr\">
 	<input name=\"action\" value=\"filtr\" type=\"hidden\">";
 
-$query0 = "SELECT DISTINCT stop_name FROM stop ORDER BY stop_name;";
+$query0 = "SELECT DISTINCT stop_name FROM stop WHERE stop_id IN (SELECT DISTINCT stop_id FROM stoptime) ORDER BY CAST(stop_name AS UNSIGNED), stop_name;";
 
-echo "<select name=\"filtr\">";
+echo "<select name=\"filtr2\">";
 if ($result0 = mysqli_query($link, $query0)) {
     while ($row0 = mysqli_fetch_row($result0)) {
         $nazev = $row0[0];
 
         echo "<option value=\"$nazev\"";
-        if ($nazev == $filtr) {echo " SELECTED";}
+        if ($nazev == $filtr2) {echo " SELECTED";}
 
         echo ">$nazev</option>";
     }
@@ -67,7 +67,7 @@ switch ($action) {
     case "filtr":
 
         $stopArr = [];
-        $query81 = "SELECT stop_id FROM stop WHERE stop_name = '$filtr' AND location_type = 0 ORDER BY stop_code, pomcode;";
+        $query81 = "SELECT stop_id FROM stop WHERE stop_name = '$filtr2' AND location_type = 0 ORDER BY CAST(stop_code AS unsigned), stop_code, pomcode;";
         if ($result81 = mysqli_query($link, $query81)) {
             while ($row81 = mysqli_fetch_row($result81)) {
                 $value = $row81[0];

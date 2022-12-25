@@ -6,15 +6,16 @@ $from   = @$_POST['from'];
 $to     = @$_POST['to'];
 $path   = @$_POST['path'];
 
-echo "<form method=\"post\" action=\"misstrasa.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"odkud\"><input name=\"action\" value=\"odkud\" type=\"hidden\">";
 echo "Odkud: <select name=\"from\">";
-$query0 = "SELECT stop_id, stop_name, pomcode FROM `stop` WHERE stop_id IN (SELECT DISTINCT stop1 FROM du WHERE final = '0') ORDER BY stop_name;";
+$query0 = "SELECT stop_id, stop_name, stop_code, pomcode FROM stop WHERE stop_id IN (SELECT DISTINCT stop1 FROM du WHERE final = '2') ORDER BY stop_name;";
+echo "$query0<br/>";
 if ($result0 = mysqli_query($link, $query0)) {
     while ($row0 = mysqli_fetch_row($result0)) {
-        $kodf    = $row0[0];
-        $nazevf  = $row0[1];
+        $kodf   = $row0[0];
+        $nazevf = $row0[1];
         $stcodef = $row0[2];
-        $codef   = $row0[3];
+        $codef  = $row0[3];
         echo "<option value=\"$kodf\"";
         if ($kodf == $from) {
             echo " SELECTED";
@@ -41,23 +42,23 @@ switch ($action) {
         }
 
         $pass    = substr($pass, 0, -1);
-        $query51 = "UPDATE du SET `path` = '$pass', final = '1' WHERE stop1 = '$from' AND stop2 = '$to';";
+        $query51 = "UPDATE du SET path = '$pass', final = '1' WHERE stop1 = '$from' AND stop2 = '$to';";
         $zapis51 = mysqli_query($link, $query51);
         $query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartrasy LIKE '%$from|$to|%';";
         $zapis54 = mysqli_query($link, $query54);
         $action  = "kam";
 
     case "odkud":
-        echo "<form method=\"post\" action=\"misstrasa.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+        echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
         echo "Kam: <select name=\"to\">";
-        $query1 = "SELECT stop_id, stop_name, stop_code, pomcode FROM `stop` WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = '0') ORDER BY stop_name;";
-        echo $query1;
+        $query1 = "SELECT stop_id, stop_name, stop_code, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = '2') ORDER BY stop_name;";
+        echo "$query1<br/>";
         if ($result1 = mysqli_query($link, $query1)) {
             while ($row1 = mysqli_fetch_row($result1)) {
-                $kodt    = $row1[0];
-                $nazevt  = $row1[1];
+                $kodt   = $row1[0];
+                $nazevt = $row1[1];
                 $stcodet = $row1[2];
-                $codet   = $row1[3];
+                $codet  = $row1[3];
                 echo "<option value=\"$kodt\"";
                 if ($kodt == $to) {
                     echo " SELECTED";
@@ -74,16 +75,16 @@ switch ($action) {
         break;
 
     case "kam":
-        echo "<form method=\"post\" action=\"misstrasa.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
+        echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"kam\"><input name=\"action\" value=\"kam\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\">";
         echo "Kam: <select name=\"to\">";
-        $query1 = "SELECT stop_id, stop_name, stop_code, pomcode FROM `stop` WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = '0') ORDER BY stop_name;";
-        echo $query1;
+        $query1 = "SELECT stop_id, stop_name, stop_code, pomcode FROM stop WHERE stop_id IN (SELECT stop2 FROM du WHERE stop1 = '$from' AND final = '2') ORDER BY stop_name;";
+        echo "$query1<br/>";
         if ($result1 = mysqli_query($link, $query1)) {
             while ($row1 = mysqli_fetch_row($result1)) {
-                $kodt    = $row1[0];
-                $nazevt  = $row1[1];
+                $kodt   = $row1[0];
+                $nazevt = $row1[1];
                 $stcodet = $row1[2];
-                $codet   = $row1[3];
+                $codet  = $row1[3];
                 echo "<option value=\"$kodt\"";
                 if ($kodt == $to) {
                     echo " SELECTED";
@@ -98,13 +99,13 @@ switch ($action) {
         echo "</select>";
         echo "<input type=\"submit\"></form>";
 
-        $query47 = "SELECT stop_lat, stop_lon FROM `stop` WHERE stop_id = '$from';";
+        $query47 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$from';";
         if ($result47 = mysqli_query($link, $query47)) {
             $row47   = mysqli_fetch_row($result47);
             $fromlat = $row47[0];
             $fromlon = $row47[1];
         }
-        $query53 = "SELECT stop_lat, stop_lon FROM `stop` WHERE stop_id = '$to';";
+        $query53 = "SELECT stop_lat, stop_lon FROM stop WHERE stop_id = '$to';";
         if ($result53 = mysqli_query($link, $query53)) {
             $row53 = mysqli_fetch_row($result53);
             $tolat = $row53[0];
@@ -129,20 +130,7 @@ switch ($action) {
             }
             echo "<summary>$count</summary></details>";
         }
-
-        echo "<details>";
-        $query146 = "SELECT trip_id FROM du_use WHERE du_id = '$du_id';";
-        if ($result146 = mysqli_query($link, $query146)) {
-            $count = mysqli_num_rows($result146);
-            while ($row146 = mysqli_fetch_row($result146)) {
-                $trip_id = $row146[0];
-
-                echo "<a href=\"tripedit.php?id=$trip_id\" target=\"_blank\">$trip_id</a> > ";
-            }
-            echo "<summary>$count</summary></details>";
-        }
-
-?>
+        ?>
 
 <div id="m" style="height:800px"></div>
 
@@ -191,7 +179,7 @@ switch ($action) {
 </script>
 
 <?php
-echo "<form method=\"post\" action=\"misstrasa.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input id=\"path\" name=\"path\" value=\"\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
+echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input id=\"path\" name=\"path\" value=\"\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
         break;
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /Applications/MAMP/htdocs/JDF/
+cd /var/www/JDF/
 
 rm -rf praha
 
@@ -11,6 +11,7 @@ cd praha
 wget https://data.pid.cz/PID_GTFS.zip
 
 unzip PID_GTFS.zip
+rm PID_GTFS.zip
 
 curl http://localhost/JDF/praha.php
 

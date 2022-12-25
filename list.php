@@ -9,7 +9,7 @@ echo "<th>Přepravce</th>
 <th>Typ</th>
 <th></th>";
 echo "</tr>";
-$query = "SELECT route_id, agency_id, route_short_name, route_long_name, route_desc, route_type, route_url, route_color, route_text_color, active FROM route WHERE active=1 ORDER BY agency_id, CAST(route_short_name as unsigned)";
+$query = "SELECT route_id, agency_id, route_short_name, route_long_name, route_desc, route_type, route_url, route_color, route_text_color, active FROM route WHERE active=1 ORDER BY agency_id, LENGTH(route_short_name), route_short_name;";
 if ($result = mysqli_query($link, $query)) {
     while ($row = mysqli_fetch_row($result)) {
         $route_id         = $row[0];

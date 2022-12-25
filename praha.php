@@ -1,12 +1,14 @@
 <?php
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
 
 $dir = "praha";
+$i   = 0;
 
 $licence = fopen("$dir/route_sub_agencies.txt", 'r');
 if ($licence) {
@@ -14,8 +16,11 @@ if ($licence) {
         $lice        = explode(',', $buffer0);
         $cislo_linky = $lice[1];
 
-        $del_cislo = mysqli_query($link, "DELETE FROM ignorace WHERE route_id = '$cislo_linky';");
-        $ins_cislo = mysqli_query($link, "INSERT INTO ignorace (route_id) VALUES ('$cislo_linky');");
+        if ($i > 0) {
+            $del_cislo = mysqli_query($link, "DELETE FROM ignorace WHERE route_id = '$cislo_linky';");
+            $ins_cislo = mysqli_query($link, "INSERT INTO ignorace (route_id) VALUES ('$cislo_linky');");
+        }
+        $i = $i + 1;
     }
     fclose($licence);
 }

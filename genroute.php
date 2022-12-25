@@ -3,10 +3,11 @@ ini_set('memory_limit', '-1');
 set_time_limit(0);
 date_default_timezone_set('Europe/Prague');
 
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
 
@@ -20,7 +21,7 @@ $current = "";
 $dir = "data/" . $dir;
 
 unset($svatek);
-$query27 = "SELECT datum FROM svatky ORDER BY id;";
+$query27 = "SELECT datum FROM svatky ORDER BY datum;";
 if ($result27 = mysqli_query($link, $query27)) {
     while ($row27 = mysqli_fetch_row($result27)) {
         $svatek[] = $row27[0];
@@ -44,7 +45,7 @@ if ($dopravci) {
         $dopr_name = $dopr[5];
         $dopr_url  = $dopr[23];
         if ($dopr_url == '') {
-            $dopr_url = "andreas.zirland.org";
+            $dopr_url = "cascais.zirland.org";
         }
 
         $cistiag  = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");
@@ -54,12 +55,35 @@ if ($dopravci) {
     fclose($dopravci);
 }
 
+if ($verze == '1.10' || $verze == '1.11') {
+    $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
+    if ($extlinka) {
+        while (($buffer9 = fgets($extlinka, 4096)) !== false) {
+            $newbuffer9 = str_replace('"', '', $buffer9);
+            $linext     = explode(',', $newbuffer9);
+            $routeno    = explode(';', $linext[6]);
+            $linka      = $linext[0] . $routeno[0];
+
+            $poradi     = $linext[1];
+            $koddopravy = $linext[2];
+            $oznaclin   = $linext[3];
+            $prefer     = $linext[4];
+
+            $queryex = "DELETE FROM exter WHERE linka = '$linka';";
+            $cistiex = mysqli_query($link, $queryex);
+
+            $query1213  = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
+            $prikaz1213 = mysqli_query($link, $query1213);
+        }
+        fclose($extlinka);
+    }
+}
+
 $linky = fopen("$dir/Linky.txt.txt", 'r');
 if ($linky) {
     while (($buffer2 = fgets($linky, 4096)) !== false) {
         $line             = explode('"', $buffer2);
         $route_no         = $line[1];
-        $route_short_name = $route_no;
         $route_long_name  = $line[3];
         $agency_id        = $line[5];
         $route_text_color = "000000";
@@ -107,9 +131,26 @@ if ($linky) {
             $platnostdo = $line[29];
         }
 
-        $route_long_name = str_replace(" - ", " – ", $route_long_name);
+        $route_long_name = str_replace(",", ", ", $route_long_name);
+        $route_long_name = str_replace(".", ". ", $route_long_name);
+        $route_long_name = str_replace(". ,", ".,", $route_long_name);
+        $route_long_name = str_replace("-", " – ", $route_long_name);
+        $route_long_name = str_replace("/", " / ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
 
         $route_id = $route_no . $linkano;
+
+        $query141 = "SELECT kod_linky FROM exter WHERE linka='$route_id';";
+        if ($result141 = mysqli_query($link, $query141)) {
+            while ($row141 = mysqli_fetch_row($result141)) {
+                $route_short_name = $row141[0];
+            }
+        }
+        if ($route_short_name == '') {
+            $route_short_name = $route_no;
+        }
 
         $query134 = "SELECT route_color FROM barvy WHERE route_id = '$label$route_id';";
         if ($result134 = mysqli_query($link, $query134)) {
@@ -121,13 +162,13 @@ if ($linky) {
         } else {
             $route_color = "017DC2";
         }
-        $queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
+        $queryro = "DELETE FROM `route` WHERE route_id = '$label$route_id';";
         $cistiro = mysqli_query($link, $queryro);
 
         $querytr = "DELETE FROM trip WHERE route_id = '$label$route_id';";
         $cistitr = mysqli_query($link, $querytr);
 
-        $query46  = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
+        $query46  = "INSERT INTO `route` (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
         $prikaz46 = mysqli_query($link, $query46);
     }
     fclose($linky);
@@ -249,9 +290,9 @@ if ($spoje) {
         }
 
         foreach ($svatek as $datumsvatek1) {
-            $svatek_date = date_create_from_format('dmY', $datumsvatek1);
+            $svatek_date = date_create_from_format('Y-m-d', $datumsvatek1);
             $svatekdiff  = date_diff($maticestart, $svatek_date);
-            $dnusvatek1  = $svatekdiff->days;
+            $dnusvatek1  = $svatekdiff->days + 1;
 
             for ($h = 0; $h < 420; $h++) {
                 if ($h == $dnusvatek1) {
@@ -323,9 +364,9 @@ if ($spoje) {
             }
 
             foreach ($svatek as $datumsvatek1) {
-                $svatek_date = date_create_from_format('dmY', $datumsvatek1);
+                $svatek_date = date_create_from_format('Y-m-d', $datumsvatek1);
                 $svatekdiff  = date_diff($maticestart, $svatek_date);
-                $dnusvatek1  = $svatekdiff->days;
+                $dnusvatek1  = $svatekdiff->days + 1;
 
                 for ($h = 0; $h < 420; $h++) {
                     if ($h == $dnusvatek1) {
@@ -370,11 +411,11 @@ if ($spoje) {
                         case "1":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days;
+                            $zacdnu  = $zacdiff->days + 1;
 
                             $timedo  = date_create_from_format('dmY', $datumdo);
                             $kondiff = date_diff($maticestart, $timedo);
-                            $kondnu  = $kondiff->days;
+                            $kondnu  = $kondiff->days + 1;
 
                             if ($poradikodu == "1") {
                                 $matrix2 = "";
@@ -385,7 +426,7 @@ if ($spoje) {
 
                             for ($g = 0; $g < 420; $g++) {
                                 if ($g >= $zacdnu && $g <= $kondnu) {
-                                    $matrix2[$g] = 1;
+                                    $matrix2[$g] = 2;
                                 }
                             }
                             break;
@@ -393,7 +434,7 @@ if ($spoje) {
                         case "2":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days;
+                            $zacdnu  = $zacdiff->days + 1;
 
                             for ($g = 0; $g < 420; $g++) {
                                 if ($g == $zacdnu) {
@@ -405,7 +446,7 @@ if ($spoje) {
                         case "3":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days;
+                            $zacdnu  = $zacdiff->days + 1;
 
                             if ($poradikodu == "1") {
                                 $matrix2 = "";
@@ -415,7 +456,7 @@ if ($spoje) {
                             }
                             for ($g = 0; $g < 420; $g++) {
                                 if ($g == $zacdnu) {
-                                    $matrix2[$g] = 1;
+                                    $matrix2[$g] = 2;
                                 }
                             }
                             break;
@@ -423,11 +464,11 @@ if ($spoje) {
                         case "4":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days;
+                            $zacdnu  = $zacdiff->days + 1;
 
                             $timedo  = date_create_from_format('dmY', $datumdo);
                             $kondiff = date_diff($maticestart, $timedo);
-                            $kondnu  = $kondiff->days;
+                            $kondnu  = $kondiff->days + 1;
 
                             for ($g = 0; $g < 420; $g++) {
                                 if ($g >= $zacdnu && $g <= $kondnu) {
@@ -464,7 +505,7 @@ if ($spoje) {
         if ($zacinv == '1') {
             $zacplat = 0;
         } else {
-            $zacplat = $zacpldiff->days;
+            $zacplat = $zacpldiff->days + 1;
         }
 
         $pldo      = date_create_from_format('dmY', $platnostdo);
@@ -473,7 +514,7 @@ if ($spoje) {
         if ($koninv == '1') {
             $konplat = 0;
         } else {
-            $konplat = $konpldiff->days;
+            $konplat = $konpldiff->days + 1;
         }
 
         for ($g = 0; $g < 420; $g++) {
@@ -522,30 +563,6 @@ if ($spoje) {
         $prikaz64 = mysqli_query($link, $query64);
     }
     fclose($spoje);
-}
-
-if ($verze == '1.10' || $verze == '1.11') {
-    $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
-    if ($extlinka) {
-        while (($buffer9 = fgets($extlinka, 4096)) !== false) {
-            $newbuffer9 = str_replace('"', '', $buffer9);
-            $linext     = explode(',', $newbuffer9);
-            $routeno    = explode(';', $linext[6]);
-            $linka      = $linext[0] . $routeno[0];
-
-            $poradi     = $linext[1];
-            $koddopravy = $linext[2];
-            $oznaclin   = $linext[3];
-            $prefer     = $linext[4];
-
-            $queryex = "DELETE FROM exter WHERE linka = '$linka';";
-            $cistiex = mysqli_query($link, $queryex);
-
-            $query1213  = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
-            $prikaz1213 = mysqli_query($link, $query1213);
-        }
-        fclose($extlinka);
-    }
 }
 
 $zastavky = fopen("$dir/Zastavky.txt.txt", 'r');
@@ -717,7 +734,7 @@ if ($zasspoje) {
 
 $linka_short = substr($linka, 0, 6);
 $query542    = "INSERT INTO anal_done (route_id, datumod, datumdo) VALUES ('$linka_short','$linkaod', '$linkado');";
-$zapis542 = mysqli_query($link, $query542);
+$zapis542    = mysqli_query($link, $query542);
 
 file_put_contents($log, $current, FILE_APPEND);
 

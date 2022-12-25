@@ -58,10 +58,6 @@ switch ($action) {
             $stopname .= ", " . $stopmisto;
         }
 
-        if ($stopstopcode != '') {
-            $stopname .= " (" . $stopstopcode . ")";
-        }
-
         $sortname = "";
         if ($stopmisto != '') {
             $sortname .= "$stopmisto ";
@@ -77,7 +73,7 @@ switch ($action) {
         $query14  = "UPDATE stop SET stop_id = '$newstopid', obec = '$obec', castobce = '$stopcastobce', misto = '$stopmisto', stop_name = '$stopname', pomcode = '$stoppomcode', stop_code = '$stopstopcode', stop_lat = '$stoplat', stop_lon = '$stoplon', sortname = '$sortname' WHERE stop_id = '$stop_id';";
         $prikaz14 = mysqli_query($link, $query14);
 
-        $deaktivace = "UPDATE shapetvary SET complete='0' WHERE (tvartrasy LIKE '%$stop_id|%'));";
+        $deaktivace = "UPDATE shapetvary SET complete='0' WHERE (tvartrasy LIKE '%$stop_id|%');";
         $prikaz19   = mysqli_query($link, $deaktivace);
         $reroute    = "UPDATE du SET final='0' WHERE (stop1='$stop_id') OR (stop2='$stop_id');";
         echo "$reroute<br/>";
@@ -93,7 +89,7 @@ echo "<form method=\"post\" action=\"stopedit.php\" name=\"edit\">
 		<input name=\"action\" value=\"edit\" type=\"hidden\">
 		<input name=\"stopid\" value=\"$stop_id\" type=\"hidden\">";
 
-$query29 = "SELECT castobce, misto, pomcode, stop_code, stop_lat, stop_lon, obec, stop_name, stop_id FROM stop WHERE stop_id = '$stop_id';";
+$query29 = "SELECT castobce, misto, pomcode, stop_code, stop_lat, stop_lon, obec, stop_name, stop_id FROM `stop` WHERE stop_id = '$stop_id';";
 if ($result29 = mysqli_query($link, $query29)) {
     while ($row29 = mysqli_fetch_row($result29)) {
         $kod_obec      = substr($stop_id, 0, 6);

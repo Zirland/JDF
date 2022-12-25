@@ -1,9 +1,12 @@
 <?php
 ini_set('memory_limit', '-1');
-$link = mysqli_connect('localhost', 'root', 'root', 'JDF');
+set_time_limit(0);
+
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$link) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
 
@@ -24,27 +27,28 @@ if ($result11 = mysqli_query($link, $query11)) {
         $output = explode('|', $tvartrasy);
 
         foreach ($output as $prujstop) {
-            $query107  = "SELECT du.path FROM du WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujstop');";
-            $result235 = mysqli_query($link, $query107);
+            $query29 = "SELECT du.path FROM du WHERE (STOP1 = '$prevstop') AND (STOP2 = '$prujstop');";
+            if ($result29 = mysqli_query($link, $query29)) {
+                while ($row29 = mysqli_fetch_row($result29)) {
+                    $linie = $row29[0];
+                    $body  = explode(';', $linie);
 
-            $pom235 = mysqli_fetch_row($result235);
-            $linie  = $pom235[0];
+                    foreach ($body as $point) {
+                        $sourad = explode(',', $point);
+                        $lon    = $sourad[0];
+                        $lat    = $sourad[1];
 
-            $body = explode(';', $linie);
-
-            foreach ($body as $point) {
-                $sourad = explode(',', $point);
-                $lon    = $sourad[0];
-                $lat    = $sourad[1];
-
-                if ($lat != '' && $lon != '') {
-                    $i        = $i + 1;
-                    $query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i',0);";
-                    $command  = mysqli_query($link, $query144);
+                        if ($lat != '' && $lon != '') {
+                            $i        = $i + 1;
+                            $query144 = "INSERT INTO shape VALUES ('$shape_id','$lat','$lon','$i',0);";
+                            $command  = mysqli_query($link, $query144);
+                        }
+                    }
                 }
             }
             $prevstop = $prujstop;
         }
+
         $query217   = "UPDATE shapetvary SET complete = '1' WHERE shape_id = '$shape_id';";
         $command217 = mysqli_query($link, $query217);
     }
@@ -93,7 +97,7 @@ $time_start = $now;
 $current = "";
 
 $file     = 'stops.txt';
-$query233 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM stop WHERE (stop_id IN (SELECT stop_id FROM stop_use));";
+$query233 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM `stop` WHERE stop_id IN (SELECT stop_id FROM stop_use);";
 if ($result233 = mysqli_query($link, $query233)) {
     while ($row233 = mysqli_fetch_row($result233)) {
         $stop_id             = $row233[0];
@@ -122,7 +126,7 @@ echo $now - $time_start;
 echo "<br>\n";
 $time_start = $now;
 
-$query313 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM stop WHERE (stop_id IN (SELECT stop_id FROM parent_use));";
+$query313 = "SELECT stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,stop_code,zone_id FROM `stop` WHERE stop_id IN (SELECT stop_id FROM parent_use);";
 if ($result313 = mysqli_query($link, $query313)) {
     while ($row313 = mysqli_fetch_row($result313)) {
         $stop_id             = $row313[0];
