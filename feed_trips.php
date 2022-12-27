@@ -159,11 +159,19 @@ if ($result85 = mysqli_query($link, $akt_trip)) {
 
         $trip_short = '';
 
-        $current .= "$route_id,$service_id,$trip_id,\"$trip_headsign\",\"$trip_short\",$direction_id,J$shape_id,$wheelchair_accessible,$bikes_allowed\n";
+        $query162 = "SELECT stop_name FROM `stop` WHERE stop_id = '$trip_headsign';";
+        if ($result162 = mysqli_query($link, $query162)) {
+            while ($row162 = mysqli_fetch_row($result162)) {
+                $head_name = $row162[0];
+            }
+        }
+
+        $current .= "$route_id,$service_id,$trip_id,\"$head_name\",\"$trip_short\",$direction_id,J$shape_id,$wheelchair_accessible,$bikes_allowed\n";
 
         $query171   = "INSERT INTO shapecheck (trip_id, shape_id) VALUES ('$trip_id', '$shape_id');";
         $zapistrasy = mysqli_query($link, $query171);
     }
+
     $file = 'trips.txt';
     file_put_contents($file, $current, FILE_APPEND);
     mysqli_free_result($result85);
