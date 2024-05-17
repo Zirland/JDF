@@ -8,12 +8,12 @@ if (!$link) {
 }
 
 $dir = "praha";
-$i   = 0;
+$i = 0;
 
 $licence = fopen("$dir/route_sub_agencies.txt", 'r');
 if ($licence) {
     while (($buffer0 = fgets($licence, 4096)) !== false) {
-        $lice        = explode(',', $buffer0);
+        $lice = explode(',', $buffer0);
         $cislo_linky = $lice[1];
 
         if ($i > 0) {

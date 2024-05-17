@@ -1,74 +1,74 @@
 <?php
 include 'header.php';
 
-$trip   = @$_GET['id'];
+$trip = @$_GET['id'];
 $action = @$_POST['action'];
 
 switch ($action) {
     case "hlava":
-        $trip     = @$_POST['trip_id'];
-        $linka    = @$_POST['route_id'];
-        $smer     = @$_POST['smer'];
-        $blok     = @$_POST['block_id'];
+        $trip = @$_POST['trip_id'];
+        $linka = @$_POST['route_id'];
+        $smer = @$_POST['smer'];
+        $blok = @$_POST['block_id'];
         $invalida = @$_POST['invalida'];
-        $cyklo    = @$_POST['cyklo'];
+        $cyklo = @$_POST['cyklo'];
 
-        $ready0   = "UPDATE trip SET route_id='$linka', direction_id='$smer', block_id='$blok', wheelchair_accessible='$invalida', bikes_allowed='$cyklo' WHERE (trip_id = '$trip');";
+        $ready0 = "UPDATE trip SET route_id='$linka', direction_id='$smer', block_id='$blok', wheelchair_accessible='$invalida', bikes_allowed='$cyklo' WHERE (trip_id = '$trip');";
         $aktualz0 = mysqli_query($link, $ready0);
         break;
 
     case "zastavky":
-        $trip  = @$_POST['trip_id'];
+        $trip = @$_POST['trip_id'];
         $pocet = @$_POST['pocet'];
 
         for ($y = 0; $y < $pocet; $y++) {
-            $ind            = $y;
-            $arrindex       = "arrive" . $ind;
-            $arrival_time   = @$_POST[$arrindex];
-            $depindex       = "leave" . $ind;
+            $ind = $y;
+            $arrindex = "arrive" . $ind;
+            $arrival_time = @$_POST[$arrindex];
+            $depindex = "leave" . $ind;
             $departure_time = @$_POST[$depindex];
-            $rzmindex       = "rezim" . $ind;
-            $rzm            = @$_POST[$rzmindex];
-            $pickup_type    = substr($rzm, 0, 1);
-            $drop_off_type  = substr($rzm, 1, 1);
-            $seqindex       = "poradi" . $ind;
-            $stop_sequence  = @$_POST[$seqindex];
-            $stpidindex     = "stop_id" . $ind;
-            $stop_id        = @$_POST[$stpidindex];
-            $stp2idindex    = "stop2_id" . $ind;
-            $stop2_id       = @$_POST[$stp2idindex];
-            $rertindex      = "reroute" . $ind;
-            $reroute        = @$_POST[$rertindex];
-            $zstidindex     = "zastav_id" . $ind;
-            $zastav_id      = @$_POST[$zstidindex];
-            $delindex       = "delete" . $ind;
-            $delete         = @$_POST[$delindex];
+            $rzmindex = "rezim" . $ind;
+            $rzm = @$_POST[$rzmindex];
+            $pickup_type = substr($rzm, 0, 1);
+            $drop_off_type = substr($rzm, 1, 1);
+            $seqindex = "poradi" . $ind;
+            $stop_sequence = @$_POST[$seqindex];
+            $stpidindex = "stop_id" . $ind;
+            $stop_id = @$_POST[$stpidindex];
+            $stp2idindex = "stop2_id" . $ind;
+            $stop2_id = @$_POST[$stp2idindex];
+            $rertindex = "reroute" . $ind;
+            $reroute = @$_POST[$rertindex];
+            $zstidindex = "zastav_id" . $ind;
+            $zastav_id = @$_POST[$zstidindex];
+            $delindex = "delete" . $ind;
+            $delete = @$_POST[$delindex];
 
             if ($reroute == 1) {
-                $query54  = "UPDATE stoptime SET stop_id = '$stop2_id' WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
+                $query54 = "UPDATE stoptime SET stop_id = '$stop2_id' WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
                 $prikaz54 = mysqli_query($link, $query54);
             }
 
             switch ($delete) {
                 case 1:
-                    $query58  = "DELETE FROM stoptime WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
+                    $query58 = "DELETE FROM stoptime WHERE ((trip_id = '$trip') AND (stop_sequence = '$stop_sequence'));";
                     $prikaz58 = mysqli_query($link, $query58);
                     break;
 
                 default:
-                    $ready1   = "UPDATE stoptime SET arrival_time='$arrival_time', departure_time='$departure_time', pickup_type='$pickup_type', drop_off_type='$drop_off_type' WHERE ((trip_id ='$trip') AND (stop_sequence = '$stop_sequence'));";
+                    $ready1 = "UPDATE stoptime SET arrival_time='$arrival_time', departure_time='$departure_time', pickup_type='$pickup_type', drop_off_type='$drop_off_type' WHERE ((trip_id ='$trip') AND (stop_sequence = '$stop_sequence'));";
                     $aktualz1 = mysqli_query($link, $ready1);
                     break;
             }
         }
 
-        $pom163   = mysqli_fetch_row(mysqli_query($link, "SELECT max(stop_sequence) FROM stoptime WHERE (trip_id = '$trip');"));
+        $pom163 = mysqli_fetch_row(mysqli_query($link, "SELECT max(stop_sequence) FROM stoptime WHERE (trip_id = '$trip');"));
         $max_trip = $pom163[0];
 
-        $pomfinstop       = mysqli_fetch_row(mysqli_query($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip' AND stop_sequence='$max_trip');"));
-        $finstop          = $pomfinstop[0];
+        $pomfinstop = mysqli_fetch_row(mysqli_query($link, "SELECT stop_id FROM stoptime WHERE (trip_id='$trip' AND stop_sequence='$max_trip');"));
+        $finstop = $pomfinstop[0];
         $pomfinstopparent = mysqli_fetch_row(mysqli_query($link, "SELECT parent_station FROM stop WHERE stop_id='$finstop';"));
-        $finstopparent    = $pomfinstopparent[0];
+        $finstopparent = $pomfinstopparent[0];
         if ($finstopparent == '') {
             $finstopid = $finstop;
         } else {
@@ -84,20 +84,20 @@ switch ($action) {
             }
         }
 
-        $query67  = "UPDATE trip SET trip_headsign = '$finstopid', shape_id = '$shape' WHERE trip_id='$trip';";
+        $query67 = "UPDATE trip SET trip_headsign = '$finstopid', shape_id = '$shape' WHERE trip_id='$trip';";
         $prikaz67 = mysqli_query($link, $query67);
         break;
 }
 
-$hlavicka      = mysqli_fetch_row(mysqli_query($link, "SELECT route_id, trip_id, stop_name, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip LEFT JOIN stop ON stop_id = trip_headsign WHERE (trip_id='$trip');"));
-$linka         = $hlavicka[0];
-$trip_id       = $hlavicka[1];
+$hlavicka = mysqli_fetch_row(mysqli_query($link, "SELECT route_id, trip_id, stop_name, trip_short_name, direction_id, block_id, shape_id, wheelchair_accessible, bikes_allowed FROM trip LEFT JOIN stop ON stop_id = trip_headsign WHERE (trip_id='$trip');"));
+$linka = $hlavicka[0];
+$trip_id = $hlavicka[1];
 $trip_headsign = $hlavicka[2];
-$smer          = $hlavicka[4];
-$blok          = $hlavicka[5];
-$shape         = $hlavicka[6];
-$invalida      = $hlavicka[7];
-$cyklo         = $hlavicka[8];
+$smer = $hlavicka[4];
+$blok = $hlavicka[5];
+$shape = $hlavicka[6];
+$invalida = $hlavicka[7];
+$cyklo = $hlavicka[8];
 
 echo "<table><tr><td>";
 echo "<table>";
@@ -115,7 +115,7 @@ echo "<td>$trip_id</td><td>Linka: <select name=\"route_id\">";
 $query45 = "SELECT route_id, route_short_name, route_long_name FROM route ORDER BY route_short_name;";
 if ($result45 = mysqli_query($link, $query45)) {
     while ($row45 = mysqli_fetch_row($result45)) {
-        $roid     = $row45[0];
+        $roid = $row45[0];
         $roshname = $row45[1];
         $rolgname = $row45[2];
 
@@ -180,22 +180,22 @@ $query108 = "SELECT stoptime.stop_id,stoptime.arrival_time,stoptime.departure_ti
 
 if ($result108 = mysqli_query($link, $query108)) {
     while ($row108 = mysqli_fetch_row($result108)) {
-        $stop_id        = $row108[0];
-        $arrival_time   = $row108[1];
+        $stop_id = $row108[0];
+        $arrival_time = $row108[1];
         $departure_time = $row108[2];
-        $pickup_type    = $row108[3];
-        $drop_off_type  = $row108[4];
-        $stop_sequence  = $row108[5];
-        $nazev_stanice  = $row108[6];
-        $kod_stanice    = $row108[7];
-        $zastav_id      = $row108[8];
+        $pickup_type = $row108[3];
+        $drop_off_type = $row108[4];
+        $stop_sequence = $row108[5];
+        $nazev_stanice = $row108[6];
+        $kod_stanice = $row108[7];
+        $zastav_id = $row108[8];
 
         echo "<tr><td><input name=\"stop_id$z\" value=\"$stop_id\" type=\"hidden\"><input name=\"zastav_id$z\" value=\"$zastav_id\" type=\"hidden\"><input name=\"poradi$z\" value=\"$stop_sequence\" type=\"hidden\"><input type=\"checkbox\" name=\"reroute$z\" value=\"1\"></td><td><select name=\"stop2_id$z\">";
         $query194 = "SELECT stop_id, sortname, pomcode FROM stop WHERE active=1 ORDER BY sortname;";
 
         if ($result194 = mysqli_query($link, $query194)) {
             while ($row194 = mysqli_fetch_row($result194)) {
-                $stopid   = $row194[0];
+                $stopid = $row194[0];
                 $sortname = $row194[1];
                 $stopcode = $row194[2];
 
@@ -241,7 +241,7 @@ echo "</table>";
 echo "</td></tr></table>";
 
 echo "JÍZDY<br/>";
-$datumy=[];
+$datumy = [];
 $query419 = "SELECT datum FROM jizdy WHERE trip_id = '$trip_id';";
 if ($result419 = mysqli_query($link, $query419)) {
     while ($row419 = mysqli_fetch_row($result419)) {
@@ -253,11 +253,11 @@ $matice_start = date("Y-m-d", time());
 
 echo "<table border=\"1\"><tr><td>";
 for ($u = 0; $u < 365; $u++) {
-    $datum         = strtotime($matice_start);
-    $datum         = strtotime("+$u days", $datum);
-    $datum_format  = date("d.m.", $datum);
+    $datum = strtotime($matice_start);
+    $datum = strtotime("+$u days", $datum);
+    $datum_format = date("d.m.", $datum);
     $datum_compare = date("Y-m-d", $datum);
-    $denvtydnu     = date('w', $datum);
+    $denvtydnu = date('w', $datum);
     if (in_array($datum_compare, $datumy)) {
         echo "<span style=\"background-color:green;\">";
     }

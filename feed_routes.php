@@ -12,16 +12,16 @@ $current = "";
 $akt_route = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color FROM `route` WHERE active='1';";
 if ($result69 = mysqli_query($link, $akt_route)) {
     while ($row69 = mysqli_fetch_row($result69)) {
-        $route_id         = $row69[0];
-        $agency_id        = $row69[1];
+        $route_id = $row69[0];
+        $agency_id = $row69[1];
         $route_short_name = $row69[2];
-        $route_long_name  = $row69[3];
-        $route_type       = $row69[4];
-        $route_color      = $row69[5];
+        $route_long_name = $row69[3];
+        $route_type = $row69[4];
+        $route_color = $row69[5];
         $route_text_color = $row69[6];
 
         if ($route_color == "ffffff") {
-            $route_color      = "";
+            $route_color = "";
             $route_text_color = "";
         }
 

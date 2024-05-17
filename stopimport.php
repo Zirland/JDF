@@ -7,20 +7,20 @@ if (!$link) {
 }
 
 $file = $_GET['file'];
-$gpx  = simplexml_load_file($file);
+$gpx = simplexml_load_file($file);
 
 foreach ($gpx->wpt as $pt) {
-    $lat  = (string) $pt['lat'];
-    $lon  = (string) $pt['lon'];
+    $lat = (string) $pt['lat'];
+    $lon = (string) $pt['lon'];
     $name = (string) $pt->name;
 
-    $name     = explode(",", $name);
-    $obec     = trim($name[0]);
+    $name = explode(",", $name);
+    $obec = trim($name[0]);
     $castobce = trim($name[1]);
-    $misto    = trim($name[2]);
-    $pomcode  = trim($name[3]);
+    $misto = trim($name[2]);
+    $pomcode = trim($name[3]);
 
-    $query23  = "INSERT INTO importstop (lat,lon,obec,castobce,misto,pomcode) VALUES ('$lat', '$lon', '$obec', '$castobce', '$misto', '$pomcode');";
+    $query23 = "INSERT INTO importstop (lat,lon,obec,castobce,misto,pomcode) VALUES ('$lat', '$lon', '$obec', '$castobce', '$misto', '$pomcode');";
     $prikaz23 = mysqli_query($link, $query23);
 }
 

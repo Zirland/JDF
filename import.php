@@ -17,7 +17,7 @@ echo "Import linky <select name=\"routes\">";
 $query67 = "SELECT route_id, route_long_name FROM mroutes ORDER BY route_id";
 if ($result67 = mysqli_query($link, $query67)) {
     while ($row67 = mysqli_fetch_row($result67)) {
-        $route_id        = $row67[0];
+        $route_id = $row67[0];
         $route_long_name = $row67[1];
 
         echo "<option value=\"$route_id\">$route_id - $route_long_name</option>";
@@ -30,26 +30,26 @@ echo "</form>";
 
 switch ($action) {
     case 'import':
-        $route_no         = $_POST['routes'];
-        $label            = "F";
-        $route_color      = "017DC2";
+        $route_no = $_POST['routes'];
+        $label = "F";
+        $route_color = "017DC2";
         $route_text_color = "000000";
         $route_short_name = $route_no;
-        $linkano          = 1;
+        $linkano = 1;
 
         $query91 = "SELECT route_long_name, agency_id, route_type, platnost_od, platnost_do FROM mroutes WHERE route_id = '$route_no';";
         if ($result91 = mysqli_query($link, $query91)) {
             while ($row91 = mysqli_fetch_row($result91)) {
                 $route_long_name = $row91[0];
-                $agency_id       = $row91[1];
-                $route_type      = $row91[2];
-                $platnost_od     = $row91[3];
-                $platnost_do     = $row91[4];
+                $agency_id = $row91[1];
+                $route_type = $row91[2];
+                $platnost_od = $row91[3];
+                $platnost_do = $row91[4];
             }
         }
 
         $route_long_name = str_replace(" - ", " – ", $route_long_name);
-        $route_id        = $route_no . $linkano;
+        $route_id = $route_no . $linkano;
 
         $queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
         if (!mysqli_query($link, $queryro)) {
@@ -74,17 +74,17 @@ switch ($action) {
         $query117 = "SELECT trip_no, trip_var, depart, matrix FROM mtrips WHERE route_id = '$route_no';";
         if ($result117 = mysqli_query($link, $query117)) {
             while ($row117 = mysqli_fetch_row($result117)) {
-                $trip_no    = $row117[0];
-                $trip_var   = $row117[1];
-                $depart     = $row117[2];
+                $trip_no = $row117[0];
+                $trip_var = $row117[1];
+                $depart = $row117[2];
                 $weekmatrix = $row117[3];
 
                 $tripspoj = $route_id . $trip_no;
 
-                $dnes_den    = date("j", time());
-                $dnes_mesic  = date("n", time());
-                $dnes_rok    = date("Y", time());
-                $dnes_datum  = mktime(0, 0, 0, $dnes_mesic, $dnes_den, $dnes_rok);
+                $dnes_den = date("j", time());
+                $dnes_mesic = date("n", time());
+                $dnes_rok = date("Y", time());
+                $dnes_datum = mktime(0, 0, 0, $dnes_mesic, $dnes_den, $dnes_rok);
                 $dnes_format = date("Y-m-d", $dnes_datum);
 
                 $query133 = "INSERT INTO log(trip_id, datum) VALUES ('$tripspoj','$dnes_format');";
@@ -123,8 +123,8 @@ switch ($action) {
                 $matrix = "";
 
                 $maticestart = date_create('1 week ago');
-                $start       = date_format($maticestart, "N");
-                $shift       = -1 * $start;
+                $start = date_format($maticestart, "N");
+                $shift = -1 * $start;
                 for ($i = 0; $i < 420; $i++) {
                     $matrix .= "0";
                 }
@@ -132,7 +132,7 @@ switch ($action) {
                     // pondělí
                     $dy = 1;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
@@ -141,7 +141,7 @@ switch ($action) {
                     // úterý
                     $dy = 2;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
@@ -150,7 +150,7 @@ switch ($action) {
                     // středa
                     $dy = 3;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
@@ -159,7 +159,7 @@ switch ($action) {
                     // čtvrtek
                     $dy = 4;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
@@ -168,7 +168,7 @@ switch ($action) {
                     // pátek
                     $dy = 5;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
@@ -177,15 +177,15 @@ switch ($action) {
                     // sobota
                     $dy = 6;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
                 }
 
                 foreach ($svatek as $datumsvatek1) {
                     $svatek_date = date_create_from_format('dmY', $datumsvatek1);
-                    $svatekdiff  = date_diff($maticestart, $svatek_date);
-                    $dnusvatek1  = $svatekdiff->days;
+                    $svatekdiff = date_diff($maticestart, $svatek_date);
+                    $dnusvatek1 = $svatekdiff->days;
 
                     for ($h = 0; $h < 420; $h++) {
                         if ($h == $dnusvatek1) {
@@ -198,14 +198,14 @@ switch ($action) {
                     // neděle a svátky
                     $dy = 0;
                     for ($wk = 0; $wk < 60; $wk++) {
-                        $index          = $shift + $dy + ($wk * 7);
+                        $index = $shift + $dy + ($wk * 7);
                         $matrix[$index] = 1;
                     }
 
                     foreach ($svatek as $datumsvatek1) {
                         $svatek_date = date_create_from_format('dmY', $datumsvatek1);
-                        $svatekdiff  = date_diff($maticestart, $svatek_date);
-                        $dnusvatek1  = $svatekdiff->days;
+                        $svatekdiff = date_diff($maticestart, $svatek_date);
+                        $dnusvatek1 = $svatekdiff->days;
 
                         for ($h = 0; $h < 420; $h++) {
                             if ($h == $dnusvatek1) {
@@ -219,22 +219,22 @@ switch ($action) {
                 if ($result242 = mysqli_query($link, $query242)) {
                     while ($row242 = mysqli_fetch_row($result242)) {
                         $negative = $row242[0];
-                        $typkodu  = $row242[1];
-                        $datumod  = $row242[2];
-                        $datumdo  = $row242[3];
+                        $typkodu = $row242[1];
+                        $datumod = $row242[2];
+                        $datumdo = $row242[3];
                         if ($datumdo == "") {
                             $datumdo = $datumod;
                         }
 
                         switch ($typkodu) {
                             case "1":
-                                $timeod  = date_create_from_format('dmY', $datumod);
+                                $timeod = date_create_from_format('dmY', $datumod);
                                 $zacdiff = date_diff($maticestart, $timeod);
-                                $zacdnu  = $zacdiff->days;
+                                $zacdnu = $zacdiff->days;
 
-                                $timedo  = date_create_from_format('dmY', $datumdo);
+                                $timedo = date_create_from_format('dmY', $datumdo);
                                 $kondiff = date_diff($maticestart, $timedo);
-                                $kondnu  = $kondiff->days;
+                                $kondnu = $kondiff->days;
 
                                 for ($g = 0; $g < 420; $g++) {
                                     if ($g < $zacdnu || $g > $kondnu) {
@@ -244,9 +244,9 @@ switch ($action) {
                                 break;
 
                             case "2":
-                                $timeod  = date_create_from_format('dmY', $datumod);
+                                $timeod = date_create_from_format('dmY', $datumod);
                                 $zacdiff = date_diff($maticestart, $timeod);
-                                $zacdnu  = $zacdiff->days;
+                                $zacdnu = $zacdiff->days;
 
                                 for ($g = 0; $g < 420; $g++) {
                                     if ($g == $zacdnu) {
@@ -256,9 +256,9 @@ switch ($action) {
                                 break;
 
                             case "3":
-                                $timeod  = date_create_from_format('dmY', $datumod);
+                                $timeod = date_create_from_format('dmY', $datumod);
                                 $zacdiff = date_diff($maticestart, $timeod);
-                                $zacdnu  = $zacdiff->days;
+                                $zacdnu = $zacdiff->days;
 
                                 if ($poradikodu == "1") {
                                     $matrix = "";
@@ -275,13 +275,13 @@ switch ($action) {
                                 break;
 
                             case "4":
-                                $timeod  = date_create_from_format('dmY', $datumod);
+                                $timeod = date_create_from_format('dmY', $datumod);
                                 $zacdiff = date_diff($maticestart, $timeod);
-                                $zacdnu  = $zacdiff->days;
+                                $zacdnu = $zacdiff->days;
 
-                                $timedo  = date_create_from_format('dmY', $datumdo);
+                                $timedo = date_create_from_format('dmY', $datumdo);
                                 $kondiff = date_diff($maticestart, $timedo);
-                                $kondnu  = $kondiff->days;
+                                $kondnu = $kondiff->days;
 
                                 for ($g = 0; $g < 420; $g++) {
                                     if ($g >= $zacdnu && $g <= $kondnu) {
@@ -309,18 +309,18 @@ switch ($action) {
                     }
                 }
 
-                $plod      = date_create_from_format('Y-m-d', $platnost_od);
+                $plod = date_create_from_format('Y-m-d', $platnost_od);
                 $zacpldiff = date_diff($maticestart, $plod);
-                $zacinv    = $zacpldiff->invert;
+                $zacinv = $zacpldiff->invert;
                 if ($zacinv == '1') {
                     $zacplat = 0;
                 } else {
                     $zacplat = $zacpldiff->days;
                 }
 
-                $pldo      = date_create_from_format('Y-m-d', $platnost_do);
+                $pldo = date_create_from_format('Y-m-d', $platnost_do);
                 $konpldiff = date_diff($maticestart, $pldo);
-                $koninv    = $konpldiff->invert;
+                $koninv = $konpldiff->invert;
                 if ($koninv == '1') {
                     $konplat = 0;
                 } else {
@@ -334,11 +334,11 @@ switch ($action) {
                 }
 
                 for ($h = 0; $h < 420; $h++) {
-                    $fixdate   = date_create('1 week ago');
+                    $fixdate = date_create('1 week ago');
                     $prirustek = "$h days";
                     date_add($fixdate, date_interval_create_from_date_string($prirustek));
                     $totodatum = date_format($fixdate, 'Y-m-d');
-                    $route     = substr($trip_id, 0, 6);
+                    $route = substr($trip_id, 0, 6);
 
                     if ($matrix[$h] == "1") {
                         $query363 = "INSERT INTO jizdy (spoj, trip_id, datum) VALUES ('$tripspoj','$trip_id','$totodatum');";
@@ -354,19 +354,19 @@ switch ($action) {
                 }
 
                 $dep_hour = substr($depart, 0, 2);
-                $dep_min  = substr($depart, 2, 2);
+                $dep_min = substr($depart, 2, 2);
                 $query374 = "SELECT stop_id, stop_seq, odstup, rezim FROM mvarianty WHERE route_id = '$route_no' AND varianta = '$trip_var';";
                 if ($result374 = mysqli_query($link, $query374)) {
                     while ($row374 = mysqli_fetch_row($result374)) {
-                        $stop_id  = $row374[0];
+                        $stop_id = $row374[0];
                         $stop_seq = $row374[1];
-                        $odstup   = $row374[2];
-                        $rezim    = $row374[3];
+                        $odstup = $row374[2];
+                        $rezim = $row374[3];
 
                         $dep_min = $dep_min + $odstup;
                         if ($dep_min > 59) {
                             $dep_hour = $dep_hour + 1;
-                            $dep_min  = $dep_min - 60;
+                            $dep_min = $dep_min - 60;
                         }
                         if ($dep_min < 10) {
                             $dep_min = "0" . $dep_min;
@@ -374,7 +374,7 @@ switch ($action) {
 
                         $time = $dep_hour . ":" . $dep_min . ":00";
 
-                        $pickup  = substr($rezim, 0, 1);
+                        $pickup = substr($rezim, 0, 1);
                         $dropoff = substr($rezim, 1, 1);
 
                         $query391 = "INSERT INTO stoptime (trip_id, arrival_time, departure_time, stop_id, stop_sequence, pickup_type, drop_off_type) VALUES ('$trip_id', '$time', '$time', '$stop_id', '$stop_seq', '$pickup', '$dropoff');";
@@ -385,14 +385,14 @@ switch ($action) {
                 }
 
                 $query404 = "SELECT stop_name FROM stop WHERE stop_id IN (SELECT stop_id FROM stoptime WHERE trip_id = '$trip_id' AND stop_sequence = (SELECT MAX(stop_sequence) FROM stoptime WHERE trip_id='$trip_id'));";
-                $row404   = mysqli_fetch_row(mysqli_query($link, $query404));
+                $row404 = mysqli_fetch_row(mysqli_query($link, $query404));
                 $headsign = $row404[0];
                 $query408 = "UPDATE trip SET trip_headsign='$headsign' WHERE trip_id='$trip_id';";
                 if (!mysqli_query($link, $query408)) {
                     echo ("Error description: " . mysqli_error($link)) . "<br/>";
                 }
 
-                $shape    = "";
+                $shape = "";
                 $query411 = "SELECT stop_id FROM stoptime WHERE trip_id='$trip_id' ORDER BY stop_sequence;";
                 if ($result411 = mysqli_query($link, $query411)) {
                     while ($row411 = mysqli_fetch_row($result411)) {

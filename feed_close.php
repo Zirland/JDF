@@ -231,14 +231,14 @@ if ($result193 = mysqli_query($link, $query193)) {
             $day_id = $vyjimka[0];
             $vyjimka_id = str_replace(")", "", $vyjimka[1]);
             if ($day_id < $dnes_poradi) {
-                $zacatek = date_create_from_format("Ymd", $dnes_rok+1 . "0101");
+                $zacatek = date_create_from_format("Ymd", $dnes_rok + 1 . "0101");
             } else {
                 $zacatek = date_create_from_format("Ymd", $dnes_rok . "0101");
             }
 
             $posun1 = "$day_id days";
             date_add($zacatek, date_interval_create_from_date_string($posun1));
-            $zaznam = date_format($zacatek,"Ymd");
+            $zaznam = date_format($zacatek, "Ymd");
 
             $current = "$kalendar,$zaznam,$vyjimka_id\n";
 

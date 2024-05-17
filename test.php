@@ -19,7 +19,7 @@ $routelist = [];
 $query18 = "SELECT route_id FROM `route` WHERE active = 1 ORDER BY route_id;";
 if ($result18 = mysqli_query($link, $query18)) {
     while ($row18 = mysqli_fetch_row($result18)) {
-        $routelist[] = substr($row18[0],0,5);
+        $routelist[] = substr($row18[0], 0, 5);
     }
 }
 $routelist = array_unique($routelist);

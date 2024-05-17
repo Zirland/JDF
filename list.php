@@ -12,21 +12,21 @@ echo "</tr>";
 $query = "SELECT route_id, agency_id, route_short_name, route_long_name, route_desc, route_type, route_url, route_color, route_text_color, active FROM route WHERE active=1 ORDER BY agency_id, LENGTH(route_short_name), route_short_name;";
 if ($result = mysqli_query($link, $query)) {
     while ($row = mysqli_fetch_row($result)) {
-        $route_id         = $row[0];
-        $agency_id        = $row[1];
-        $route_short      = $row[2];
-        $route_long       = $row[3];
-        $route_desc       = $row[4];
-        $route_type       = $row[5];
-        $route_url        = $row[6];
-        $route_color      = $row[7];
+        $route_id = $row[0];
+        $agency_id = $row[1];
+        $route_short = $row[2];
+        $route_long = $row[3];
+        $route_desc = $row[4];
+        $route_type = $row[5];
+        $route_url = $row[6];
+        $route_color = $row[7];
         $route_text_color = $row[8];
-        $route_active     = $row[9];
+        $route_active = $row[9];
 
         echo "<tr>";
 
         $ro_ag_pom = mysqli_fetch_row(mysqli_query($link, "SELECT agency_name FROM agency WHERE (agency_id = $agency_id);"));
-        $ro_ag     = $ro_ag_pom['0'];
+        $ro_ag = $ro_ag_pom['0'];
         echo "<td>$ro_ag</td>";
 
         echo "<td style=\"background-color: #$route_color; text-align: center;\"><span style=\"color: #$route_text_color;\">$route_short";
@@ -38,8 +38,8 @@ if ($result = mysqli_query($link, $query)) {
         echo "</td>";
 
         $query73 = "SELECT kod_linky from exter WHERE linka = '$route_id';";
-        $mhd     = mysqli_fetch_row(mysqli_query($link, $query73));
-//        echo "<td>$mhd[0]</td>";
+        $mhd = mysqli_fetch_row(mysqli_query($link, $query73));
+        //        echo "<td>$mhd[0]</td>";
 
         echo "<td";
         if ($route_active == "1") {

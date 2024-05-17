@@ -10,7 +10,7 @@ if (!$link) {
     exit;
 }
 
-$file    = 'linemap.csv';
+$file = 'linemap.csv';
 $current = "id,lon,lat,seq\n";
 file_put_contents($file, $current);
 
@@ -29,7 +29,7 @@ if ($result16 = mysqli_query($link, $query16)) {
                     while ($row26 = mysqli_fetch_row($result26)) {
                         $tvartrasy = $row26[0];
 
-                        $i        = 0;
+                        $i = 0;
                         $prevstop = "";
 
                         $output = explode('|', $tvartrasy);
@@ -44,11 +44,11 @@ if ($result16 = mysqli_query($link, $query16)) {
 
                                     foreach ($body as $point) {
                                         $sourad = explode(',', $point);
-                                        $lon    = $sourad[0];
-                                        $lat    = $sourad[1];
+                                        $lon = $sourad[0];
+                                        $lat = $sourad[1];
 
                                         if ($lon != "" && $lat != "") {
-                                            $i       = $i + 1;
+                                            $i = $i + 1;
                                             $current = "$route_short_name" . "_$shape_id, $lon, $lat, $i\n";
                                             file_put_contents($file, $current, FILE_APPEND);
                                         }

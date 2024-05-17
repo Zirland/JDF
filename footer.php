@@ -2,7 +2,8 @@
 </tr>
 </table>
 <?php
-mysqli_close ($link);
+mysqli_close($link);
 ?>
 </body>
+
 </html>
