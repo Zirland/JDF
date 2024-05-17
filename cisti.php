@@ -24,6 +24,16 @@ if ($result15 = mysqli_query($link, $query15)) {
 
 $prepare25 = mysqli_query($link, "DROP TABLE tyden;");
 
+$query27 = "SELECT DISTINCT SUBSTR(trip_id,1,6) FROM (SELECT trip_id, stop_sequence, count(*) as pocet FROM stoptime GROUP BY trip_id, stop_sequence) as duplicity WHERE pocet > 1;";
+if ($result27 = mysqli_query($link, $query27)) {
+    while ($row27 = mysqli_fetch_row($result27)) {
+        $dupl_route = $row27[0];
+
+        echo "Duplicita: $dupl_route<br/>";
+    }
+    echo "------------<br/>";
+}
+
 $query27 = "SELECT trip_id FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM jizdy);";
 if ($result27 = mysqli_query($link, $query27)) {
     while ($row27 = mysqli_fetch_row($result27)) {
@@ -50,6 +60,9 @@ $prikaz47 = mysqli_query($link, $query47);
 $query50  = "DELETE FROM du WHERE stop1 = stop2;";
 $prikaz50 = mysqli_query($link, $query50);
 
+$query63 = "DELETE FROM du WHERE stop1 NOT IN (SELECT stop_id FROM stop) OR stop2 NOT IN (SELECT stop_id FROM stop);";
+$prikaz63 = mysqli_query($link, $query63);
+
 $query53  = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
 $prikaz53 = mysqli_query($link, $query53);
 
@@ -64,7 +77,6 @@ $prikaz62 = mysqli_query($link, $query62);
 
 $query65  = "DELETE FROM du_use WHERE du_id NOT IN (SELECT du_id FROM du);";
 $prikaz65 = mysqli_query($link, $query65);
-
 
 echo "== Konec ==";
 include 'footer.php';

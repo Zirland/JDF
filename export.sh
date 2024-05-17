@@ -11,6 +11,6 @@ curl http://localhost/JDF/feed_close.php
 
 zip MHD *.txt
 
-java -jar gtfs-validator-4.0.0-cli.jar -c cz -i MHD.zip -o output
+java -jar gtfs-validator-4.2.0-cli.jar -c cz -i MHD.zip -o output
 
 exit;

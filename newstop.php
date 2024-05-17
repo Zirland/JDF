@@ -51,10 +51,6 @@ switch ($action) {
             $stopname .= ", " . $misto;
         }
 
-        if ($stopcode != '') {
-            $stopname .= " (" . $stopcode . ")";
-        }
-
         $sortname = "";
         if ($misto != '') {
             $sortname .= "$misto ";

@@ -56,12 +56,37 @@ if ($dopravci) {
     fclose($dopravci);
 }
 
+if ($verze == '1.10' || $verze == '1.11') {
+    $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
+    if ($extlinka) {
+        while (($buffer9 = fgets($extlinka, 4096)) !== false) {
+            $newbuffer9 = str_replace('"', '', $buffer9);
+            $linext     = explode(',', $newbuffer9);
+            $routeno    = explode(';', $linext[6]);
+            $linka      = $linext[0] . $routeno[0];
+
+            $poradi     = $linext[1];
+            $koddopravy = $linext[2];
+            $oznaclin   = $linext[3];
+            $prefer     = $linext[4];
+
+            $queryex = "DELETE FROM exter WHERE linka = '$linka';";
+            echo "$queryex<br/>";
+//            $cistiex = mysqli_query($link, $queryex);
+
+            $query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
+            echo "$query1213<br/>";
+//            $prikaz1213 = mysqli_query($link, $query1213);
+        }
+        fclose($extlinka);
+    }
+}
+
 $linky = fopen("$dir/Linky.txt.txt", 'r');
 if ($linky) {
     while (($buffer2 = fgets($linky, 4096)) !== false) {
         $line             = explode('"', $buffer2);
         $route_no         = $line[1];
-        $route_short_name = $route_no;
         $route_long_name  = $line[3];
         $agency_id        = $line[5];
         $route_text_color = "000000";
@@ -109,9 +134,26 @@ if ($linky) {
             $platnostdo = $line[29];
         }
 
-        $route_long_name = str_replace(" - ", " – ", $route_long_name);
+        $route_long_name = str_replace(",", ", ", $route_long_name);
+        $route_long_name = str_replace(".", ". ", $route_long_name);
+        $route_long_name = str_replace(". ,", ".,", $route_long_name);
+        $route_long_name = str_replace("-", " – ", $route_long_name);
+        $route_long_name = str_replace("/", " / ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
+        $route_long_name = str_replace("  ", " ", $route_long_name);
 
         $route_id = $route_no . $linkano;
+
+        $query141 = "SELECT kod_linky FROM exter WHERE linka='$route_id';";
+        if ($result141 = mysqli_query($link, $query141)) {
+            while ($row141 = mysqli_fetch_row($result141)) {
+                $route_short_name = $row141[0];
+            }
+        }
+        if ($route_short_name == '') {
+            $route_short_name = $route_no;
+        }
 
         $query134 = "SELECT route_color FROM barvy WHERE route_id = '$label$route_id';";
         if ($result134 = mysqli_query($link, $query134)) {
@@ -123,7 +165,7 @@ if ($linky) {
         } else {
             $route_color = "017DC2";
         }
-        $queryro = "DELETE FROM route WHERE route_id = '$label$route_id';";
+        $queryro = "DELETE FROM `route` WHERE route_id = '$label$route_id';";
 //        echo "$queryro<br/>";
         //        $cistiro = mysqli_query($link, $queryro);
 
@@ -131,7 +173,7 @@ if ($linky) {
 //        echo "$querytr<br/>";
         //        $cistitr = mysqli_query($link, $querytr);
 
-        $query46 = "INSERT INTO route (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
+        $query46 = "INSERT INTO `route` (route_id, agency_id, route_short_name, route_long_name, route_type, route_color, route_text_color, active) VALUES ('$label$route_id', '$agency_id', '$route_short_name', '$route_long_name', '$route_type', '$route_color', '$route_text_color', '0');";
 //        echo "$query46<br/>";
         //        $prikaz46 = mysqli_query($link, $query46);
     }
@@ -204,11 +246,11 @@ if ($spoje) {
 
         $matrix = "";
 
-        $maticestart = date_create('1 week ago');
+        $maticestart = date_create($linkaod);
         $start       = date_format($maticestart, "N");
         $shift       = -1 * $start;
 
-        for ($i = 0; $i < 420; $i++) {
+        for ($i = 0; $i < 3650; $i++) {
             $matrix .= "0";
         }
 
@@ -219,113 +261,39 @@ if ($spoje) {
             substr($PK, 0, 3) != '-5-' &&
             substr($PK, 0, 3) != '-6-' &&
             substr($PK, 0, 3) != '-7-' &&
-            substr($PK, 0, 3) != '-8-') {
+            substr($PK, 0, 3) != '-8-' &&
+            substr($PK, 0, 3) != '-9-') {
             $PK = '-1-2-8' . $PK;
         }
 
         if (strpos($PK, '-1-') !== false) {
             // pracdny
             $dy = 1;
-            for ($wk = 0; $wk < 60; $wk++) {
+            for ($wk = 0; $wk < 520; $wk++) {
                 $index          = $shift + $dy + ($wk * 7);
                 $matrix[$index] = 1;
             }
 
             $dy = 2;
-            for ($wk = 0; $wk < 60; $wk++) {
+            for ($wk = 0; $wk < 520; $wk++) {
                 $index          = $shift + $dy + ($wk * 7);
                 $matrix[$index] = 1;
             }
 
             $dy = 3;
-            for ($wk = 0; $wk < 60; $wk++) {
+            for ($wk = 0; $wk < 520; $wk++) {
                 $index          = $shift + $dy + ($wk * 7);
                 $matrix[$index] = 1;
             }
 
             $dy = 4;
-            for ($wk = 0; $wk < 60; $wk++) {
+            for ($wk = 0; $wk < 520; $wk++) {
                 $index          = $shift + $dy + ($wk * 7);
                 $matrix[$index] = 1;
             }
 
             $dy = 5;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        foreach ($svatek as $datumsvatek1) {
-            $svatek_date = date_create_from_format('Y-m-d', $datumsvatek1);
-            $svatekdiff  = date_diff($maticestart, $svatek_date);
-            $dnusvatek1  = $svatekdiff->days + 1;
-
-            for ($h = 0; $h < 420; $h++) {
-                if ($h == $dnusvatek1) {
-                    $matrix[$h] = 0;
-                }
-            }
-        }
-
-        if (strpos($PK, '-3-') !== false) {
-            // pondělí
-            $dy = 1;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-4-') !== false) {
-            // úterý
-            $dy = 2;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-5-') !== false) {
-            // středa
-            $dy = 3;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-6-') !== false) {
-            // čtvrtek
-            $dy = 4;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-7-') !== false) {
-            // pátek
-            $dy = 5;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-8-') !== false) {
-            // sobota
-            $dy = 6;
-            for ($wk = 0; $wk < 60; $wk++) {
-                $index          = $shift + $dy + ($wk * 7);
-                $matrix[$index] = 1;
-            }
-        }
-
-        if (strpos($PK, '-2-') !== false) {
-            // neděle a svátky
-            $dy = 0;
-            for ($wk = 0; $wk < 60; $wk++) {
+            for ($wk = 0; $wk < 520; $wk++) {
                 $index          = $shift + $dy + ($wk * 7);
                 $matrix[$index] = 1;
             }
@@ -333,22 +301,107 @@ if ($spoje) {
             foreach ($svatek as $datumsvatek1) {
                 $svatek_date = date_create_from_format('Y-m-d', $datumsvatek1);
                 $svatekdiff  = date_diff($maticestart, $svatek_date);
-                $dnusvatek1  = $svatekdiff->days + 1;
+                $dnusvatek1  = $svatekdiff->days;
 
-                for ($h = 0; $h < 420; $h++) {
+                for ($h = 0; $h < 3650; $h++) {
+                    if ($h == $dnusvatek1) {
+                        $matrix[$h] = 0;
+                    }
+                }
+            }
+        }
+        echo "313: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-2-') !== false) {
+            // neděle a svátky
+            $dy = 0;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+
+            foreach ($svatek as $datumsvatek1) {
+                $svatek_date = date_create_from_format('Y-m-d', $datumsvatek1);
+                $svatekdiff  = date_diff($maticestart, $svatek_date);
+                $dnusvatek1  = $svatekdiff->days;
+
+                for ($h = 0; $h < 3650; $h++) {
                     if ($h == $dnusvatek1) {
                         $matrix[$h] = 1;
                     }
                 }
             }
         }
-
+        echo "334: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-3-') !== false) {
+            // pondělí
+            $dy = 1;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "343: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-4-') !== false) {
+            // úterý
+            $dy = 2;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "352: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-5-') !== false) {
+            // středa
+            $dy = 3;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "361: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-6-') !== false) {
+            // čtvrtek
+            $dy = 4;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "370: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-7-') !== false) {
+            // pátek
+            $dy = 5;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "379: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-8-') !== false) {
+            // sobota
+            $dy = 6;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "388: <pre>$matrix</pre><br/>";
+        if (strpos($PK, '-9-') !== false) {
+            // neděle
+            $dy = 0;
+            for ($wk = 0; $wk < 520; $wk++) {
+                $index          = $shift + $dy + ($wk * 7);
+                $matrix[$index] = 1;
+            }
+        }
+        echo "397: <pre>$matrix</pre><br/>";
+        echo "<hr/>";
         $matrix2 = "";
 
-        for ($i = 0; $i < 420; $i++) {
-            $matrix2 .= "X";
+        for ($i = 0; $i < 3650; $i++) {
+            $matrix2 .= "1";
         }
-
+        echo "403: <pre>$matrix2</pre><br/>";
         $caskody = fopen("$dir/Caskody.txt.txt", 'r');
         if ($caskody) {
             while (($buffer5 = fgets($caskody, 4096)) !== false) {
@@ -378,71 +431,74 @@ if ($spoje) {
                         case "1":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days + 1;
+                            $zacdnu  = $zacdiff->days;
 
                             $timedo  = date_create_from_format('dmY', $datumdo);
                             $kondiff = date_diff($maticestart, $timedo);
-                            $kondnu  = $kondiff->days + 1;
+                            $kondnu  = $kondiff->days;
 
                             if ($poradikodu == "1") {
                                 $matrix2 = "";
-                                for ($i = 0; $i < 420; $i++) {
+                                for ($i = 0; $i < 3650; $i++) {
                                     $matrix2 .= "0";
                                 }
                             }
 
-                            for ($g = 0; $g < 420; $g++) {
+                            for ($g = 0; $g < 3650; $g++) {
                                 if ($g >= $zacdnu && $g <= $kondnu) {
-                                    $matrix2[$g] = 2;
+                                    $matrix2[$g] = "1";
                                 }
                             }
+                            echo "444: <pre>$matrix2</pre><br/>";
                             break;
 
                         case "2":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days + 1;
+                            $zacdnu  = $zacdiff->days;
 
-                            for ($g = 0; $g < 420; $g++) {
+                            for ($g = 0; $g < 3650; $g++) {
                                 if ($g == $zacdnu) {
-                                    $matrix2[$g] = 2;
+                                    $matrix2[$g] = "2";
                                 }
                             }
+                            echo "457: <pre>$matrix2</pre><br/>";
                             break;
 
                         case "3":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days + 1;
+                            $zacdnu  = $zacdiff->days;
 
                             if ($poradikodu == "1") {
                                 $matrix2 = "";
-                                for ($i = 0; $i < 420; $i++) {
+                                for ($i = 0; $i < 3650; $i++) {
                                     $matrix2 .= "0";
                                 }
                             }
-                            for ($g = 0; $g < 420; $g++) {
+                            for ($g = 0; $g < 3650; $g++) {
                                 if ($g == $zacdnu) {
-                                    $matrix2[$g] = 2;
+                                    $matrix2[$g] = "2";
                                 }
                             }
+                            echo "476: <pre>$matrix2</pre><br/>";
                             break;
 
                         case "4":
                             $timeod  = date_create_from_format('dmY', $datumod);
                             $zacdiff = date_diff($maticestart, $timeod);
-                            $zacdnu  = $zacdiff->days + 1;
+                            $zacdnu  = $zacdiff->days;
 
                             $timedo  = date_create_from_format('dmY', $datumdo);
                             $kondiff = date_diff($maticestart, $timedo);
-                            $kondnu  = $kondiff->days + 1;
+                            $kondnu  = $kondiff->days;
 
-                            for ($g = 0; $g < 420; $g++) {
+                            for ($g = 0; $g < 3650; $g++) {
                                 if ($g >= $zacdnu && $g <= $kondnu) {
-                                    $matrix2[$g] = 0;
+                                    $matrix2[$g] = "0";
                                 }
                             }
-
+                            echo "493: <pre>$matrix2</pre><br/>";
                             break;
 
                         case "5":
@@ -472,7 +528,7 @@ if ($spoje) {
         if ($zacinv == '1') {
             $zacplat = 0;
         } else {
-            $zacplat = $zacpldiff->days + 1;
+            $zacplat = $zacpldiff->days;
         }
 
         $pldo      = date_create_from_format('dmY', $platnostdo);
@@ -481,28 +537,21 @@ if ($spoje) {
         if ($koninv == '1') {
             $konplat = 0;
         } else {
-            $konplat = $konpldiff->days + 1;
+            $konplat = $konpldiff->days;
         }
 
-        for ($g = 0; $g < 420; $g++) {
+        for ($g = 0; $g < 3650; $g++) {
             if ($g < $zacplat || $g > $konplat) {
                 $matrix2[$g] = "0";
             }
         }
 
         $mixmatrix = "";
-        for ($g = 0; $g < 420; $g++) {
-            if ($matrix2[$g] == "X") {
-                $matrix2[$g] = 1;
-            }
-            $soucet = $matrix[$g] + $matrix2[$g];
-            if ($soucet < 2) {
-                $mixmatrix[$g] = 0;
-            } else {
-                $mixmatrix[$g] = 1;
-            }
+        for ($g = 0; $g < 3650; $g++) {
+            $soucet        = $matrix[$g] + $matrix2[$g];
+            $mixmatrix[$g] = $soucet;
         }
-
+        echo "539: <pre>$mixmatrix</pre><br/>";
         $wheelchair = 0;
         if (strpos($PK, '-14-') !== false) {
             $wheelchair = 1;
@@ -513,14 +562,13 @@ if ($spoje) {
             $bike = 1;
         }
 
-        for ($h = 0; $h < 420; $h++) {
-            $fixdate   = date_create('1 week ago');
+        for ($h = 0; $h < 3650; $h++) {
+            $fixdate   = date_create($linkaod);
             $prirustek = "$h days";
             date_add($fixdate, date_interval_create_from_date_string($prirustek));
             $totodatum = date_format($fixdate, 'Y-m-d');
-            $route     = substr($trip_id, 0, 6);
 
-            if ($mixmatrix[$h] == "1") {
+            if ($mixmatrix[$h] > 1) {
                 $query188 = "INSERT INTO jizdy (spoj, trip_id, datum) VALUES ('$tripspoj','$trip_id','$totodatum');";
                 echo "$query188<br/>";
 //                $prikaz188 = mysqli_query($link, $query188);
@@ -532,32 +580,6 @@ if ($spoje) {
 //        $prikaz64 = mysqli_query($link, $query64);
     }
     fclose($spoje);
-}
-
-if ($verze == '1.10' || $verze == '1.11') {
-    $extlinka = fopen("$dir/LinExt.txt.txt", 'r');
-    if ($extlinka) {
-        while (($buffer9 = fgets($extlinka, 4096)) !== false) {
-            $newbuffer9 = str_replace('"', '', $buffer9);
-            $linext     = explode(',', $newbuffer9);
-            $routeno    = explode(';', $linext[6]);
-            $linka      = $linext[0] . $routeno[0];
-
-            $poradi     = $linext[1];
-            $koddopravy = $linext[2];
-            $oznaclin   = $linext[3];
-            $prefer     = $linext[4];
-
-            $queryex = "DELETE FROM exter WHERE linka = '$linka';";
-            echo "$queryex<br/>";
-//            $cistiex = mysqli_query($link, $queryex);
-
-            $query1213 = "INSERT INTO exter (linka, poradi, kod_dopravy, kod_linky, prefer) VALUES ('$linka', '$poradi', '$koddopravy', '$oznaclin', '$prefer');";
-            echo "$query1213<br/>";
-//            $prikaz1213 = mysqli_query($link, $query1213);
-        }
-        fclose($extlinka);
-    }
 }
 
 $zastavky = fopen("$dir/Zastavky.txt.txt", 'r');

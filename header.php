@@ -14,24 +14,24 @@
 </head>
 
 <body>
-
 	<?php
-require_once 'dbconnect.php';
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-if (!$link) {
-    echo "Error: Unable to connect to database." . PHP_EOL;
-    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
-    exit;
-}
+	require_once 'dbconnect.php';
+	$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+	if (!$link) {
+		echo "Error: Unable to connect to database." . PHP_EOL;
+		echo "Reason: " . mysqli_connect_error() . PHP_EOL;
+		exit;
+	}
 
-$filtr = @$_POST['filtr'];
+	$filtr = @$_POST['result'];
 
-if ($filtr != '') {
-    $query27 = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
-    echo "$query27<br/>";
-    $prikaz27 = mysqli_query($link, $query27);
-}
-?>
+	if ($filtr != '') {
+		$filtr = str_replace("(),", '', $filtr);
+		$query27 = "UPDATE config SET hodnota = '$filtr' WHERE parametr = 'filtr_obec';";
+		echo "$query27<br/>";
+		$prikaz27 = mysqli_query($link, $query27);
+	}
+	?>
 
 	<table style="width:100%; height:100%;">
 		<tr>
@@ -48,6 +48,7 @@ if ($filtr != '') {
 				STOPS<br />
 				<a href="newstop.php">Newstop</a><br />
 				<a href="station_kontrola.php">Station</a><br />
+				<a href="cisti_stop.php">Čisti stop</a><br />
 				LINKY<br />
 				<a href="analist_fresh.php">Analýza fresh</a><br />
 				<a href="analist_regen.php">Analýza regen</a><br />
@@ -64,30 +65,67 @@ if ($filtr != '') {
 				<hr />
 
 				<?php
-$query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
-if ($result63 = mysqli_query($link, $query63)) {
-    while ($row63 = mysqli_fetch_row($result63)) {
-        $value = $row63[0];
-    }
-}
+				$query63 = "SELECT hodnota FROM config WHERE parametr = 'filtr_obec';";
+				if ($result63 = mysqli_query($link, $query63)) {
+					while ($row63 = mysqli_fetch_row($result63)) {
+						$values = $row63[0];
 
-echo "<form method=\"post\" action=\"\" name=\"filtr\">";
-echo "<select name=\"filtr\">";
+						$valuesArr = explode(',', $values);
+					}
+				}
 
-$query74 = "SELECT obec FROM stop GROUP BY obec ORDER BY obec;";
-if ($result74 = mysqli_query($link, $query74)) {
-    while ($row74 = mysqli_fetch_row($result74)) {
-        $obec = $row74[0];
+				echo "<div id=\"txt\"></div>";
+				$valueList = implode("','", $valuesArr);
 
-        echo "<option value=\"$obec\"";
-        if ($obec == $value) {
-            echo " SELECTED";
-        }
-        echo ">$obec</option>";
-    }
-}
+				echo "<form method=\"post\" action=\"\" name=\"filtr\">";
+				echo "<select name=\"filtr\" id=\"filtr\">";
 
-echo "<input type=\"submit\"></form>";
-?>
+				$query74 = "SELECT obec FROM `stop` GROUP BY obec ORDER BY obec;";
+				if ($result74 = mysqli_query($link, $query74)) {
+					while ($row74 = mysqli_fetch_row($result74)) {
+						$obec = $row74[0];
+
+						echo "<option value=\"$obec\">$obec</option>";
+					}
+				}
+
+				echo "<input type=\"button\" value=\"Přidat\" onclick=\"addSelectedValueToArray()\">";
+				echo "<input type=\"hidden\" id=\"result\" name=\"result\" value=\"\">";
+				echo "<input type=\"submit\"></form>";
+				?>
+				<script>
+					var selectedValues = [];
+					<?php
+					foreach ($valuesArr as $radek) {
+						echo "selectedValues.push('$radek');\n";
+					}
+					?>
+
+					function addSelectedValueToArray() {
+						var selectElement = document.getElementById('filtr');
+						var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+						selectedValues.push(selectedValue);
+						document.getElementById('result').value = selectedValues.join(',');
+						vystup2();
+					}
+
+					function removePoint2(id) {
+						selectedValues[id] = "()";
+						document.getElementById('result').value = selectedValues.join(',');
+						vystup2();
+					}
+
+					function vystup2() {
+						var vystup = "";
+
+						for (var i = 0; i < selectedValues.length; i++) {
+							vystup += selectedValues[i] + "<input type=\"button\" onClick=\"removePoint2(" + i + ")\"><br/>";
+						}
+
+						document.getElementById("txt").innerHTML = vystup;
+					}
+
+					vystup2();
+				</script>
 			</td>
 			<td>

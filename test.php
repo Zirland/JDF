@@ -30,7 +30,7 @@ foreach ($routelist as $oblast) {
 
 $command .= "curl http://localhost/JDF/feed_close.php\n\n";
 $command .= "zip MHD *.txt\n\n";
-$command .= "java -jar gtfs-validator-3.1.1-cli.jar -c cz -i MHD.zip -o output\n\n";
+$command .= "java -jar gtfs-validator-4.1.0-cli.jar -c cz -i MHD.zip -o output\n\n";
 $command .= "exit;\n";
 
 file_put_contents($file, $command, FILE_APPEND);

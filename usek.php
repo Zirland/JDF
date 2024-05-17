@@ -1,18 +1,18 @@
 <?php
 include 'header.php';
 
-$action  = $_POST['action'];
-$delete  = $_POST['delete'];
-$usek_id = $_GET['du_id'];
+$action = @$_POST['action'];
+$delete = @$_POST['delete'];
+$usek_id = @$_GET['du_id'];
 if (!$usek_id) {
-    $usek_id = $_POST['id_usek'];
-};
+    $usek_id = @$_POST['id_usek'];
+}
 
-$path = $_POST['path'];
+$path = @$_POST['path'];
 $from = @$_POST['from'];
-$to   = @$_POST['to'];
+$to = @$_POST['to'];
 
-$koleje  = [];
+$koleje = [];
 $query15 = "SELECT DISTINCT stoptime.stop_id from stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id IN (SELECT route_id FROM `route` WHERE route_type = 0));";
 if ($result15 = mysqli_query($link, $query15)) {
     while ($row15 = mysqli_fetch_row($result15)) {
@@ -28,9 +28,9 @@ echo "Odkud: <select name=\"from\">";
 $query0 = "SELECT stop_id, stop_name, pomcode, stop_code FROM `stop` WHERE stop_id IN (SELECT stop1 FROM du WHERE final = 1) ORDER BY stop_name;";
 if ($result0 = mysqli_query($link, $query0)) {
     while ($row0 = mysqli_fetch_row($result0)) {
-        $kodf   = $row0[0];
+        $kodf = $row0[0];
         $nazevf = $row0[1];
-        $codef  = $row0[2];
+        $codef = $row0[2];
         $platf = $row0[3];
         echo "<option value=\"$kodf\"";
         if ($kodf == $from) {
@@ -56,7 +56,7 @@ switch ($action) {
         $body = explode("),(", $path);
         $pass = "";
         foreach ($body as $point) {
-            $upr_point  = str_replace(")", "", $point);
+            $upr_point = str_replace(")", "", $point);
             $upr_point2 = str_replace("(", "", $upr_point);
 
             if ($upr_point2 != "") {
@@ -64,7 +64,7 @@ switch ($action) {
             }
         }
 
-        $pass    = substr($pass, 0, -1);
+        $pass = substr($pass, 0, -1);
         $query51 = "UPDATE du SET `path` = '$pass' WHERE du_id = '$usek_id';";
         $zapis51 = mysqli_query($link, $query51);
 
@@ -72,29 +72,29 @@ switch ($action) {
         if ($result31 = mysqli_query($link, $query31)) {
             while ($row31 = mysqli_fetch_row($result31)) {
                 $from = $row31[0];
-                $to   = $row31[1];
+                $to = $row31[1];
             }
         }
 
         $query54 = "UPDATE shapetvary SET complete = '0' WHERE tvartrasy LIKE '%$from|$to|%';";
         $zapis54 = mysqli_query($link, $query54);
-        $action  = "usek";
+        $action = "usek";
 
     case "usek":
         $query102 = "SELECT `path`, stop1, stop2 FROM du WHERE du_id = '$usek_id';";
         echo $query102;
         if ($result102 = mysqli_query($link, $query102)) {
             $row102 = mysqli_fetch_row($result102);
-            $path   = $row102[0];
-            $from   = $row102[1];
-            $to     = $row102[2];
+            $path = $row102[0];
+            $from = $row102[1];
+            $to = $row102[2];
         }
 
         $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$from';";
         if ($result2 = mysqli_query($link, $query2)) {
             while ($row2 = mysqli_fetch_row($result2)) {
-                $nazevv    = $row2[0];
-                $codev     = $row2[1];
+                $nazevv = $row2[0];
+                $codev = $row2[1];
                 $stopcodev = $row2[2];
                 echo "From: $nazevv $codev $stopcodev | ";
             }
@@ -104,8 +104,8 @@ switch ($action) {
         $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$to';";
         if ($result2 = mysqli_query($link, $query2)) {
             while ($row2 = mysqli_fetch_row($result2)) {
-                $nazevv    = $row2[0];
-                $codev     = $row2[1];
+                $nazevv = $row2[0];
+                $codev = $row2[1];
                 $stopcodev = $row2[2];
                 echo "To: $nazevv $codev $stopcodev<br/>";
             }
@@ -140,9 +140,9 @@ switch ($action) {
         echo $query1;
         if ($result1 = mysqli_query($link, $query1)) {
             while ($row1 = mysqli_fetch_row($result1)) {
-                $kodt   = $row1[0];
+                $kodt = $row1[0];
                 $nazevt = $row1[1];
-                $codet  = $row1[2];
+                $codet = $row1[2];
                 $platt = $row1[3];
                 echo "<option value=\"$kodt\"";
                 if ($kodt == $to) {
@@ -170,9 +170,9 @@ switch ($action) {
         echo $query1;
         if ($result1 = mysqli_query($link, $query1)) {
             while ($row1 = mysqli_fetch_row($result1)) {
-                $kodt   = $row1[0];
+                $kodt = $row1[0];
                 $nazevt = $row1[1];
-                $codet  = $row1[2];
+                $codet = $row1[2];
                 $platt = $row1[3];
                 echo "<option value=\"$kodt\"";
                 if ($kodt == $to) {
@@ -196,16 +196,16 @@ switch ($action) {
         echo $query102;
         if ($result102 = mysqli_query($link, $query102)) {
             $row102 = mysqli_fetch_row($result102);
-            $path   = $row102[0];
-            $du_id  = $row102[1];
+            $path = $row102[0];
+            $du_id = $row102[1];
         }
 
         echo "<br/>ID = $du_id | ";
         $query2 = "SELECT stop_name, pomcode, stop_code FROM `stop` WHERE stop_id = '$from';";
         if ($result2 = mysqli_query($link, $query2)) {
             while ($row2 = mysqli_fetch_row($result2)) {
-                $nazevv    = $row2[0];
-                $codev     = $row2[1];
+                $nazevv = $row2[0];
+                $codev = $row2[1];
                 $stopcodev = $row2[2];
                 echo "From: $nazevv $codev $stopcodev | ";
             }
@@ -215,8 +215,8 @@ switch ($action) {
         $query2 = "SELECT stop_name, pomcode, stop_code FROM stop WHERE stop_id = '$to';";
         if ($result2 = mysqli_query($link, $query2)) {
             while ($row2 = mysqli_fetch_row($result2)) {
-                $nazevv    = $row2[0];
-                $codev     = $row2[1];
+                $nazevv = $row2[0];
+                $codev = $row2[1];
                 $stopcodev = $row2[2];
                 echo "To: $nazevv $codev $stopcodev<br/>";
             }
@@ -237,130 +237,151 @@ switch ($action) {
 }
 ?>
 
+<input type="number" id="positionInput" placeholder="Enter position">
 <div id="m" style="height:600px"></div>
 
 <script type="text/javascript">
-	function addMarker(nazev, id, x, y) {
-		var znacka = JAK.mel("div");
-		var obrazek = JAK.mel("img", {
-			src: SMap.CONFIG.img + "/marker/drop-red.png"
-		});
-		znacka.appendChild(obrazek);
+    function addMarker(nazev, id, x, y) {
+        var znacka = JAK.mel("div");
+        var obrazek = JAK.mel("img", {
+            src: SMap.CONFIG.img + "/marker/drop-red.png"
+        });
+        znacka.appendChild(obrazek);
 
-		var popisek = JAK.mel("div", {}, {
-			position: "absolute",
-			left: "0px",
-			top: "2px",
-			textAlign: "center",
-			width: "22px",
-			color: "white",
-			fontWeight: "bold"
-		});
-		popisek.innerHTML = nazev;
-		znacka.appendChild(popisek);
+        var popisek = JAK.mel("div", {}, {
+            position: "absolute",
+            left: "0px",
+            top: "2px",
+            textAlign: "center",
+            width: "22px",
+            color: "white",
+            fontWeight: "bold"
+        });
+        popisek.innerHTML = nazev;
+        znacka.appendChild(popisek);
 
 
-		var options = {
-			title: nazev,
-			url: znacka
-		};
+        var options = {
+            title: nazev,
+            url: znacka
+        };
 
-		var pozice = SMap.Coords.fromWGS84(Number(x), Number(y));
-		var marker = new SMap.Marker(pozice, id, options);
-		marker.decorate(SMap.Marker.Feature.Draggable);
-		vrstva.addMarker(marker);
-		markers.push(pozice);
-	}
+        var pozice = SMap.Coords.fromWGS84(Number(x), Number(y));
+        var marker = new SMap.Marker(pozice, id, options);
+        marker.decorate(SMap.Marker.Feature.Draggable);
+        vrstva.addMarker(marker);
+        markers.splice(id, 0, pozice);
+    }
 
-	function removeMarker(e) {
-		var marker = e.target;
-		var id = marker.getId();
-		vrstva.removeMarker(marker);
-		markers[id] = "()";
+    function removeMarker(e) {
+        var marker = e.target;
+        var id = marker.getId();
+        vrstva.removeMarker(marker);
+        markers[id] = "()";
 
-		vystup();
-	}
+        vystup();
+    }
 
-	function removePoint(id) {
-		markers[id] = "()";
+    function removePoint(id) {
+        markers[id] = "()";
 
-		vystup("1");
-	}
+        vystup("1");
+    }
 
-	function start(e) {
-		var node = e.target.getContainer();
-		node[SMap.LAYER_MARKER].style.cursor = "pointer";
-	}
+    function increaseValue(inputValue) {
+        let intValue = parseInt(inputValue, 10);
+        if (!isNaN(intValue)) {
+            intValue++;
+        }
+        return intValue;
+    }
 
-	function stop(e) {
-		var node = e.target.getContainer();
-		node[SMap.LAYER_MARKER].style.cursor = "";
-		var marker = e.target;
-		var id = marker.getId();
-		var coords = marker.getCoords();
-		var souradnice = coords.toString().split(",");
-		var souradnice_x = souradnice[0].replace(/\(/g, "");
-		var souradnice_y = souradnice[1].replace(/\)/g, "");
+    function addPoint(e, elm) {
+        let pole = document.getElementById("positionInput");
+        let poradi = pole.value
+        var coords = SMap.Coords.fromEvent(e.data.event, m);
 
-		var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
-		markers.splice(id, 1, pozice);
+        addMarker(poradi, poradi, coords.x, coords.y);
+        pole.value = increaseValue(poradi);
 
-		vystup();
-	}
+        vystup("1");
+    }
 
-	function vystup(open) {
-		var vystup = "<details";
-		if (open == "1") {
-			vystup += " open";
-		}
-		vystup += "><summary>Points</summary>";
-		for (var i = 0; i < markers.length; i++) {
-			vystup += i + ": " + markers[i] + "<input type=\"button\" onClick=\"removePoint(" + i + ")\"><br/>";
-		}
-		vystup += "</details>";
+    function start(e) {
+        var node = e.target.getContainer();
+        node[SMap.LAYER_MARKER].style.cursor = "pointer";
+    }
 
-		document.getElementById("text").innerHTML = vystup;
-		document.getElementById("path").value = markers;
-	}
+    function stop(e) {
+        var node = e.target.getContainer();
+        node[SMap.LAYER_MARKER].style.cursor = "";
+        var marker = e.target;
+        var id = marker.getId();
+        var coords = marker.getCoords();
+        var souradnice = coords.toString().split(",");
+        var souradnice_x = souradnice[0].replace(/\(/g, "");
+        var souradnice_y = souradnice[1].replace(/\)/g, "");
 
-	var m = new SMap(JAK.gel("m"));
+        var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
+        markers.splice(id, 1, pozice);
+
+        vystup();
+    }
+
+    function vystup(open) {
+        var vystup = "<details";
+        if (open == "1") {
+            vystup += " open";
+        }
+        vystup += "><summary>Points</summary>";
+        for (var i = 0; i < markers.length; i++) {
+            vystup += i + ": " + markers[i] + "<input type=\"button\" onClick=\"removePoint(" + i + ")\"><br/>";
+        }
+        vystup += "</details>";
+
+        document.getElementById("text").innerHTML = vystup;
+        document.getElementById("path").value = markers;
+    }
+
+    var m = new SMap(JAK.gel("m"));
     m.addDefaultLayer(SMap.DEF_OPHOTO);
-	m.addDefaultLayer(SMap.DEF_BASE).enable();
+    m.addDefaultLayer(SMap.DEF_BASE).enable();
 
-	var layerSwitch = new SMap.Control.Layer({
-		width: 65,
-		items: 2,
-		page: 2
-	});
-	layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-	layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-	m.addControl(layerSwitch, {left:"8px", top:"9px"});
+    var layerSwitch = new SMap.Control.Layer({
+        width: 65,
+        items: 2,
+        page: 2
+    });
+    layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+    layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+    m.addControl(layerSwitch, { left: "8px", top: "9px" });
 
     m.addControl(new SMap.Control.Sync());
-	var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
-	m.addControl(mouse);
+    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
+    m.addControl(mouse);
 
-	var vrstva = new SMap.Layer.Marker();
-	m.addLayer(vrstva);
-	vrstva.enable();
-	var markers = [];
+    var vrstva = new SMap.Layer.Marker();
+    m.addLayer(vrstva);
+    vrstva.enable();
+    var markers = [];
 
-	<?php
-$body = explode(";", $path);
-for ($i = 0; $i < count($body); $i++) {
-    echo "addMarker($i, $i, $body[$i]);";
-}
-?>
+    <?php
+    $body = explode(";", $path);
+    for ($i = 0; $i < count($body); $i++) {
+        echo "addMarker($i, $i, $body[$i]);";
+    }
+    ?>
 
-	var cz = m.computeCenterZoom(markers);
-	m.setCenterZoom(cz[0], cz[1]);
+    var cz = m.computeCenterZoom(markers);
+    m.setCenterZoom(cz[0], cz[1]);
 
-	vystup();
+    vystup();
 
-	var signals = m.getSignals();
-	signals.addListener(window, "marker-click", removeMarker);
-	signals.addListener(window, "marker-drag-stop", stop);
-	signals.addListener(window, "marker-drag-start", start);
+    var signals = m.getSignals();
+    signals.addListener(window, "marker-click", removeMarker);
+    signals.addListener(window, "marker-drag-stop", stop);
+    signals.addListener(window, "marker-drag-start", start);
+    signals.addListener(window, "map-click", addPoint);
 </script>
 
 

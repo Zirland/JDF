@@ -29,7 +29,7 @@ switch ($action) {
             $aktif = 0;
         }
 
-        $ready0   = "UPDATE route SET agency_id='$dopravce', route_short_name='$shortname', route_long_name='$longname', route_type='$routetype', route_color='$pozadi', route_text_color='$foreground', active='$aktif' WHERE (route_id = '$route');";
+        $ready0   = "UPDATE `route` SET agency_id='$dopravce', route_short_name='$shortname', route_long_name='$longname', route_type='$routetype', route_color='$pozadi', route_text_color='$foreground', active='$aktif' WHERE (route_id = '$route');";
         $aktualz0 = mysqli_query($link, $ready0);
 
         $ready1   = "DELETE FROM barvy WHERE route_id = '$route';";
@@ -37,10 +37,13 @@ switch ($action) {
         $ready2   = "INSERT INTO barvy VALUES ('$route', '$pozadi');";
         $aktualz2 = mysqli_query($link, $ready2);
 
+        $query40 = "DELETE FROM du_use WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route');";
+        $prikaz40 = mysqli_query($link, $query40);
+
         $oldtrip = 0;
         $oldstop = 0;
-        $oldlon  = 0;
-        $oldlat  = 0;
+        $old_lat = 0;
+        $old_lon = 0;
 
         switch ($routetype) {
             case '3':
@@ -53,29 +56,30 @@ switch ($action) {
                 break;
         }
 
-        $query56 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
-        if ($result56 = mysqli_query($link, $query56)) {
-            while ($row56 = mysqli_fetch_row($result56)) {
-                $stop_id  = $row56[0];
-                $trip_id  = $row56[1];
+        $query59 = "SELECT stop_id, trip_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id = '$route') ORDER BY trip_id, stop_sequence;";
+        if ($result59 = mysqli_query($link, $query59)) {
+            while ($row59 = mysqli_fetch_row($result59)) {
+                $stop_id = $row59[0];
+                $trip_id = $row59[1];
 
-                $query62 = "SELECT final FROM du WHERE stop1 = '$oldstop' AND stop2 = '$stop_id';";
-                if ($result62 = mysqli_query($link, $query62)) {
-                    $hit = mysqli_num_rows($result62);
-                    while ($row62 = mysqli_fetch_row($result62)) {
-                        $du_id = $row62[0];
+                $du_id = '';
+
+                $query67 = "SELECT du_id FROM du WHERE stop1 = '$oldstop' AND stop2 = '$stop_id';";
+                if ($result67 = mysqli_query($link, $query67)) {
+                    $hit = mysqli_num_rows($result67);
+                    while ($row67 = mysqli_fetch_row($result67)) {
+                        $du_id = $row67[0];
                     }
                 }
-
                 if ($hit == 0) {
-                    $query71  = "SELECT stop_lat, stop_lon FROM `stop` WHERE stop_id = '$stop_id';";
-                    $result71 = mysqli_query($link, $query71);
-                    while ($row71 = mysqli_fetch_row($result71)) {
-                        $stop_lat = $row71[0];
-                        $stop_lon = $row71[1];
+                    $query75  = "SELECT stop_lat, stop_lon FROM `stop` WHERE stop_id = '$stop_id';";
+                    $result75 = mysqli_query($link, $query75);
+                    while ($row75 = mysqli_fetch_row($result75)) {
+                        $stop_lat = $row75[0];
+                        $stop_lon = $row75[1];
                     }
 
-                    $prujezdy = $oldlon . "," . $oldlat . ";" . $stop_lon . "," . $stop_lat;
+                    $prujezdy = $old_lon . "," . $old_lat . ";" . $stop_lon . "," . $stop_lat;
                     if ($trip_id == $oldtrip) {
                         $insert_query = "INSERT INTO du (stop1, stop2, path, final) VALUES ('$oldstop', '$stop_id', '$prujezdy', '$activity');";
                         echo "$insert_query<br/>";
@@ -83,16 +87,15 @@ switch ($action) {
                         $du_id         = mysqli_insert_id($link);
                     }
                 }
-
                 if ($du_id != '' && $oldstop != $stop_id) {
-                    $query100  = "INSERT INTO du_use (du_id, trip_id) VALUES ('$du_id', '$trip_id');";
-                    $prikaz100 = mysqli_query($link, $query100);
+                    $query91  = "INSERT INTO du_use (du_id, trip_id) VALUES ('$du_id', '$trip_id');";
+                    $prikaz91 = mysqli_query($link, $query91);
                 }
 
                 $oldtrip = $trip_id;
                 $oldstop = $stop_id;
-                $oldlat  = $stop_lat;
-                $oldlon  = $stop_lon;
+                $old_lat = $stop_lat;
+                $old_lon = $stop_lon;
             }
         }
         break;
@@ -411,7 +414,7 @@ echo "</td></tr></table>";
 	var markers = [];
 
 <?php
-$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM `stop` WHERE obec = '$value' ORDER BY stop_id;";
+$query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM `stop` WHERE obec IN ('$valueList') ORDER BY stop_id;";
 if ($result30 = mysqli_query($link, $query30)) {
     while ($row30 = mysqli_fetch_row($result30)) {
         $stop_id   = $row30[0];

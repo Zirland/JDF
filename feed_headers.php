@@ -1,5 +1,11 @@
 <?php
-$time_start = microtime(true);
+require_once 'dbconnect.php';
+$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+if (!$link) {
+    echo "Error: Unable to connect to database." . PHP_EOL;
+    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
 
 $file    = 'agency.txt';
 $current = "agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone\n";
@@ -32,14 +38,6 @@ file_put_contents($file, $current);
 $file    = 'shapes.txt';
 $current = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence\n";
 file_put_contents($file, $current);
-
-require_once 'dbconnect.php';
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-if (!$link) {
-    echo "Error: Unable to connect to database." . PHP_EOL;
-    echo "Reason: " . mysqli_connect_error() . PHP_EOL;
-    exit;
-}
 
 $agency_trunc     = mysqli_query($link, "TRUNCATE TABLE ag_use;");
 $calendar_trunc   = mysqli_query($link, "TRUNCATE TABLE cal_use;");
