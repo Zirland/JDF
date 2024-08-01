@@ -3,20 +3,24 @@
 
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<title>JDF</title>
-	<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
-	<script type="text/javascript">
-		Loader.lang = "cs";
-		Loader.load(null, {
-			poi: true
-		});
-	</script>
+	<title>JDF devel</title>
+	<script type="text/javascript" src="apikey.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+	<style>
+		#map {
+			width: 1200px;
+			height: 800px;
+		}
+	</style>
 </head>
 
 <body>
 	<?php
 	require_once 'dbconnect.php';
-	$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+	$link = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 	if (!$link) {
 		echo "Error: Unable to connect to database." . PHP_EOL;
 		echo "Reason: " . mysqli_connect_error() . PHP_EOL;
@@ -42,7 +46,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px; background-color:yellow; vertical-align:top;">
+			<td style="width:100px; background-color:red; vertical-align:top;">
 				<a href="list2.php">Neaktivní</a><br />
 				<a href="cisti.php">Čisti</a><br />
 				STOPS<br />
@@ -93,7 +97,7 @@
 				echo "<input type=\"hidden\" id=\"result\" name=\"result\" value=\"\">";
 				echo "<input type=\"submit\"></form>";
 				?>
-				<script>
+				<script type="text/javascript">
 					var selectedValues = [];
 					<?php
 					foreach ($valuesArr as $radek) {
@@ -109,7 +113,7 @@
 						vystup2();
 					}
 
-					function removePoint2(id) {
+					function removeCity(id) {
 						selectedValues[id] = "()";
 						document.getElementById('result').value = selectedValues.join(',');
 						vystup2();
@@ -119,7 +123,7 @@
 						var vystup = "";
 
 						for (var i = 0; i < selectedValues.length; i++) {
-							vystup += selectedValues[i] + "<input type=\"button\" onClick=\"removePoint2(" + i + ")\"><br/>";
+							vystup += selectedValues[i] + "<input type=\"button\" onClick=\"removeCity(" + i + ")\"><br/>";
 						}
 
 						document.getElementById("txt").innerHTML = vystup;

@@ -4,7 +4,7 @@ set_time_limit(0);
 date_default_timezone_set('Europe/Prague');
 
 require_once 'dbconnect.php';
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$link = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 if (!$link) {
     echo "Error: Unable to connect to database." . PHP_EOL;
     echo "Reason: " . mysqli_connect_error() . PHP_EOL;
@@ -18,7 +18,7 @@ $linkaod = $_GET['linkaod'];
 $linkado = $_GET['linkado'];
 $current = "";
 
-$dir = "data/" . $dir;
+$dir = "data/$dir";
 
 unset($svatek);
 $query27 = "SELECT datum FROM svatky ORDER BY datum;";
@@ -48,7 +48,7 @@ if ($dopravci) {
             $dopr_url = "cascais.zirland.org";
         }
         if (substr($dopr_url, 0, 4) != 'http') {
-            $dopr_url = 'http://' . $dopr_url;
+            $dopr_url = "http://$dopr_url";
         }
 
         $cistiag = mysqli_query($link, "DELETE FROM agency WHERE agency_id = '$dopr_id';");

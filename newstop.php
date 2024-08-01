@@ -15,8 +15,8 @@ $kodobec = "";
 switch ($action) {
     case 'nova':
         $stopcode = $_POST['stopcode'];
-        $stoplat = $_POST['stoplat'];
-        $stoplon = $_POST['stoplon'];
+        $stop_lat = $_POST['stoplat'];
+        $stop_lon = $_POST['stoplon'];
         $pomcode = $_POST['pomcode'];
         $kodobec = $_POST['kodobec'];
         $castobce = $_POST['castobce'];
@@ -45,10 +45,10 @@ switch ($action) {
 
         $stopname = $obec;
         if ($castobce != '') {
-            $stopname .= ", " . $castobce;
+            $stopname .= ", $castobce";
         }
         if ($misto != '') {
-            $stopname .= ", " . $misto;
+            $stopname .= ", $misto";
         }
 
         $sortname = "";
@@ -63,7 +63,7 @@ switch ($action) {
             $sortname .= " $stopcode";
         }
 
-        $query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stoplat','$stoplon','','','0','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
+        $query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stop_lat','$stop_lon','','','0','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
         $prikaz14 = mysqli_query($link, $query14);
 
         $deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stopid|%');";
@@ -77,7 +77,9 @@ switch ($action) {
 echo "<table>";
 echo "<tr><td colspan=\"4\">Insert new stop</td></tr>";
 
-echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\"><input name=\"action\" value=\"nova\" type=\"hidden\"><input name=\"impid\" value=\"$getid\" type=\"hidden\">";
+echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\">
+<input name=\"action\" value=\"nova\" type=\"hidden\">
+<input name=\"impid\" value=\"$getid\" type=\"hidden\">";
 
 echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
 echo "<tr><td><select id=\"kodobec\" name=\"kodobec\" autofocus>";
@@ -100,87 +102,87 @@ echo "<tr><td></td><td colspan=\"3\"><input type=\"submit\" value=\"Insert\"></f
 echo "</table>";
 ?>
 
-<div id="mapa" style="width:1200px; height:800px;"></div>
+<div id="map"></div>
 
 <script type="text/javascript">
-    function SelectElement(id, valueToSelect) {
-        var element = document.getElementById(id);
-        element.value = valueToSelect;
-    }
+    function moveMarker(e) {
+        let coords = e.target.getLatLng();
+        let souradnice = coords.toString().split(', ');
+        let souradnice_x = souradnice[0].replace(/LatLng\(/g, '');
+        let souradnice_y = souradnice[1].replace(/\)/g, '');
 
-    function start(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "pointer";
-    }
+        document.getElementById('stoplat').value = souradnice_x;
+        document.getElementById('stoplon').value = souradnice_y;
 
-    function stop(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "";
-        var coords = e.target.getCoords();
-        var souradnice = coords.toString().split(",");
-        var souradnice_x = souradnice[0].replace(/\(/g, "");
-        var souradnice_y = souradnice[1].replace(/\)/g, "");
-
-        document.getElementById("stoplat").value = souradnice_y;
-        document.getElementById("stoplon").value = souradnice_x;
-
-        var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
-        mapa.setCenter(pozice);
+        map.panTo([souradnice_x, souradnice_y]);
     }
 
     <?php
-    if (isset($stoplon) && isset($stoplat)) {
-        echo "var stred = SMap.Coords.fromWGS84($stoplon, $stoplat);\n";
+    if (isset($stop_lon) && isset($stop_lat)) {
+        echo "const init_pos = [$stop_lat, $stop_lon];";
     } else {
-        echo "var stred = SMap.Coords.fromWGS84(14.41, 50.08);\n";
+        echo 'const init_pos = [50.08, 14.41];';
     }
     ?>
-
-    var mapa = new SMap(document.querySelector("#mapa"), stred, 18);
-
-    mapa.addDefaultLayer(SMap.DEF_OPHOTO);
-    mapa.addDefaultLayer(SMap.DEF_BASE).enable();
-
-    var layerSwitch = new SMap.Control.Layer({
-        width: 65,
-        items: 2,
-        page: 2
-    });
-    layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-    layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-    mapa.addControl(layerSwitch, { left: "8px", top: "9px" });
-
-    mapa.addControl(new SMap.Control.Sync());
-    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
-    mapa.addControl(mouse);
-
-    var layer = new SMap.Layer.Marker();
-    mapa.addLayer(layer);
-    layer.enable();
-
-    var options = {
-        title: ""
+    const map = L.map('map').setView(init_pos, 18);
+    const tileLayers = {
+        'Základní': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 19,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'Letecká': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 20,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'OpenStreetMap': L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+        ),
     };
-    var marker = new SMap.Marker(stred, "myMarker", options);
-    marker.decorate(SMap.Marker.Feature.Draggable);
-    layer.addMarker(marker);
 
-    var layer2 = new SMap.Layer.Marker(undefined, {
-        poiTooltip: true
+    tileLayers['OpenStreetMap'].addTo(map);
+    L.control.layers(tileLayers).addTo(map);
+
+    const LogoControl = L.Control.extend({
+        options: {
+            position: 'bottomleft',
+        },
+
+        onAdd: function (map) {
+            const container = L.DomUtil.create('div');
+            const link = L.DomUtil.create('a', '', container);
+
+            link.setAttribute('href', 'http://mapy.cz/');
+            link.setAttribute('target', '_blank');
+            link.innerHTML =
+                '<img src="https://api.mapy.cz/img/api/logo.svg" />';
+            L.DomEvent.disableClickPropagation(link);
+
+            return container;
+        },
     });
-    mapa.addLayer(layer2).enable();
 
-    var dataProvider = mapa.createDefaultDataProvider();
-    dataProvider.setOwner(mapa);
-    dataProvider.addLayer(layer2);
-    dataProvider.setMapSet(SMap.MAPSET_BASE);
-    dataProvider.enable();
+    new LogoControl().addTo(map);
 
-    var signals = mapa.getSignals();
-    signals.addListener(window, "marker-drag-stop", stop);
-    signals.addListener(window, "marker-drag-start", start);
+    var marker = L.marker(init_pos, {
+        draggable: true,
+    }).addTo(map);
 
-
+    marker.on('dragend', moveMarker);
 </script>
 
 <?php

@@ -7,76 +7,53 @@ $tyden = date("Y-m-d", strtotime("+ 1 week"));
 $query7 = "DELETE FROM jizdy WHERE datum < '$dnes';";
 $prikaz7 = mysqli_query($link, $query7);
 
-$query11 = "DELETE FROM `log` WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
-$prikaz11 = mysqli_query($link, $query11);
+$query10 = "DELETE FROM `log` WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
+$prikaz10 = mysqli_query($link, $query10);
 
-$prepare13 = mysqli_query($link, "CREATE TABLE tyden AS (SELECT * FROM jizdy WHERE datum<'$tyden');");
-
-$query15 = "SELECT id FROM tyden LEFT OUTER JOIN (SELECT MAX(id) as RowId, spoj, datum FROM tyden GROUP BY spoj, datum) as KeepRows ON tyden.id = KeepRows.RowId WHERE KeepRows.RowId IS NULL;";
-if ($result15 = mysqli_query($link, $query15)) {
-    while ($row15 = mysqli_fetch_row($result15)) {
-        $id = $row15[0];
-
-        $query20 = "DELETE FROM jizdy WHERE id = '$id';";
-        $prikaz20 = mysqli_query($link, $query20);
-    }
-}
-
-$prepare25 = mysqli_query($link, "DROP TABLE tyden;");
-
-$query27 = "SELECT DISTINCT SUBSTR(trip_id,1,6) FROM (SELECT trip_id, stop_sequence, count(*) as pocet FROM stoptime GROUP BY trip_id, stop_sequence) as duplicity WHERE pocet > 1;";
-if ($result27 = mysqli_query($link, $query27)) {
-    while ($row27 = mysqli_fetch_row($result27)) {
-        $dupl_route = $row27[0];
+$query13 = "SELECT DISTINCT SUBSTR(trip_id,1,6) FROM (SELECT trip_id, stop_sequence, count(*) as pocet FROM stoptime GROUP BY trip_id, stop_sequence) as duplicity WHERE pocet > 1;";
+if ($result13 = mysqli_query($link, $query13)) {
+    while ($row13 = mysqli_fetch_row($result13)) {
+        $dupl_route = $row13[0];
 
         echo "Duplicita: $dupl_route<br/>";
     }
     echo "------------<br/>";
 }
 
-$query27 = "SELECT trip_id FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM jizdy);";
-if ($result27 = mysqli_query($link, $query27)) {
-    while ($row27 = mysqli_fetch_row($result27)) {
-        $trip_id = $row27[0];
+$query23 = "SELECT trip_id FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM jizdy);";
+if ($result23 = mysqli_query($link, $query23)) {
+    while ($row23 = mysqli_fetch_row($result23)) {
+        $trip_id = $row23[0];
 
         echo "<a href=\"tripedit.php?id=$trip_id\">$trip_id</a><br/>";
         $prikaz = mysqli_query($link, "DELETE FROM trip WHERE trip_id = '$trip_id';");
     }
 }
 
-$query37 = "SELECT route_id FROM `route` WHERE route_id NOT IN (SELECT DISTINCT route_id FROM trip WHERE active='1');";
-if ($result37 = mysqli_query($link, $query37)) {
-    while ($row37 = mysqli_fetch_row($result37)) {
-        $route_id = $row37[0];
+$query33 = "SELECT route_id FROM `route` WHERE route_id NOT IN (SELECT DISTINCT route_id FROM trip WHERE active='1');";
+if ($result33 = mysqli_query($link, $query33)) {
+    while ($row33 = mysqli_fetch_row($result33)) {
+        $route_id = $row33[0];
 
         echo "Route $route_id<br/>";
         $prikaz43 = mysqli_query($link, "UPDATE `route` SET active='0' WHERE route_id = '$route_id';");
     }
 }
 
-$query47 = "DELETE FROM du WHERE stop1 = '0';";
-$prikaz47 = mysqli_query($link, $query47);
+$query43 = "DELETE FROM du WHERE stop1 = '0' OR stop1 = stop2 OR stop1 NOT IN (SELECT stop_id FROM stop) OR stop2 NOT IN (SELECT stop_id FROM stop);";
+$prikaz43 = mysqli_query($link, $query43);
 
-$query50 = "DELETE FROM du WHERE stop1 = stop2;";
-$prikaz50 = mysqli_query($link, $query50);
+$query46 = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
+$prikaz46 = mysqli_query($link, $query46);
 
-$query63 = "DELETE FROM du WHERE stop1 NOT IN (SELECT stop_id FROM stop) OR stop2 NOT IN (SELECT stop_id FROM stop);";
-$prikaz63 = mysqli_query($link, $query63);
+$query49 = "DELETE FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM stoptime);";
+$prikaz49 = mysqli_query($link, $query49);
 
-$query53 = "DELETE FROM stoptime WHERE trip_id NOT IN (SELECT trip_id FROM trip);";
-$prikaz53 = mysqli_query($link, $query53);
+$query52 = "DELETE FROM jizdy WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM trip);";
+$prikaz52 = mysqli_query($link, $query52);
 
-$query56 = "DELETE FROM trip WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM stoptime);";
-$prikaz56 = mysqli_query($link, $query56);
-
-$query59 = "DELETE FROM jizdy WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM trip);";
-$prikaz59 = mysqli_query($link, $query59);
-
-$query62 = "DELETE FROM du_use WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM trip);";
-$prikaz62 = mysqli_query($link, $query62);
-
-$query65 = "DELETE FROM du_use WHERE du_id NOT IN (SELECT du_id FROM du);";
-$prikaz65 = mysqli_query($link, $query65);
+$query55 = "DELETE FROM du_use WHERE trip_id NOT IN (SELECT DISTINCT trip_id FROM trip) OR du_id NOT IN (SELECT du_id FROM du);";
+$prikaz55 = mysqli_query($link, $query55);
 
 echo "== Konec ==";
 include 'footer.php';

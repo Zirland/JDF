@@ -1,6 +1,6 @@
 <?php
 require_once 'dbconnect.php';
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$link = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 if (!$link) {
     echo "Error: Unable to connect to database." . PHP_EOL;
     echo "Reason: " . mysqli_connect_error() . PHP_EOL;
@@ -8,7 +8,7 @@ if (!$link) {
 }
 
 $source = $_GET['file'];
-$dir = "data/" . $source;
+$dir = "data/$source";
 $file = 'sort.log';
 
 $version = fopen("$dir/VerzeJDF.txt.txt", 'r');
@@ -37,7 +37,6 @@ if ($linky) {
         $route_short_name = $route_no;
         $route_long_name = $line[3];
         $vyluka = 0;
-        $route_type = "3";
 
         if ($verze == '1.8' || $verze == '1.9') {
             $platnostod = $line[17];
@@ -47,26 +46,14 @@ if ($linky) {
 
         if ($verze == '1.10' || $verze == '1.11') {
             $typ = $line[9];
-            switch ($typ) {
-                case "A":
-                    $route_type = "3";
-                    break;
-                case "E":
-                    $route_type = "0";
-                    break;
-                case "L":
-                    $route_type = "6";
-                    break;
-                case "M":
-                    $route_type = "1";
-                    break;
-                case "P":
-                    $route_type = "4";
-                    break;
-                case "T":
-                    $route_type = "11";
-                    break;
-            }
+            $route_type = match ($typ) {
+                "A" => "3",
+                "E" => "0",
+                "L" => "6",
+                "M" => "1",
+                "P" => "4",
+                "T" => "11",
+            };
         }
 
         if ($verze == '1.10') {
@@ -90,7 +77,7 @@ $query68 = "INSERT INTO analyza (dir, verze, route_id, route_name, route_type, d
 $prikaz68 = mysqli_query($link, $query68);
 
 $file = 'sort.log';
-$logline = $query68 . "\n";
+$logline = "$query68\n";
 file_put_contents($file, $logline, FILE_APPEND);
 
 mysqli_close($link);

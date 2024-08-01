@@ -6,7 +6,7 @@ function getContrastYIQ($hexcolor)
     $r = hexdec(substr($hexcolor, 0, 2));
     $g = hexdec(substr($hexcolor, 2, 2));
     $b = hexdec(substr($hexcolor, 4, 2));
-    $yiq = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+    $yiq = ($r * 299 + $g * 587 + $b * 114) / 1000;
     return ($yiq >= 128) ? '000000' : 'FFFFFF';
 }
 
@@ -102,7 +102,7 @@ switch ($action) {
                         $stop_lon = $row75[1];
                     }
 
-                    $prujezdy = $old_lon . "," . $old_lat . ";" . $stop_lon . "," . $stop_lat;
+                    $prujezdy = "$old_lon,$old_lat;$stop_lon,$stop_lat";
                     if ($trip_id == $oldtrip) {
                         $insert_query = "INSERT INTO du (stop1, stop2, path, final) VALUES ('$oldstop', '$stop_id', '$prujezdy', '$activity');";
                         echo "$insert_query<br/>";
@@ -129,9 +129,9 @@ switch ($action) {
 
         for ($y = 0; $y < $pocet; $y++) {
             $ind = $y;
-            $stpidindex = "stop_id" . $ind;
+            $stpidindex = "stop_id$ind";
             $stop_id = $_POST[$stpidindex];
-            $stpvazbaindex = "stop_vazba" . $ind;
+            $stpvazbaindex = "stop_vazba$ind";
             $stop2_id = $_POST[$stpvazbaindex];
 
             $query30 = "UPDATE linestopsDB SET stop_vazba='$stop2_id' WHERE (stop_id ='$stop_id');";
@@ -150,7 +150,7 @@ echo "<table><tr><td>";
 echo "<table>";
 echo "<tr>";
 
-$query50 = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, active FROM route WHERE (route_id='$route');";
+$query50 = "SELECT route_id, agency_id, route_short_name, route_long_name, route_type, route_color, active FROM `route` WHERE (route_id='$route');";
 if ($result50 = mysqli_query($link, $query50)) {
     while ($row50 = mysqli_fetch_row($result50)) {
         $route_id = $row50[0];
@@ -263,10 +263,10 @@ if ($result63 = mysqli_query($link, $query63)) {
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
         echo "$stop_name<br/>";
-        echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
+        echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\" onfocus=\"selectCombo(this)\">";
         echo "<option value=\"\">---</option>";
         echo stops($stop_vazba);
-        $z = $z + 1;
+        $z++;
         echo "</select>";
         echo "</td></tr>";
     }
@@ -285,17 +285,17 @@ if ($result63 = mysqli_query($link, $query63)) {
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
         echo "$stop_name<br/>";
 
-        echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\">";
+        echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\" onfocus=\"selectCombo(this)\">";
         echo "<option value=\"\">---</option>";
         echo stops($stop_vazba);
-        $z = $z + 1;
+        $z++;
         echo "</select>";
         echo "</td></tr>";
     }
 }
 
 echo "</table><input type=\"hidden\" name=\"pocet\" value=\"$z\"><input type=\"submit\"></form>";
-echo "</td><td><div id=\"mapa\" style=\"width:1280px; height:960px;\"></div><br/><div id=\"text\"></div>";
+echo "</td><td><div id=\"map\"></div><br/><div id=\"text\"></div>";
 echo "</td></tr></table>";
 
 echo "<table>";
@@ -354,31 +354,37 @@ echo "</td></tr></table>";
 
 
 <script type="text/javascript">
+    let layerGroup = L.featureGroup();
+    let poradi = "";
+    let oldfocus = "";
+    let focused = "";
+
     function SelectElement(id, valueToSelect) {
-        var element = document.getElementById(id);
+        let element = document.getElementById(id);
         element.value = valueToSelect;
     }
 
-    function addMarker(nazev, id, x, y) {
-        var options = {
-            title: nazev
-        };
-
-        var pozice = SMap.Coords.fromWGS84(Number(x), Number(y));
-        var marker = new SMap.Marker(pozice, id, options);
-        layer.addMarker(marker);
-        markers.push(pozice);
+    function addMarker(nazev, id, latlon) {
+        let marker = L.marker(latlon, {
+            bodid: id.toString()
+        })
+            .bindTooltip(nazev.toString(),
+                {
+                    permanent: false,
+                    direction: 'right'
+                }
+            )
+        layerGroup.addLayer(marker);
+        marker.on("click", selectBod);
     }
 
-    function select(e) {
-        var marker = e.target;
-        var id = marker.getId();
+    function selectCombo() {
+        focused = document.activeElement;
+    }
 
-        var focused = document.activeElement;
-        if (!focused || focused == document.body)
-            focused = null;
-        else if (document.querySelector)
-            focused = document.querySelector(":focus");
+    function selectBod(e) {
+        let marker = e.target;
+        let id = marker.options.bodid;
 
         if (poradi == "")
             oznaceno = focused.name;
@@ -394,20 +400,61 @@ echo "</td></tr></table>";
         poradi = Number(poradi) + 1;
     }
 
-    var poradi = "";
-    var oldfocus = "";
-    var stred = SMap.Coords.fromWGS84(14.41, 50.08);
-    var mapa = new SMap(JAK.gel("mapa"));
-    mapa.addDefaultLayer(SMap.DEF_BASE).enable();
+    const init_pos = [50.08, 14.41];
+    const map = L.map('map').setView(init_pos, 16);
+    const tileLayers = {
+        'Základní': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 19,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'Letecká': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 20,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'OpenStreetMap': L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+        ),
+    };
 
-    mapa.addControl(new SMap.Control.Sync());
-    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
-    mapa.addControl(mouse);
+    tileLayers['OpenStreetMap'].addTo(map);
+    L.control.layers(tileLayers).addTo(map);
 
-    var layer = new SMap.Layer.Marker();
-    mapa.addLayer(layer);
-    layer.enable();
-    var markers = [];
+    const LogoControl = L.Control.extend({
+        options: {
+            position: 'bottomleft',
+        },
+
+        onAdd: function (map) {
+            const container = L.DomUtil.create('div');
+            const link = L.DomUtil.create('a', '', container);
+
+            link.setAttribute('href', 'http://mapy.cz/');
+            link.setAttribute('target', '_blank');
+            link.innerHTML =
+                '<img src="https://api.mapy.cz/img/api/logo.svg" />';
+            L.DomEvent.disableClickPropagation(link);
+
+            return container;
+        },
+    });
+
+    new LogoControl().addTo(map);
+    layerGroup.addTo(map);
 
     <?php
     $query30 = "SELECT stop_id, stop_name, stop_lon, stop_lat,pomcode, stop_code FROM `stop` WHERE obec IN ('$valueList') ORDER BY stop_id;";
@@ -425,18 +472,13 @@ echo "</td></tr></table>";
             }
             $stop_name .= " $pomcode";
 
-            echo "addMarker('$stop_name', '$stop_id', $longitude, $latitude);\n";
+            $bod = "[$latitude,$longitude]";
+
+            echo "addMarker('$stop_name', '$stop_id', $bod);\n";
         }
     }
-
     ?>
-
-    var cz = mapa.computeCenterZoom(markers);
-    mapa.setCenterZoom(cz[0], cz[1]);
-
-    var signals = mapa.getSignals();
-    signals.addListener(window, "marker-click", select);
-
+    map.fitBounds(layerGroup.getBounds());
 </script>
 
 

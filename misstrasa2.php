@@ -31,13 +31,13 @@ echo "<input type=\"submit\"></form>";
 
 switch ($action) {
     case "uloz":
-        $body = explode("),(", $path);
+        $body = explode("],[", $path);
         $pass = "";
         foreach ($body as $point) {
-            $upr_point = str_replace(")", "", $point);
-            $upr_point2 = str_replace("(", "", $upr_point);
+            $upr_point = str_replace("]", "", $point);
+            $upr_point2 = str_replace("[", "", $upr_point);
 
-            $pass .= $upr_point2 . ";";
+            $pass .= "$upr_point2;";
         }
 
         $pass = substr($pass, 0, -1);
@@ -112,10 +112,9 @@ switch ($action) {
         $query96 = "SELECT du_id FROM du WHERE stop1 = '$from' AND stop2 = '$to';";
         $pom96 = mysqli_fetch_row(mysqli_query($link, $query96));
         $du_id = $pom96[0];
-        echo "$du_id | <a href=\"usek.php?du_id=$du_id\" target=\"blank\">Editace úseku</a> | <a href=\"reroute.php?du_id=$du_id\" target=\"blank\">Reroute</a><br/>";
-
-        $prujezdy = $fromlon . "," . $fromlat . "|" . $tolon . "," . $tolat;
-
+        echo "$du_id | <a href=\"usek.php?du_id=$du_id\" target=\"blank\">Editace úseku</a> | <a href=\"reroute.php?du_id=$du_id\" target=\"blank\">Reroute</a> | ";
+        echo "<button onclick=\"switchKontra()\">Změnit směr</button>";
+        echo "<br/>";
         echo "<details>";
         $query146 = "SELECT trip_id FROM trip WHERE shape_id LIKE '%$from|$to|%';";
         if ($result146 = mysqli_query($link, $query146)) {
@@ -142,54 +141,158 @@ switch ($action) {
 
         ?>
 
-        <div id="m" style="height:800px"></div>
+        <div id="map"></div>
 
         <script type="text/javascript">
-            function click(e, elm) {
-                var click_coords = SMap.Coords.fromEvent(e.data.event, m);
+            let first = <?php echo "[$fromlat, $fromlon]"; ?>;
+            let last = <?php echo "[$tolat, $tolon]"; ?>;
+            let skrz = [];
+            let kontra = 0;
+            let inverseArray = [];
+            let polyline = L.polyline([]);
+            let layerGroup = L.layerGroup();
 
-                skrz.push(click_coords);
-                sour = [];
-                sour.push(first);
-                var jizda = sour.concat(skrz);
-                jizda.push(last);
-
-                SMap.Route.route(jizda, {
-                    geometry: true
-                }).then(nalezeno);
+            function switchKontra() {
+                kontra = kontra == 1 ? 0 : 1;
+                skrz = [];
+                findRoute(first, last, skrz, kontra);
             }
 
-            var skrz = [];
-            var centerMap = SMap.Coords.fromWGS84(14.40, 50.08);
-            var m = new SMap(JAK.gel("m"), centerMap, 16);
-            var l = m.addDefaultLayer(SMap.DEF_BASE).enable();
-            m.addDefaultControls();
+            function drawMap() {
+                layerGroup.clearLayers();
+                for (let i = 0; i < inverseArray.length; i++) {
+                    let latlon = inverseArray[i];
+                    let marker = L.marker(latlon)
+                        .bindTooltip(i.toString(),
+                            {
+                                permanent: true,
+                                direction: 'right'
+                            }
+                        )
+                    layerGroup.addLayer(marker);
+                }
 
-            m.getSignals().addListener(window, "map-click", click);
+                map.removeLayer(polyline);
+                polyline = L.polyline(inverseArray, {
+                    color: 'red',
+                    weight: 5
+                }).addTo(map);
+                map.fitBounds(polyline.getBounds());
+            }
 
-            var nalezeno = function (route) {
-                var vrstva = new SMap.Layer.Geometry();
-                m.addLayer(vrstva).enable();
+            function findRoute(first, last, pass, kontra) {
+                let url = `https://api.mapy.cz/v1/routing/route?lang=cs&apikey=${API_KEY}&`;
+                if (kontra == 1) {
+                    url += 'start=' + last[1] + '%2C' + last[0] + '&';
+                    url += 'end=' + first[1] + '%2C' + first[0] + '&';
+                } else {
+                    url += 'start=' + first[1] + '%2C' + first[0] + '&';
+                    url += 'end=' + last[1] + '%2C' + last[0] + '&';
+                }
+                url += 'routeType=car_fast&format=geojson&avoidToll=false';
+                if (pass) {
+                    for (let i = 0; i < pass.length; i++) {
+                        url += '&waypoints=';
+                        let bod = pass[i].toString().split(',');
+                        url += bod[1].replace(/\]/g, '') + '%2C' + bod[0].replace(/\[/g, '');
+                    }
+                }
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        let coords = data.geometry.geometry.coordinates;
+                        inverseArray = coords.map(item => [item[1], item[0]]);
+                        let linie = [];
+                        inverseArray.forEach(item => {
+                            linie.push('[' + item[1] + ',' + item[0] + ']');
+                        });
+                        if (kontra == 1) {
+                            linie.reverse();
+                            inverseArray.reverse();
+                        }
+                        document.getElementById("path").value = linie.toString();
+                        drawMap();
+                    });
+            }
 
-                var coords = route.getResults().geometry;
-                document.getElementById("path").value = coords;
-                var cz = m.computeCenterZoom(coords);
-                m.setCenterZoom(cz[0], cz[1]);
-                var g = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, null, coords);
-                vrstva.addGeometry(g);
+            function passPoint(e) {
+                let clickPoint = e.latlng.toString().split(', ');
+                let souradnice_x = clickPoint[0].replace(/LatLng\(/g, '');
+                let souradnice_y = clickPoint[1].replace(/\)/g, '');
+                let pass = '[' + souradnice_x + ',' + souradnice_y + ']';
+                skrz.push(pass);
+                findRoute(first, last, skrz, kontra);
+            }
+
+            const init_pos = [50.08, 14.41];
+            const map = L.map('map').setView(init_pos, 16);
+            const tileLayers = {
+                'Základní': L.tileLayer(
+                    `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+                    {
+                        minZoom: 0,
+                        maxZoom: 19,
+                        attribution:
+                            '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+                    }
+                ),
+                'Letecká': L.tileLayer(
+                    `https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+                    {
+                        minZoom: 0,
+                        maxZoom: 20,
+                        attribution:
+                            '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+                    }
+                ),
+                'OpenStreetMap': L.tileLayer(
+                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    {
+                        maxZoom: 19,
+                        attribution:
+                            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    }
+                ),
             };
 
-            var first = SMap.Coords.fromWGS84(<?php echo "$fromlon, $fromlat"; ?>);
-            var last = SMap.Coords.fromWGS84(<?php echo "$tolon, $tolat"; ?>);
-            var coords = [first, last];
+            tileLayers['OpenStreetMap'].addTo(map);
+            L.control.layers(tileLayers).addTo(map);
 
-            SMap.Route.route(coords, {
-                geometry: true
-            }).then(nalezeno);
+            const LogoControl = L.Control.extend({
+                options: {
+                    position: 'bottomleft',
+                },
+
+                onAdd: function (map) {
+                    const container = L.DomUtil.create('div');
+                    const link = L.DomUtil.create('a', '', container);
+
+                    link.setAttribute('href', 'http://mapy.cz/');
+                    link.setAttribute('target', '_blank');
+                    link.innerHTML =
+                        '<img src="https://api.mapy.cz/img/api/logo.svg" />';
+                    L.DomEvent.disableClickPropagation(link);
+
+                    return container;
+                },
+            });
+
+            new LogoControl().addTo(map);
+            layerGroup.addTo(map);
+
+            map.on('click', passPoint);
+
+            findRoute(first, last, skrz, kontra);
         </script>
 
         <?php
-        echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"uloz\"><input name=\"action\" value=\"uloz\" type=\"hidden\"><input name=\"from\" value=\"$from\" type=\"hidden\"><input name=\"to\" value=\"$to\" type=\"hidden\"><input id=\"path\" name=\"path\" value=\"\" type=\"hidden\"><input type=\"submit\" value=\"Zapsat\"></form>";
+        echo "<form method=\"post\" action=\"misstrasa2.php\" name=\"uloz\">
+        <input name=\"action\" value=\"uloz\" type=\"hidden\">
+        <input name=\"from\" value=\"$from\" type=\"hidden\">
+        <input name=\"to\" value=\"$to\" type=\"hidden\">
+        <input id=\"path\" name=\"path\" value=\"\" type=\"hidden\">
+        <input type=\"submit\" value=\"Zapsat\">
+        </form>";
         break;
 }
 
