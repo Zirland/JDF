@@ -3,7 +3,7 @@ ini_set('memory_limit', '-1');
 set_time_limit(0);
 
 require_once 'dbconnect.php';
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$link = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 if (!$link) {
     echo "Error: Unable to connect to database." . PHP_EOL;
     echo "Reason: " . mysqli_connect_error() . PHP_EOL;

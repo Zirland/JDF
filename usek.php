@@ -8,9 +8,9 @@ if (!$usek_id) {
     $usek_id = @$_POST['id_usek'];
 }
 
-$path = @$_POST['path'];
 $from = @$_POST['from'];
 $to = @$_POST['to'];
+$path = @$_POST['path'];
 
 $koleje = [];
 $query15 = "SELECT DISTINCT stoptime.stop_id from stoptime WHERE trip_id IN (SELECT trip_id FROM trip WHERE route_id IN (SELECT route_id FROM `route` WHERE route_type = 0));";
@@ -53,14 +53,14 @@ echo "<input type=\"submit\"></form>";
 
 switch ($action) {
     case "uloz":
-        $body = explode("),(", $path);
+        $body = explode("],[", $path);
         $pass = "";
         foreach ($body as $point) {
-            $upr_point = str_replace(")", "", $point);
-            $upr_point2 = str_replace("(", "", $upr_point);
+            $upr_point = str_replace("]", "", $point);
+            $upr_point2 = str_replace("[", "", $upr_point);
 
             if ($upr_point2 != "") {
-                $pass .= $upr_point2 . ";";
+                $pass .= "$upr_point2;";
             }
         }
 
@@ -237,55 +237,67 @@ switch ($action) {
 }
 ?>
 
-<input type="number" id="positionInput" placeholder="Enter position">
-<div id="m" style="height:600px"></div>
+<input type="number" id="positionInput" value="1">
+<div id="map"></div>
 
 <script type="text/javascript">
-    function addMarker(nazev, id, x, y) {
-        var znacka = JAK.mel("div");
-        var obrazek = JAK.mel("img", {
-            src: SMap.CONFIG.img + "/marker/drop-red.png"
+    let inverseArray = [];
+    let linie = [];
+    let layerGroup = L.layerGroup();
+
+    function vystup(open) {
+        var vystup = "<details";
+        if (open == "1") {
+            vystup += " open";
+        }
+        vystup += "><summary>Points</summary>";
+        for (var i = 0; i < inverseArray.length; i++) {
+            vystup += i + ": " + inverseArray[i] + "<input type=\"button\" onClick=\"removePoint(" + i + ")\"><br/>";
+        }
+        vystup += "</details>";
+
+        let linie = [];
+        inverseArray.forEach(item => {
+            linie.push('[' + item[1] + ',' + item[0] + ']');
         });
-        znacka.appendChild(obrazek);
+        document.getElementById("path").value = linie.toString();
+        document.getElementById("text").innerHTML = vystup;
 
-        var popisek = JAK.mel("div", {}, {
-            position: "absolute",
-            left: "0px",
-            top: "2px",
-            textAlign: "center",
-            width: "22px",
-            color: "white",
-            fontWeight: "bold"
-        });
-        popisek.innerHTML = nazev;
-        znacka.appendChild(popisek);
-
-
-        var options = {
-            title: nazev,
-            url: znacka
-        };
-
-        var pozice = SMap.Coords.fromWGS84(Number(x), Number(y));
-        var marker = new SMap.Marker(pozice, id, options);
-        marker.decorate(SMap.Marker.Feature.Draggable);
-        vrstva.addMarker(marker);
-        markers.splice(id, 0, pozice);
-    }
-
-    function removeMarker(e) {
-        var marker = e.target;
-        var id = marker.getId();
-        vrstva.removeMarker(marker);
-        markers[id] = "()";
-
-        vystup();
     }
 
     function removePoint(id) {
-        markers[id] = "()";
-
+        inverseArray.splice(id, 1);
         vystup("1");
+    }
+
+    function drawMap(zoom) {
+        layerGroup.clearLayers();
+        for (let i = 0; i < inverseArray.length; i++) {
+            let latlon = inverseArray[i];
+            let marker = L.marker(latlon, {
+                draggable: true,
+                bodid: i.toString()
+            })
+                .bindTooltip(i.toString(),
+                    {
+                        permanent: true,
+                        direction: 'right'
+                    }
+                )
+            layerGroup.addLayer(marker);
+            marker.on("dragend", dragedMaker);
+            marker.on("click", removeMarker);
+        }
+
+        map.removeLayer(polyline);
+        polyline = L.polyline(inverseArray, {
+            color: 'red',
+            weight: 5
+        }).addTo(map);
+        if (zoom == 1) {
+            map.fitBounds(polyline.getBounds());
+        }
+        vystup("0");
     }
 
     function increaseValue(inputValue) {
@@ -296,92 +308,100 @@ switch ($action) {
         return intValue;
     }
 
-    function addPoint(e, elm) {
+    function addNewMarker(e) {
         let pole = document.getElementById("positionInput");
-        let poradi = pole.value
-        var coords = SMap.Coords.fromEvent(e.data.event, m);
-
-        addMarker(poradi, poradi, coords.x, coords.y);
+        let poradi = pole.value;
+        let souradnice = e.latlng.toString().split(', ');
+        let souradnice_x = souradnice[0].replace(/LatLng\(/g, '');
+        let souradnice_y = souradnice[1].replace(/\)/g, '');
+        newpos = [souradnice_x, souradnice_y];
+        inverseArray.splice(poradi, 0, newpos);
         pole.value = increaseValue(poradi);
-
-        vystup("1");
+        drawMap("0");
     }
 
-    function start(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "pointer";
+    function removeMarker() {
+        let bodid = this.options.bodid;
+        inverseArray.splice(bodid, 1);
+        drawMap("0");
     }
 
-    function stop(e) {
-        var node = e.target.getContainer();
-        node[SMap.LAYER_MARKER].style.cursor = "";
-        var marker = e.target;
-        var id = marker.getId();
-        var coords = marker.getCoords();
-        var souradnice = coords.toString().split(",");
-        var souradnice_x = souradnice[0].replace(/\(/g, "");
-        var souradnice_y = souradnice[1].replace(/\)/g, "");
-
-        var pozice = SMap.Coords.fromWGS84(souradnice_x, souradnice_y);
-        markers.splice(id, 1, pozice);
-
-        vystup();
+    function dragedMaker() {
+        let bodid = this.options.bodid;
+        let newlat = this.getLatLng().lat;
+        let newlon = this.getLatLng().lng;
+        inverseArray[bodid] = [newlat, newlon];
+        drawMap("0");
     }
 
-    function vystup(open) {
-        var vystup = "<details";
-        if (open == "1") {
-            vystup += " open";
-        }
-        vystup += "><summary>Points</summary>";
-        for (var i = 0; i < markers.length; i++) {
-            vystup += i + ": " + markers[i] + "<input type=\"button\" onClick=\"removePoint(" + i + ")\"><br/>";
-        }
-        vystup += "</details>";
+    const init_pos = [50.08, 14.41];
+    const map = L.map('map').setView(init_pos, 16);
+    const tileLayers = {
+        'Základní': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 19,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'Letecká': L.tileLayer(
+            `https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${API_KEY}`,
+            {
+                minZoom: 0,
+                maxZoom: 20,
+                attribution:
+                    '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
+            }
+        ),
+        'OpenStreetMap': L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+        ),
+    };
 
-        document.getElementById("text").innerHTML = vystup;
-        document.getElementById("path").value = markers;
-    }
+    tileLayers['OpenStreetMap'].addTo(map);
+    L.control.layers(tileLayers).addTo(map);
 
-    var m = new SMap(JAK.gel("m"));
-    m.addDefaultLayer(SMap.DEF_OPHOTO);
-    m.addDefaultLayer(SMap.DEF_BASE).enable();
+    const LogoControl = L.Control.extend({
+        options: {
+            position: 'bottomleft',
+        },
 
-    var layerSwitch = new SMap.Control.Layer({
-        width: 65,
-        items: 2,
-        page: 2
+        onAdd: function (map) {
+            const container = L.DomUtil.create('div');
+            const link = L.DomUtil.create('a', '', container);
+
+            link.setAttribute('href', 'http://mapy.cz/');
+            link.setAttribute('target', '_blank');
+            link.innerHTML =
+                '<img src="https://api.mapy.cz/img/api/logo.svg" />';
+            L.DomEvent.disableClickPropagation(link);
+
+            return container;
+        },
     });
-    layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-    layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-    m.addControl(layerSwitch, { left: "8px", top: "9px" });
 
-    m.addControl(new SMap.Control.Sync());
-    var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM);
-    m.addControl(mouse);
-
-    var vrstva = new SMap.Layer.Marker();
-    m.addLayer(vrstva);
-    vrstva.enable();
-    var markers = [];
+    new LogoControl().addTo(map);
+    let polyline = L.polyline([]).addTo(map);
+    layerGroup.addTo(map);
 
     <?php
     $body = explode(";", $path);
     for ($i = 0; $i < count($body); $i++) {
-        echo "addMarker($i, $i, $body[$i]);";
+        $point = explode(",", $body[$i]);
+        $bod = "[{$point[1]}, {$point[0]}]";
+        echo "inverseArray.push($bod);";
     }
     ?>
 
-    var cz = m.computeCenterZoom(markers);
-    m.setCenterZoom(cz[0], cz[1]);
-
-    vystup();
-
-    var signals = m.getSignals();
-    signals.addListener(window, "marker-click", removeMarker);
-    signals.addListener(window, "marker-drag-stop", stop);
-    signals.addListener(window, "marker-drag-start", start);
-    signals.addListener(window, "map-click", addPoint);
+    drawMap("1");
+    map.on("click", addNewMarker);
 </script>
 
 
