@@ -15,6 +15,7 @@ foreach ($gpx->wpt as $pt) {
     $lon = (string) $pt['lon'];
     $name = (string) $pt->name;
 
+    //  Teplá, Beroun, rozc., -
     $name = explode(",", $name);
     $obec = trim($name[0]);
     $castobce = trim($name[1]);

@@ -3,7 +3,7 @@
 
 <head>
 	<meta content="text/html; charset=utf-8" http-equiv="content-type">
-	<title>JDF devel</title>
+	<title>JDF</title>
 	<script type="text/javascript" src="apikey.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -46,7 +46,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="width:100px; background-color:red; vertical-align:top;">
+			<td style="width:100px; background-color:yellow; vertical-align:top;">
 				<a href="list2.php">Neaktivní</a><br />
 				<a href="cisti.php">Čisti</a><br />
 				STOPS<br />

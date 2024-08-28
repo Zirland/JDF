@@ -118,8 +118,8 @@ echo "</table>";
     }
 
     <?php
-    if (isset($stop_lon) && isset($stop_lat)) {
-        echo "const init_pos = [$stop_lat, $stop_lon];";
+    if (isset($getlon) && isset($getlat)) {
+        echo "const init_pos = [$getlat, $getlon];";
     } else {
         echo 'const init_pos = [50.08, 14.41];';
     }

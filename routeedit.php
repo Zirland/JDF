@@ -262,7 +262,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
-        echo "$stop_name<br/>";
+        echo "$stop_name <a href=\"stopedit.php?id=$stop_vazba\">E</a> <br/>";
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\" onfocus=\"selectCombo(this)\">";
         echo "<option value=\"\">---</option>";
         echo stops($stop_vazba);
@@ -283,8 +283,7 @@ if ($result63 = mysqli_query($link, $query63)) {
 
         echo "<tr><td>";
         echo "<input type=\"hidden\" name=\"stop_id$z\" value=\"$stop_id\">";
-        echo "$stop_name<br/>";
-
+        echo "$stop_name <a href=\"stopedit.php?id=$stop_vazba\">E</a> <br/>";
         echo "<select id=\"stop_vazba$z\" name=\"stop_vazba$z\" onfocus=\"selectCombo(this)\">";
         echo "<option value=\"\">---</option>";
         echo stops($stop_vazba);
@@ -394,6 +393,7 @@ echo "</td></tr></table>";
             oznaceno = focused.name;
             oldfocus = focused.name;
         }
+
         SelectElement(oznaceno, id);
         document.getElementById(oznaceno).style = "background-color:green;";
         poradi = oznaceno.replace(/stop_vazba/g, "");
