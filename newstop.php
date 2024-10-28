@@ -14,34 +14,34 @@ $kodobec = "";
 
 switch ($action) {
     case 'nova':
-        $stopcode = $_POST['stopcode'];
+        $stopcode = trim($_POST['stopcode']);
         $stop_lat = $_POST['stoplat'];
         $stop_lon = $_POST['stoplon'];
-        $pomcode = $_POST['pomcode'];
+        $pomcode = trim($_POST['pomcode']);
         $kodobec = $_POST['kodobec'];
-        $castobce = $_POST['castobce'];
-        $misto = $_POST['misto'];
+        $castobce = trim($_POST['castobce']);
+        $misto = trim($_POST['misto']);
         $impid = $_POST['impid'];
 
-        $pom18 = mysqli_fetch_row(mysqli_query($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
-        $obec = $pom18[0];
+        $pom26 = mysqli_fetch_row(mysqli_query($link, "SELECT nazev_obce FROM obce WHERE lau2 = '$kodobec';"));
+        $obec = $pom26[0];
 
-        $query21 = "SELECT max FROM stop_count WHERE kodobce = '$kodobec';";
-        if ($result21 = mysqli_query($link, $query21)) {
-            while ($row21 = mysqli_fetch_row($result21)) {
-                $max = $row21[0];
+        $query29 = "SELECT max FROM stop_count WHERE kodobce = '$kodobec';";
+        if ($result29 = mysqli_query($link, $query29)) {
+            while ($row29 = mysqli_fetch_row($result29)) {
+                $max = $row29[0];
             }
         }
 
         $hit = mysqli_num_rows($result21);
         if ($hit == 0) {
             $max = 0;
-            $insert31 = mysqli_query($link, "INSERT INTO stop_count (kodobce, max) VALUES ('$kodobec', '0');");
+            $insert39 = mysqli_query($link, "INSERT INTO stop_count (kodobce, max) VALUES ('$kodobec', '0');");
         }
 
         $newmax = $max + 1;
-        $stopid = $kodobec . "Z" . $newmax;
-        $update28 = mysqli_query($link, "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$kodobec';");
+        $stopid = "{$kodobec}Z$newmax";
+        $update44 = mysqli_query($link, "UPDATE stop_count SET max = '$newmax' WHERE kodobce = '$kodobec';");
 
         $stopname = $obec;
         if ($castobce != '') {
@@ -63,11 +63,11 @@ switch ($action) {
             $sortname .= " $stopcode";
         }
 
-        $query14 = "INSERT INTO stop (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stop_lat','$stop_lon','','','0','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
-        $prikaz14 = mysqli_query($link, $query14);
+        $query66 = "INSERT INTO `stop` (stop_id, stop_code, stop_name, stop_desc, stop_lat, stop_lon, zone_id, stop_url, location_type, stop_timezone, wheelchair_boarding, active, pomcode, obec, castobce, misto, sortname)  VALUES ('$stopid','$stopcode','$stopname','','$stop_lat','$stop_lon','','','0','','0','1', '$pomcode', '$obec', '$castobce', '$misto', '$sortname');";
+        $prikaz66 = mysqli_query($link, $query66);
 
         $deaktivace = "UPDATE shapetvary SET complete = '0' WHERE (tvartrasy LIKE '%$stopid|%');";
-        $prikaz19 = mysqli_query($link, $deaktivace);
+        $prikaz69 = mysqli_query($link, $deaktivace);
 
         $delimport = "DELETE FROM importstop WHERE id='$impid';";
         $prikazdel = mysqli_query($link, $delimport);
@@ -83,12 +83,12 @@ echo "<form method=\"post\" action=\"newstop.php\" name=\"nova\">
 
 echo "<tr><td>Obec</td><td>Část obce</td><td>Místo</td><td>Pomcode</td><td>Stop code</td><td>Latitude ~50.123456</td><td>Longitude ~16.987654</td></tr>";
 echo "<tr><td><select id=\"kodobec\" name=\"kodobec\" autofocus>";
-$query53 = "SELECT lau1, lau2, nazev_obce FROM obce ORDER BY nazev_obce;";
-if ($result53 = mysqli_query($link, $query53)) {
-    while ($row53 = mysqli_fetch_row($result53)) {
-        $kodokres = $row53[0];
-        $kodobce = $row53[1];
-        $nazevobce = $row53[2];
+$query86 = "SELECT lau1, lau2, nazev_obce FROM obce ORDER BY nazev_obce;";
+if ($result86 = mysqli_query($link, $query86)) {
+    while ($row86 = mysqli_fetch_row($result86)) {
+        $kodokres = $row86[0];
+        $kodobce = $row86[1];
+        $nazevobce = $row86[2];
 
         echo "<option value=\"$kodobce\"";
         if ($kodobec == $kodobce) {

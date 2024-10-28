@@ -6,16 +6,16 @@ if ($result4 = mysqli_query($link, $query4)) {
     while ($row4 = mysqli_fetch_row($result4)) {
         $stop_id = $row4[0];
         $obec = $row4[1];
-        $castobce = $row4[2];
-        $misto = $row4[3];
-        $stop_code = $row4[4];
+        $castobce = trim($row4[2]);
+        $misto = trim($row4[3]);
+        $stop_code = trim($row4[4]);
 
         $stopname = $obec;
         if ($castobce != '') {
-            $stopname .= ", " . $castobce;
+            $stopname .= ", $castobce";
         }
         if ($misto != '') {
-            $stopname .= ", " . $misto;
+            $stopname .= ", $misto";
         }
 
         $sortname = "";
