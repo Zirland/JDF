@@ -33,7 +33,7 @@ switch ($action) {
             }
         }
 
-        $hit = mysqli_num_rows($result21);
+        $hit = mysqli_num_rows($result29);
         if ($hit == 0) {
             $max = 0;
             $insert39 = mysqli_query($link, "INSERT INTO stop_count (kodobce, max) VALUES ('$kodobec', '0');");
